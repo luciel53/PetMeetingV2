@@ -1,3 +1,5 @@
+import Carousel from '../components/Carousel';
+
 export default function Accueil() {
 
 	return (
@@ -29,7 +31,7 @@ export default function Accueil() {
 		</section>
 		{/* Carousel */}
 		<section>
-		  <div>Carousel</div>
+		  <div><Carousel /></div>
 		</section>
 	  </main>
 	);
