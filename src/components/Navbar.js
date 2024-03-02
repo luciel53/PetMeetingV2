@@ -1,5 +1,8 @@
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
+import userIcon from "../assets/images/icons/user.svg";
+import messagesIcon from "../assets/images/icons/messages.svg";
+import logoutIcon from "../assets/images/icons/logout.svg";
 
 export default function Navbar() {
 	const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -65,9 +68,9 @@ export default function Navbar() {
 		  </ul>
 		  {/* Parallelogram */}
 		  <div className="bg-gray w-28 md:w-36 lg:w-60 h-12 md:h-14 lg:h-20 skew-x-45 mr-8 md:mr-10 lg:mr-48 flex flex-row px-4 md:px-6 lg:px-12 justify-between items-center">
-			<img src="images/user.svg" className="-skew-x-45 w-5 md:w-6 lg:w-8" alt="Icône de profil utilisateur" />
-			<img src="images/messages.svg" className="-skew-x-45 w-5 md:w-6 lg:w-8" alt="Icône de profil utilisateur" />
-			<img src="images/logout.svg" className="-skew-x-45 w-5 md:w-6 lg:w-8" alt="Icône de profil utilisateur" />
+			<img src={userIcon} className="-skew-x-45 w-5 md:w-6 lg:w-8" alt="Icône de profil utilisateur" />
+			<img src={messagesIcon} className="-skew-x-45 w-5 md:w-6 lg:w-8" alt="Icône de profil utilisateur" />
+			<img src={logoutIcon} className="-skew-x-45 w-5 md:w-6 lg:w-8" alt="Icône de profil utilisateur" />
 		  </div>
 		  {/* Burger button */}
 		  <button
@@ -77,7 +80,7 @@ export default function Navbar() {
 			className="cursor-pointer mr-2 w-7 md:hidden"
 			onClick={toggleMenu}
 		  >
-			<img src="images/burger.png" alt="Menu hamburger" />
+			<img src={require("../assets/images/icons/burger.png")} alt="Menu hamburger" />
 		  </button>
 		</nav>
 	  </header>
