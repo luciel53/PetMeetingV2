@@ -1,0 +1,17 @@
+@font-face {
+	font-family: 'Mina-Regular';
+	src: url('fonts/Mina-Regular.ttf');
+}
+
+footer {
+	font-family: 'Mina-Regular';
+
+	width: 100%;
+	text-align: center; /* Centrer le texte */
+    position: fixed; /* Fixe le footer en bas */
+
+  left: 0; /* Alignement à gauche */
+  z-index: 100;
+}
+
+
