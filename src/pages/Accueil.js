@@ -6,7 +6,7 @@ export default function Accueil() {
 		<section className="flex flex-wrap md:flex-row justify-between">
 		  {/* Lima picture */}
 		  <div>
-			  <img src={require("../assets/images/chat-bengal.png")} className="w-32 md:w-60 lg:w-80" alt="chat de race bengal" />
+			  <img src={require("../assets/images/chat-bengal.png")} className="w-32 md:w-60 lg:w-[100%]" alt="chat de race bengal" />
 		  </div>
 		  {/* Welcome bubble */}
 		  <div className="w-[48%] mr-36 h-60 mt-16 p-8 bg-white shadow-lg rounded-full text-center">

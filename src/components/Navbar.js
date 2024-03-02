@@ -20,7 +20,7 @@ export default function Navbar() {
 			aria-label="Page d'accueil de PetMeeting"
 		  >
 			<img
-			  src="images/logo.png"
+			  src={require("../assets/images/logo.png")}
 			  className="w-52 md:w-60 lg:w-80 md:mr-4"
 			  alt="Logo de PetMeeting"
 			/>
