@@ -8,17 +8,17 @@ import connectionIcon from "../assets/images/icons/connection.png";
 
 export default function Navbar() {
 	const [isMenuOpen, setIsMenuOpen] = useState(false);
-	const [connectedIcons, setConnectedIcons] = useState(false);
+	const [connectedIcons, setConnectedIcons] = useState(true);
 	const [unconnectedIcons, setUnconnectedIcons] = useState(false);
 
 	function toggleMenu () {
-	  setIsMenuOpen(!isMenuOpen);
-	  if (setIsMenuOpen(true)) {
-		setUnconnectedIcons(false);
-	  } else {
-		setUnconnectedIcons(true);
-	  }
-	}
+      setIsMenuOpen(!isMenuOpen);
+	      
+      if (!isMenuOpen) {
+        setUnconnectedIcons(false);
+      }
+}
+
 
 
 	function toggleUnconnectedIcons () {

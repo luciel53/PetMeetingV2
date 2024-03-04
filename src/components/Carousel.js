@@ -92,11 +92,11 @@ export default function Carousel() {
                     const imageIndex = (startIndex + index) % images.length;
                     const image = images[imageIndex];
                     return (
-                        <div key={index} className="container flex flex-col bg-white z-0 h-80 w-80 mx-auto mr-3 pb-2 rounded-3xl shadow-xl">
+                        <div key={index} className="container flex flex-col bg-white z-0 md:h-80 w-80 mx-auto mr-3 pb-2 rounded-3xl shadow-xl">
                             <p className="text-center">{image.name}</p>
-                            <img src={image.image} className="z-20 h-64 md:h-72 my-3 object-cover mx-auto" alt={image.name} />
+                            <img src={image.image} className="z-20 h-40 md:h-72 my-3 object-cover mx-auto" alt={image.name} />
                             <p className="text-center">{image.race}</p>
-                            
+
                         </div>
                     );
                 })}
