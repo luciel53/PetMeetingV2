@@ -4,7 +4,7 @@ import Button from'../components/Button';
 
 export default function Login () {
   return (
-    <div className="container flex flex-col justify-center mx-auto w-[25%] mt-40 p-12 bg-white rounded-3xl shadow-lg text-lg">
+    <div className="container flex flex-col justify-center mx-auto md:mx-auto w-[88%] md:w-[55%] lg:w-[25%] p-5 md:p-12 my-28 md:mt-72 bg-white rounded-3xl shadow-lg text-sm md:text-lg">
       <label className='ml-4 mb-2'>
         Nom d'utilisateur*:
 	    </label>
