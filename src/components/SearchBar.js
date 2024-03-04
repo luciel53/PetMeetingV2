@@ -1,17 +1,13 @@
-import Button from '../components/Button';
 
-const races = {
-	
-}
 
 export default function SearchBar() {
   return (
     <div>
-      <div className=" flex flex-row bg-white rounded-full md:w-[950px] h-16 border-fragole border mx-auto shadow-lg">
+      <div className=" flex flex-row bg-white rounded-full md:w-[650px] lg:w-[950px] h-16 border-fragole border mx-auto shadow-lg md:text-xs lg:text-lg">
       <select className="bg-white ml-5 rounded-full outline-none">
         <option value="" className="text-center">Sexe</option>
-		<option>Mâle</option>
-		<option className="">Femelle</option>
+		<option value="Mâle">Mâle</option>
+		<option value="Femelle">Femelle</option>
 	  </select>
 	  <select className="bg-white ml-5 rounded-full outline-none">
 		<option value="" className="text-center">Race</option>
@@ -31,7 +27,7 @@ export default function SearchBar() {
 		<option value="vairons">Vairons</option>
 	  </select>
 	  <select className="bg-white ml-5 rounded-full outline-none">
-		<option value="Groupe sanguin" className="text-center">Groupe sanguin</option>
+		<option value="" className="text-center">Groupe sanguin</option>
 		<option value="A">A</option>
 		<option value="B">B</option>
 		<option value="AB">AB</option>
@@ -41,7 +37,7 @@ export default function SearchBar() {
 		<option value="Loire-Atlantique">Loire-Atlantique</option>
 		<option value="Dordogne">Dordogne</option>
 	  </select>
-	  <button type="button" className='bg-fragole text-white text-xl w-40 rounded-full ml-16'>Rechercher!</button>
+	  <button type="button" className='bg-fragole text-white lg:text-xl lg:w-40 rounded-full lg:ml-6 shadow-lg hover:opacity-85'>Rechercher!</button>
 
 
 	  </div>
