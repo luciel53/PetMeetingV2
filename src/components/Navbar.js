@@ -5,11 +5,13 @@ import messagesIcon from "../assets/images/icons/messages.svg";
 import logoutIcon from "../assets/images/icons/logout.svg";
 import registerIcon from "../assets/images/icons/register.png";
 import connectionIcon from "../assets/images/icons/connection.png";
+import paw from "../assets/images/icons/paw.png";
 
 export default function Navbar() {
 	const [isMenuOpen, setIsMenuOpen] = useState(false);
 	const [connectedIcons, setConnectedIcons] = useState(true);
 	const [unconnectedIcons, setUnconnectedIcons] = useState(false);
+	const [active, setActive] = useState(false);
 
 	function toggleMenu () {
       setIsMenuOpen(!isMenuOpen);
@@ -17,16 +19,14 @@ export default function Navbar() {
       if (!isMenuOpen) {
         setUnconnectedIcons(false);
       }
-}
-
-
+    }
 
 	function toggleUnconnectedIcons () {
       setUnconnectedIcons(!unconnectedIcons);
 	}
 
 	return (
-	  <header className="bg-purple z-50 fixed top-0 w-full shadow">
+	  <header className="bg-purple z-50 fixed top-0 w-full shadow-xl">
 		<nav
 		  id="header-nav"
 		  className="bg-purple mx-auto p-0 flex items-center justify-between">
@@ -47,15 +47,16 @@ export default function Navbar() {
 			id="toggled-menu"
 			className={`w-full absolute flex top-full text-white bg-purple left-0 -z-10 border-b border-gray-200 md:flex flex-col items-center md:static md:z-10 md:w-min md:transform-none md:border-none md:flex-row md:mr-6 ${isMenuOpen ? 'block' : 'hidden'}`}
 		  >
-			<li className="py-4 md:py-0 md:mr-6">
+			<li className="py-4 md:py-0 md:mr-6 hover:animate-wiggle">
+				{active && (<span className='z-0 absolute'><img src={paw} alt="paw"/></span>)}
 			  <Link
 				to="/Annonces"
-				className="text-sm lg:text-xl uppercase font-semibold hover:animate-pulse rounded-lg px-2 w-full hover:bg-white hover:text-purple"
+				className="z-10 relative text-sm lg:text-xl uppercase font-semibold rounded-lg px-2 ml-1 w-full"
 			  >
 				annonces
 			  </Link>
 			</li>
-			<li className="py-4 md:py-0 md:mr-6">
+			<li className="py-4 md:py-0 md:mr-6 hover:animate-wiggle">
 			  <a
 				href="#publier"
 				className="text-sm lg:text-xl uppercase font-semibold w-full hover:text-rose-600"
@@ -63,7 +64,7 @@ export default function Navbar() {
 				publier
 			  </a>
 			</li>
-			<li className="py-4 md:py-0 md:mr-6">
+			<li className="py-4 md:py-0 md:mr-6 hover:animate-wiggle">
 			  <a
 				href="#membres"
 				className="text-sm lg:text-xl uppercase font-semibold w-full hover:text-rose-600"
@@ -71,7 +72,7 @@ export default function Navbar() {
 				membres
 			  </a>
 			</li>
-			<li className="py-4 md:py-0 md:mr-0">
+			<li className="py-4 md:py-0 md:mr-0 hover:animate-wiggle">
 			  <a
 				href="#contact"
 				className="text-sm lg:text-xl uppercase font-semibold w-full hover:text-rose-600"
