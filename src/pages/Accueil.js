@@ -11,7 +11,7 @@ export default function Accueil() {
 			  <img src={require("../assets/images/chat-bengal.png")} className="w-20 md:w-44 lg:w-[100%]" alt="chat de race bengal" />
 		  </div>
 		  {/* Welcome bubble */}
-		  <div className="w-64 md:w-[40%] mr-8 lg:mr-36 lg:h-[60%] mt-0 md:mt-4 lg:mt-16 p-8 lg:p-2 bg-white shadow-lg rounded-3xl lg:rounded-full text-center">
+		  <div className="w-64 md:w-[40%] mr-8 lg:mr-36 lg:h-[60%] mt-0 md:mt-4 lg:mt-16 p-8 lg:p-2 bg-white shadow-lg rounded-3xl lg:rounded-full text-center animate-fade-down animate-duration-[800ms] animate-delay-500 animate-ease-linear">
 			<div className="relative hidden lg:block lg:left-7 lg:top-52 lg:w-6 lg:h-5 bg-white shadow-sm"></div>
 			  <h1 className="mt-0 mb-4 text-md md:text-md lg:text-3xl text-purple">Bienvenue sur PetMeeting!</h1>
 			  <p className="text-sm md:text-xs lg:text-lg italic px-0 md:px-2 lg:px-6">
