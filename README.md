@@ -1,3 +1,25 @@
+# PetMeeting
+
+PetMeeting is a tool to help cats' breeders to find a breeder. The goal is to facilitate the genetic selection and the races devlopment.
+
+## Technologies/Installation
+
+### React
+
+I chose to use React to its ability to create dynamic, responsive applications. Also, we can find a lot of documentation on React. I really take pleasure to use it.
+
+
+
+
+## Usage
+
+
+## Structure of the project
+
+
+
+## Contact
+
 # Getting Started with Create React App
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
