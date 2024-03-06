@@ -1,58 +1,7 @@
+import cats from "./Cats";
 import React, { useState, useEffect } from "react";
-import Abyssin from '../assets/images/grid-carousel/abyssin.png';
-import Bengal from '../assets/images/grid-carousel/bengal.png';
-import BritishLonghair from '../assets/images/grid-carousel/britishlonghair.png';
-import BritishShorthair from '../assets/images/grid-carousel/britishshorthair.png';
-import Ragdoll from '../assets/images/grid-carousel/ragdoll.png';
-import Siamois from '../assets/images/grid-carousel/siamois.png';
-import Scottish from '../assets/images/grid-carousel/scottishfold.png';
 
 export default function Carousel() {
-    const images = [
-        {
-            name: "Popeye",
-            image: Abyssin,
-            race: "Abyssin",
-            sexe: "mâle",
-        },
-        {
-            name: "Sahel",
-            image: Bengal,
-            race: "Bengal",
-            sexe: "Mâle",
-        },
-        {
-            name: "Sally",
-            image: BritishLonghair,
-            race: "British Longhair",
-            sexe: "Femelle",
-        },
-        {
-            name: "Christmas",
-            image: Ragdoll,
-            race: "Ragdoll",
-            sexe: "mâle",
-        },
-        {
-            name: "Shtroumpf",
-            image: BritishShorthair,
-            race: "British short hair",
-            sexe: "mâle",
-        },
-        {
-            name: "Apollo",
-            image: Siamois,
-            race: "Siamois",
-            sexe: "mâle",
-        },
-        {
-            name: "Maestro",
-            image: Scottish,
-            race: "Scottish Fold",
-            sexe: "mâle",
-        },
-    ];
-
     const [startIndex, setStartIndex] = useState(0);
     const [itemsToShow, setItemsToShow] = useState(0);
 
@@ -64,20 +13,28 @@ export default function Carousel() {
             } else if (window.innerWidth < 1200 && window.innerHeight >= 768) {
                 setItemsToShow(3); // tablet : 3 elements
             } else {
-				setItemsToShow(2); // mobile : 2 elements
-			}
+                setItemsToShow(2); // mobile : 2 elements
+            }
         }
+
+        const intervalId = setInterval(() => {
+            setStartIndex(prevIndex => (prevIndex + 1));
+        }, 5000);
+
         window.addEventListener("resize", handleResize); // detect changes
         handleResize(); // Call function
-        return () => window.removeEventListener("resize", handleResize); // avoid bugs/memory leaks
-    }, []);
+        return () => {
+            window.removeEventListener("resize", handleResize); // avoid bugs/memory leaks
+            clearInterval(intervalId); // clear interval
+        };
+    }, [cats.length]);
 
     function nextImages() {
-        setStartIndex(prevIndex => (prevIndex + 1) % images.length);
+        setStartIndex(prevIndex => (prevIndex + 1) % cats.length);
     }
 
     function prevImages() {
-        setStartIndex(prevIndex => (prevIndex - 1 + images.length) % images.length);
+        setStartIndex(prevIndex => (prevIndex - 1 + cats.length) % cats.length);
     }
 
     return (
@@ -89,10 +46,10 @@ export default function Carousel() {
             {/* Carousel */}
             <div className="relative mt-4 md:mt-8 md:p-5 shadow-xl mb-5 flex flex-nowrap bg-white rounded-3xl font-semibold">
                 {Array.from({ length: itemsToShow }).map((_, index) => {
-                    const imageIndex = (startIndex + index) % images.length;
-                    const image = images[imageIndex];
+                    const imageIndex = (startIndex + index) % cats.length;
+                    const image = cats[imageIndex];
                     return (
-                        <div key={index} className="container flex flex-col bg-white z-0 md:h-80 w-80 mx-auto mr-3 pb-2 rounded-3xl shadow-xl">
+                        <div key={index} className="container flex flex-col bg-white z-0 md:h-80 w-80 mx-auto mr-3 pb-2 rounded-3xl shadow-xl transition: all 0.5s ease-in-out">
                             <p className="text-center">{image.name}</p>
                             <img src={image.image} className="z-20 h-40 md:h-72 my-3 object-cover mx-auto" alt={image.name} />
                             <p className="text-center">{image.race}</p>
