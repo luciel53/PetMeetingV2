@@ -1,5 +1,8 @@
 # PetMeeting
 
+![Logo](/src/assets/images/logo.png)
+
+
 PetMeeting is a tool to help cats' breeders to find a breeder. The goal is to facilitate the genetic selection and the races devlopment.
 
 ## Technologies/Installation
@@ -8,8 +11,61 @@ PetMeeting is a tool to help cats' breeders to find a breeder. The goal is to fa
 
 I chose to use React to its ability to create dynamic, responsive applications. Also, we can find a lot of documentation on React. I really take pleasure to use it.
 
+To install React and create a new project:
+
+```
+$ yarn create react-app PetMeetingV2
+```
+
+Then go to the project and start the application:
+
+```
+cd PetMeetingV2 && yarn start
+```
+
+### React-router
+
+To manage the routes and links, we use React-Router.
+To install it:
+
+```
+yarn add react-router-dom
+```
 
 
+### TailwindCSS
+
+we chose tailwindcss because it saves us time and allows us to customise it to suit our needs.
+
+To install it:
+
+```
+yarn add tailwindcss
+```
+
+Create a new `tailwind.config.js` with:
+
+```
+npx tailwindcss init
+```
+
+Install the plugin Tailwind CSS animated:
+
+```
+npm i tailwindcss-animated
+```
+
+Then add the plugin to your tailwind.config.js file:
+
+```
+// tailwind.config.js
+module.exports = {
+  // ...
+  plugins: [
+    require('tailwindcss-animated')
+  ],
+}
+```
 
 ## Usage
 
