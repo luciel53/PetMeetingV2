@@ -1,11 +1,8 @@
 # PetMeeting
 
 <p>
-  <img src="src/assets/images/logo.png" alt="Texte alternatif" style="display: block; margin: auto;">
+  <img src="src/assets/images/logo.png" alt="Texte alternatif" style="margin-left: 150px">
 </p>
-
-![Logo](/src/assets/images/logo.png)
-
 
 PetMeeting is a tool to help cats' breeders to find a breeder. The goal is to facilitate the genetic selection and the races devlopment.
 
