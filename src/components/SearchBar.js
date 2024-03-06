@@ -78,8 +78,8 @@ export default function SearchBar() {
 
   return (
     <div>
-      <div className=" flex flex-row bg-white rounded-full md:w-[650px] lg:w-[745px] h-16 border-fragole border mx-auto shadow-lg md:text-xs lg:text-lg">
-        <select className="bg-white ml-5 rounded-full outline-none" onChange={(e) => setSex(e.target.value)}>
+      <div className=" flex flex-row bg-white rounded-full md:w-[650px] lg:w-[719px] h-16 border-fragole border mx-auto shadow-lg md:text-xs lg:text-lg">
+        <select className="bg-white rounded-full outline-none pl-4 hover:opacity-50 cursor-pointer" onChange={(e) => setSex(e.target.value)}>
           <option value="" className="text-center">
             Sexe
           </option>
@@ -89,7 +89,7 @@ export default function SearchBar() {
             </option>
           ))}
         </select>
-        <select className="bg-white w-24 rounded-full outline-none " onChange={(e) => setRace(e.target.value)}>
+        <select className="bg-white w-20 pr-2 pl-3 rounded-full outline-none hover:opacity-50 cursor-pointer" onChange={(e) => setRace(e.target.value)}>
           <option value="" className="text-center">
             Race
           </option>
@@ -99,7 +99,7 @@ export default function SearchBar() {
             </option>
           ))}
         </select>
-        <select className="bg-white pl-2 w-48 rounded-full outline-none" onChange={(e) => setColorEye(e.target.value)}>
+        <select className="bg-white pl-3 pr-2 w-48 rounded-full outline-none hover:opacity-50 cursor-pointer" onChange={(e) => setColorEye(e.target.value)}>
           <option value="" className="text-center">
             Couleur des yeux
           </option>
@@ -107,7 +107,7 @@ export default function SearchBar() {
             <option value={option.value}>{option.label}</option>
           ))}
         </select>
-        <select className="bg-white ml-5 pr-3 rounded-full outline-none" onChange={(e)  => setGroupeSanguin(e.target.value)}>
+        <select className="bg-white ml-3 pr-2 rounded-full outline-none hover:opacity-50 cursor-pointer" onChange={(e)  => setGroupeSanguin(e.target.value)}>
           <option value="" className="text-center">
             Groupe sanguin
           </option>
@@ -117,7 +117,7 @@ export default function SearchBar() {
             </option>
           ))}
         </select>
-        <select className="bg-white rounded-full w-24 ml-2 outline-none" onChange={(e) => setLocalisation(e.target.value)}>
+        <select className="bg-white rounded-full w-24 pl-2 outline-none hover:opacity-50 cursor-pointer" onChange={(e) => setLocalisation(e.target.value)}>
           <option value="" className="text-center">
             Région
           </option>
