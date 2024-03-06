@@ -82,13 +82,17 @@ export default function Navbar() {
               membres
             </a>
           </li>
-          <li className="py-4 md:py-0 md:mr-0 hover:animate-wiggle">
-            <a
-              href="#contact"
-              className="text-sm lg:text-xl uppercase font-semibold w-full hover:text-rose-600"
+          <li className="pt-8 py-4 md:py-0 md:mr-6 hover:animate-wiggle relative">
+            <NavLink
+              to="/Contact"
+              className="text-sm lg:text-xl uppercase font-semibold rounded-lg px-2 ml-1 w-full relative z-20"
+              activeClassName="text-sm lg:text-xl uppercase font-semibold rounded-lg px-2 ml-1 w-full relative"
             >
-              contact
-            </a>
+              Contact
+            </NavLink>
+            {location.pathname === "/Contact" && (
+              <img src={paw} alt="paw" className="z-0 absolute -top-2 left-1" />
+            )}
           </li>
         </ul>
         {/* Parallelogram */}

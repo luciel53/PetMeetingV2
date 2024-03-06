@@ -8,6 +8,7 @@ import Login from "./pages/Login";
 import Register from "./pages/Register";
 import Profile from "./pages/Profile";
 import Publier from "./pages/Publier";
+import Contact from "./pages/Contact";
 import Footer from "./components/Footer";
 import React from 'react';
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
@@ -26,6 +27,7 @@ export default function App() {
           <Route path="/Register" element={<Register />} />
           <Route path="/Annonces" element={<Annonces />} />
           <Route path="/Publier" element={<Publier />} />
+          <Route path="/Contact" element={<Contact />} />
           <Route path="/Profile" element={<Profile />} />
         </Routes>
         <Footer />
