@@ -1,5 +1,9 @@
 # PetMeeting
 
+<p>
+  <img src="src/assets/images/logo.png" alt="Texte alternatif" style="display: block; margin: auto;">
+</p>
+
 ![Logo](/src/assets/images/logo.png)
 
 
