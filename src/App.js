@@ -4,6 +4,7 @@ import "tailwindcss/tailwind.css";
 import Navbar from "./components/Navbar";
 import Accueil from "./pages/Accueil";
 import Annonces from "./pages/Annonces";
+import Offer from "./pages/Offer";
 import Login from "./pages/Login";
 import Register from "./pages/Register";
 import Profile from "./pages/Profile";
@@ -25,6 +26,7 @@ export default function App() {
           <Route path="/" exact element={<Accueil />} />
           <Route path="/Login" element={<Login />} />
           <Route path="/Register" element={<Register />} />
+          <Route path="/Offer" element={<Offer />} />
           <Route path="/Annonces" element={<Annonces />} />
           <Route path="/Publier" element={<Publier />} />
           <Route path="/Contact" element={<Contact />} />
