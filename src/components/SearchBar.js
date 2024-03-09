@@ -1,55 +1,13 @@
 import race from "../components/Races";
+import sexe from "../components/Sex";
+import eyeColor from "../components/EyeColor";
+import blood from "../components/Blood";
 import département from "../components/Regions";
 import search from "../assets/images/icons/search.png";
 import cross from "../assets/images/icons/cross.png";
 import { useState } from "react";
 
 export default function SearchBar() {
-  const sexe = [
-    {
-      value: "Mâle",
-      label: "Mâle",
-    },
-    {
-      value: "Femelle",
-      label: "Femelle",
-    },
-  ];
-
-  const eyeColor = [
-    {
-      value: "Verts",
-      label: "Verts",
-    },
-    {
-      value: "Bleus",
-      label: "Bleus",
-    },
-    {
-      value: "Or",
-      label: "Or",
-    },
-    {
-      value: "Vairons",
-      label: "Vairons",
-    },
-  ];
-
-  const blood = [
-    {
-      value: "A",
-      label: "A",
-    },
-    {
-      value: "B",
-      label: "B",
-    },
-    {
-      value: "AB",
-      label: "AB",
-    },
-  ];
-
   const [sex, setSex] = useState("");
   const [Race, setRace] = useState("");
   const [colorEye, setColorEye] = useState("");
