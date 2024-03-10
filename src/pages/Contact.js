@@ -1,41 +1,42 @@
 import React from "react";
-import { NavLink, useLocation } from "react-router-dom";
+import { NavLink } from "react-router-dom";
 import Button from "../components/Button";
 
-export default function Contact() {
+export default function Login() {
   return (
-    <>
-      <NavLink to="/">
-      <div className="ml-20 mt-28 flex flex-row text-verydarkgray hover:opacity-80">
-          &larr; Retour à l'accueil
-        </div>
-      </NavLink>
-    <div className="container flex items-center flex-col justify-center mx-auto md:mx-auto w-[88%] md:w-[55%] lg:w-[25%] p-5 md:p-12 my-28 md:mt-10 bg-white rounded-3xl shadow-xl text-sm md:text-lg">
-      <h2 className="text-lg md:text-2xl text-fragole mx-auto mb-6">
+    <div className="container flex flex-col justify-center mx-auto md:mx-auto w-[88%] md:w-[55%] lg:w-[30%] p-5 md:p-12 md:mt-60 lg:mt-52 bg-white rounded-3xl shadow-2xl text-sm md:text-lg animate-fade">
+      <h2 className="text-lg md:text-2xl text-darkdarkgray text-center pb-7">
         Contactez-nous:
       </h2>
-      <label className="ml-4 mb-2">Nom:</label>
-      <input
-        type="email"
-        className="h-8 w-[90%] ml-4 mb-4 pt-1 pl-3 border border-darkgray rounded-lg bg-gray"
-      />
-      <label className="ml-4 mb-2">Email:</label>
-      <input
-        type="text"
-        className="h-8 w-[90%] ml-4 mb-4 pt-1 pl-3 border border-darkgray rounded-lg bg-gray"
-      />
-      <label className="ml-4 mb-2">Sujet:</label>
-      <input
-        type="text"
-        className="h-8 w-[90%] ml-4 mb-4 pt-1 pl-3 border border-darkgray rounded-lg bg-gray"
-      />
-      <label className="ml-4 mb-2">Votre message:</label>
-      <input
-        type="text"
-        className="h-24 w-[90%] ml-4 mb-4 pt-1 pl-3 border border-darkgray rounded-lg bg-gray"
-      />
+      <div className="flex flex-row items-center justify-center">
+        <input
+          type="text"
+          placeholder="Nom*"
+          className="h-12 w-96 mb-4 pt-1 pl-2 border-b border-darkgray focus:outline-none focus:border-fragole"
+        />
+      </div>
+      <div className="flex flex-row items-center justify-center">
+        <input
+          type="text"
+          placeholder="Email*"
+          className="h-12 w-96 mb-4 pt-1 pl-2 border-b border-darkgray focus:outline-none focus:border-fragole"
+        />
+      </div>
+      <div className="flex flex-row items-center justify-center">
+        <input
+          type="text"
+          placeholder="Sujet*"
+          className="h-12 w-96 mb-4 pt-1 pl-2 border-b border-darkgray focus:outline-none focus:border-fragole"
+        />
+      </div>
+      <div className="flex flex-row items-center justify-center">
+        <textarea
+          type="text"
+          placeholder="Message*"
+          className="h-28 w-96 mb-4 pt-1 pl-2 border-b border-darkgray focus:outline-none focus:border-fragole"
+        />
+      </div>
       <Button text="Envoyer" />
     </div>
-    </>
   );
 }
