@@ -74,13 +74,17 @@ export default function Navbar() {
               <img src={paw} alt="paw" className="z-0 absolute -top-2 left-1" />
             )}
           </li>
-          <li className="py-4 md:py-0 md:mr-6 hover:animate-wiggle">
-            <a
-              href="#membres"
-              className="text-sm lg:text-xl uppercase font-semibold w-full hover:text-rose-600"
+          <li className="pt-8 py-4 md:py-0 md:mr-6 hover:animate-wiggle relative">
+            <NavLink
+              to="/Membres"
+              className="text-sm lg:text-xl uppercase font-semibold rounded-lg px-2 ml-1 w-full relative z-20"
+              activeClassName="text-sm lg:text-xl uppercase font-semibold rounded-lg px-2 ml-1 w-full relative"
             >
-              membres
-            </a>
+              Membres
+            </NavLink>
+            {location.pathname === "/Membres" && (
+              <img src={paw} alt="paw" className="z-0 absolute -top-2 left-1" />
+            )}
           </li>
           <li className="pt-8 py-4 md:py-0 md:mr-6 hover:animate-wiggle relative">
             <NavLink

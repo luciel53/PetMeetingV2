@@ -6,7 +6,7 @@ import userMini from "../assets/images/icons/user-mini.png";
 
 export default function Login() {
   return (
-    <div className="container flex flex-col justify-center mx-auto md:mx-auto w-[88%] md:w-[55%] lg:w-[25%] p-5 md:p-12 md:mt-60 bg-white rounded-3xl shadow-lg text-sm md:text-lg animate-fade">
+    <div className="container flex flex-col justify-center mx-auto md:mx-auto w-[88%] md:w-[55%] lg:w-[25%] p-5 md:p-12 md:mt-60 bg-white rounded-3xl shadow-2xl text-sm md:text-lg animate-fade">
       <h2 className="text-lg md:text-2xl text-darkdarkgray text-center pb-7">
         Connectez-vous:
       </h2>
