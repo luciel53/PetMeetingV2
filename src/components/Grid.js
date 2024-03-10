@@ -6,7 +6,7 @@ export default function Grid() {
   console.log(cats);
 
   return (
-    <div className="grid grid-cols-2 place-content-center md:max-w-max md:mx-auto md:grid-cols-3 lg:grid-cols-4 mt-12 mb-20">
+    <div className="grid grid-cols-2 place-content-center md:max-w-max md:mx-auto md:grid-cols-3 lg:grid-cols-4 mt-12 mb-20 animate-fade-down">
       {cats.map((cat, index) => (
         <div
           key={index}

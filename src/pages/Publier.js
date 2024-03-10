@@ -14,7 +14,7 @@ export default function Publier() {
           &larr; Retour à l'accueil
         </div>
       </NavLink>
-      <div className="container flex flex-col mx-auto ">
+      <div className="container flex flex-col mx-auto animate-fade ">
         <div className="container flex flex-row mx-auto mb-6">
           <img
             src={add}
@@ -27,7 +27,7 @@ export default function Publier() {
         </div>
         <div className="flex flex-col md:flex-row items-center place-items-center my-auto mx-auto">
           {/* Description */}
-          <div className="md:w-[500px] md:h-[600px] bg-white rounded-3xl shadow-xl md:mr-6">
+          <div className="md:w-[500px] md:h-[600px] bg-white rounded-3xl shadow-2xl md:mr-6">
             <h3 className="text-xl md:text-2xl text-center mt-3 mb-6">
               Description 😽:{" "}
             </h3>
@@ -156,22 +156,22 @@ export default function Publier() {
             </form>
           </div>
           {/* Pictures */}
-          <div className="md:w-[500px] md:h-[600px] bg-white rounded-3xl shadow-xl">
+          <div className="md:w-[500px] md:h-[600px] bg-white rounded-3xl shadow-2xl">
             <div className="flex flex-col justify-center mx-10 mb-3 text-sm md:text-lg">
               <h3 className="text-2xl text-center mt-3">
                 Infos complémentaires 🔍:
               </h3>
               <div className="flex flex-row justify-between mt-6 mb-3">
                 <label>Qualités:</label>
-                <input type="text" className="w-72 h-20 bg-gray border border-darkgray rounded-lg ml-2"></input>
+                <textarea type="text" className="w-72 h-20 bg-gray border border-darkgray rounded-lg ml-2"/>
               </div>
               <div className="flex flex-row justify-between mb-3">
                 <label>Défauts:</label>
-                <input type="text" className="w-72 h-20 bg-gray border border-darkgray rounded-lg ml-2"></input>
+                <textarea type="text" className="w-72 h-20 bg-gray border border-darkgray rounded-lg ml-2"/>
               </div>
               <div className="flex flex-row justify-between mb-3">
                 <label>Autres:</label>
-                <input type="text" className="w-72 h-20 bg-gray border border-darkgray rounded-lg ml-2"></input>
+                <textarea type="text" className="w-72 h-20 bg-gray border border-darkgray rounded-lg ml-2"/>
               </div>
             </div>
             <div className="flex flex-col justify-center mx-32 mb-3 text-sm md:text-lg">

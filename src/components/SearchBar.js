@@ -36,7 +36,7 @@ export default function SearchBar() {
 
   return (
     <div>
-      <div className=" flex flex-row bg-white rounded-full md:w-[650px] lg:w-[719px] h-16 border-fragole border mx-auto shadow-lg md:text-xs lg:text-lg">
+      <div className=" flex flex-row bg-white rounded-full md:w-[650px] lg:w-[719px] h-16 border-fragole border mx-auto shadow-lg md:text-xs lg:text-lg animate-fade animate-delay-100">
         <select className="bg-white rounded-full outline-none pl-4 hover:opacity-50 cursor-pointer" onChange={(e) => setSex(e.target.value)}>
           <option value="" className="text-center">
             Sexe
