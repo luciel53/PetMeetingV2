@@ -1,6 +1,7 @@
 import { NavLink, useLocation } from "react-router-dom";
 import SearchBar from "../components/SearchBar";
 import Grid from "../components/Grid";
+import cats from "../components/Cats";
 
 export default function Annonces() {
   return (
@@ -16,7 +17,7 @@ export default function Annonces() {
         {/* Selection */}
         <div></div>
         {/* Grid */}
-        <Grid />
+        <Grid items={cats} />
       </div>
     </>
   );

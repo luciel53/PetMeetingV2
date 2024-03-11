@@ -1,8 +1,14 @@
+import cristina from "../assets/images/people/Cristina.jpg";
+import gertrude from "../assets/images/people/Gertrude.jpg";
+import paul from "../assets/images/people/Paul.jpg";
+import suzanne from "../assets/images/people/suzanne.jpg";
+import warren from "../assets/images/people/warren.jpg";
+
 const users = [
   {
     id: 1,
     name: "Cristina",
-    image: "../assets/images/people/Cristina.jpg",
+    image: cristina,
     email: "cristina@email.com",
     presentation: "Eleveuse de bengal depuis 3 ans, je propose mon mâle pour quelques saillies extérieures",
     website: "http://lesbengaldemplates.com",
@@ -12,7 +18,7 @@ const users = [
   {
     id: 2,
     name: "Gertrude",
-    image: "../assets/images/people/Gertrude.jpg",
+    image: gertrude,
     email: "Gertrude@email.com",
     presentation: "Eleveuse de sphynx depuis peu, je un mâle pour ma femelle",
     website: "http://lessphynxdelahoue.com",
@@ -22,7 +28,7 @@ const users = [
   {
     id: 3,
     name: "Paul",
-    image: "../assets/images/people/Paul.jpg",
+    image: paul,
     email: "Paul@email.com",
     presentation: "Eleveur professionnel de Ragdoll",
     website: "http://www.eleveur-ragdoll.com",
@@ -32,7 +38,7 @@ const users = [
   {
     id: 4,
     name: "Suzanne",
-    image: "../assets/images/people/suzanne.jpg",
+    image: suzanne,
     email: "Suzanne@gmail.com",
     presentation: "Eleveuse professionnelle d'Abyssin.",
     website: "http://abyssinsdesbois.com",
@@ -42,7 +48,7 @@ const users = [
   {
     id: 5,
     name: "Warren",
-    image: "../assets/images/people/warren.jpg",
+    image: warren,
     email: "Warren@email.com",
     presentation: "",
     website: "",
@@ -50,3 +56,5 @@ const users = [
     birthday: "",
   },
 ];
+
+export default users;

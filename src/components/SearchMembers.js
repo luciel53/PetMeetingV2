@@ -1,5 +1,4 @@
 import GlassSearchButton from "../components/GlassSearchButton";
-import Grid from "../components/Grid";
 
 export default function SearchMembers() {
   return (
@@ -13,9 +12,6 @@ export default function SearchMembers() {
         <div className="ml-[12%]">
           <GlassSearchButton className="" />
         </div>
-      </div>
-      <div>
-        <Grid />
       </div>
     </div>
   );
