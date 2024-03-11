@@ -15,7 +15,7 @@ export default function Grid({ items }) {
           <p className="text-center text-lg font-semibold mt-3">{item.name}</p>
           <img
             src={item.image}
-            className="z-20 h-40 md:h-72 my-3 object-cover mx-auto"
+            className="z-20 h-40 md:h-3/4 w-56 my-3 object-cover mx-auto shadow-sm rounded-3xl"
             alt={item.name}
           />
           {item.race && (
