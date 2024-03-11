@@ -9,7 +9,7 @@ import paw from "../assets/images/icons/paw.png";
 
 export default function Navbar() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
-  const [connectedIcons, setConnectedIcons] = useState(true);
+  const [connectedIcons, setConnectedIcons] = useState(false);
   const [unconnectedIcons, setUnconnectedIcons] = useState(false);
   const location = useLocation();
 
@@ -114,11 +114,13 @@ export default function Navbar() {
               />
             </NavLink>
           ) : (
-            <img
-              src={connectionIcon}
-              className="-skew-x-45 w-9 lg:w-14 mr-2"
-              alt="Connexion"
-            />
+            <NavLink to="/Login" className="flex" aria-label="Login">
+              <img
+                src={connectionIcon}
+                className="-skew-x-45 w-9 lg:w-14 mr-2"
+                alt="Connexion"
+              />
+            </NavLink>
           )}
           {connectedIcons ? (
             <img
@@ -127,11 +129,13 @@ export default function Navbar() {
               alt="Icône de profil utilisateur"
             />
           ) : (
-            <img
-              src={registerIcon}
-              className="-skew-x-45 w-10 lg:w-14"
-              alt="Enregistrement"
-            />
+            <NavLink to="/Register" className="flex" aria-label="Register">
+              <img
+                src={registerIcon}
+                className="-skew-x-45 w-10 lg:w-14"
+                alt="Enregistrement"
+              />
+            </NavLink>
           )}
           {connectedIcons && (
             <img
