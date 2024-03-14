@@ -9,7 +9,7 @@ import paw from "../assets/images/icons/paw.png";
 
 export default function Navbar() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
-  const [connectedIcons, setConnectedIcons] = useState(false);
+  const [connectedIcons, setConnectedIcons] = useState(true);
   const [unconnectedIcons, setUnconnectedIcons] = useState(false);
   const location = useLocation();
 

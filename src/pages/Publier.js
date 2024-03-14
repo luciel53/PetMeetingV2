@@ -70,7 +70,7 @@ export default function Publier() {
                   <label>Nom*:</label>
                   <input
                     type="text"
-                    className="w-52 bg-gray border border-darkgray rounded-lg h-8 ml-2"
+                    className="w-52 bg-gray border border-darkgray rounded-lg h-8 ml-2 pl-2 px-1"
                   />
                 </div>
                 {/* Race */}
@@ -88,7 +88,7 @@ export default function Publier() {
                   <label>N° d'identification*:</label>
                   <input
                     type="text"
-                    className="bg-gray w-52 border border-darkgray rounded-lg h-8 ml-2"
+                    className="bg-gray w-52 border border-darkgray rounded-lg h-8 ml-2 pl-2 px-1"
                   />
                 </div>
                 {/* Groupe sanguin */}
@@ -106,7 +106,7 @@ export default function Publier() {
                   <label>Tests maladies*:</label>
                   <input
                     type="text"
-                    className="w-52 bg-gray border border-darkgray rounded-lg h-8 ml-2"
+                    className="w-52 bg-gray border border-darkgray rounded-lg h-8 ml-2 pl-2 px-1"
                   />
                 </div>
                 {/* Age */}
@@ -114,7 +114,7 @@ export default function Publier() {
                   <label>Âge*:</label>
                   <input
                     type="text"
-                    className="w-52 bg-gray border border-darkgray rounded-lg h-8 ml-2"
+                    className="w-52 bg-gray border border-darkgray rounded-lg h-8 ml-2 pl-2 px-1"
                   />
                 </div>
                 {/* Eye color */}
@@ -132,7 +132,7 @@ export default function Publier() {
                   <label>Robe:</label>
                   <input
                     type="text"
-                    className="w-52 bg-gray border border-darkgray rounded-lg h-8 ml-2"
+                    className="w-52 bg-gray border border-darkgray rounded-lg h-8 ml-2 pl-2 px-1"
                   />
                 </div>
                 {/* Localisation */}
@@ -149,7 +149,7 @@ export default function Publier() {
                   <label>Prix*:</label>
                   <input
                     type="text"
-                    className="w-52 bg-gray border border-darkgray rounded-lg h-8 ml-2"
+                    className="w-52 bg-gray border border-darkgray rounded-lg h-8 ml-2 pl-2 px-1"
                   />
                 </div>
               </fieldset>
@@ -163,15 +163,15 @@ export default function Publier() {
               </h3>
               <div className="flex flex-row justify-between mt-6 mb-3">
                 <label>Qualités:</label>
-                <textarea type="text" className="w-72 h-20 bg-gray border border-darkgray rounded-lg ml-2"/>
+                <textarea type="text" className="w-72 h-20 bg-gray border border-darkgray rounded-lg ml-2 pl-2 px-1"/>
               </div>
               <div className="flex flex-row justify-between mb-3">
                 <label>Défauts:</label>
-                <textarea type="text" className="w-72 h-20 bg-gray border border-darkgray rounded-lg ml-2"/>
+                <textarea type="text" className="w-72 h-20 bg-gray border border-darkgray rounded-lg ml-2 pl-2 px-1"/>
               </div>
               <div className="flex flex-row justify-between mb-3">
                 <label>Autres:</label>
-                <textarea type="text" className="w-72 h-20 bg-gray border border-darkgray rounded-lg ml-2"/>
+                <textarea type="text" className="w-72 h-20 bg-gray border border-darkgray rounded-lg ml-2 pl-2 px-1"/>
               </div>
             </div>
             <div className="flex flex-col justify-center mx-32 mb-3 text-sm md:text-lg">
