@@ -109,7 +109,7 @@ export default function Navbar() {
             >
               <img
                 src={userIcon}
-                className="-skew-x-45 w-5 md:w-6 lg:w-8"
+                className="-skew-x-45 w-5 md:w-6 lg:w-8 hover:opacity-70"
                 alt="Icône de profil utilisateur"
               />
             </NavLink>
@@ -117,22 +117,24 @@ export default function Navbar() {
             <NavLink to="/Login" className="flex" aria-label="Login">
               <img
                 src={connectionIcon}
-                className="-skew-x-45 w-9 lg:w-14 mr-2"
+                className="-skew-x-45 w-9 lg:w-14 mr-2 hover:opacity-70"
                 alt="Connexion"
               />
             </NavLink>
           )}
           {connectedIcons ? (
-            <img
-              src={messagesIcon}
-              className="-skew-x-45 w-5 md:w-6 lg:w-8"
-              alt="Icône de profil utilisateur"
-            />
+            <NavLink to="messagerie" className="flex" aria-label="messagerie">
+              <img
+                src={messagesIcon}
+                className="-skew-x-45 w-5 md:w-6 lg:w-8 hover:opacity-70"
+                alt="Icône de profil utilisateur"
+              />
+            </NavLink>
           ) : (
             <NavLink to="/Register" className="flex" aria-label="Register">
               <img
                 src={registerIcon}
-                className="-skew-x-45 w-10 lg:w-14"
+                className="-skew-x-45 w-10 lg:w-14 hover:opacity-70"
                 alt="Enregistrement"
               />
             </NavLink>
@@ -140,7 +142,7 @@ export default function Navbar() {
           {connectedIcons && (
             <img
               src={logoutIcon}
-              className="-skew-x-45 w-5 md:w-6 lg:w-8"
+              className="-skew-x-45 w-5 md:w-6 lg:w-8 hover:opacity-70"
               alt="Icône de profil utilisateur"
             />
           )}
