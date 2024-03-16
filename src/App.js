@@ -12,6 +12,7 @@ import Profile from "./pages/Profile";
 import Messages from "./pages/Messages";
 import Publier from "./pages/Publier";
 import Contact from "./pages/Contact";
+import Error404 from "./pages/Error404";
 import Footer from "./components/Footer";
 import React from 'react';
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
@@ -29,6 +30,7 @@ export default function App() {
           <Route path="/Login" element={<Login />} />
           <Route path="/Register" element={<Register />} />
           <Route path="/Offer" element={<Offer />} />
+          <Route path="/Erreur404" element={<Error404 />} />
           <Route path="/Annonces" element={<Annonces />} />
           <Route path="/Publier" element={<Publier />} />
           <Route path="/Membres" element={<Membres />} />

@@ -80,7 +80,7 @@ export default function Messages() {
             </div>
           </div>
           <div className="flex flex-row w-[750px] h-10 mt-4 mr-6 p-4 bg-white rounded-3xl shadow-lg justify-between">
-            <input placeholder="Tapez votre message ici..." className="pl-3 py-2 pr-[56%] outline-none bg-white" />
+            <input placeholder="Tapez votre message ici..." className="w-[77%] h-auto pl-3 py-2 outline-none bg-white" />
             <div className="-mt-9 hover:opacity-80">
               <Button text="Envoyer" />
             </div>
