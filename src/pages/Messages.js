@@ -1,4 +1,5 @@
 import { NavLink, useLocation } from "react-router-dom";
+import Button from "../components/Button";
 import users from "../components/Users";
 import cats from "../components/Cats";
 import change from "../assets/images/icons/change.png";
@@ -58,29 +59,36 @@ export default function Messages() {
           </div>
         </div>
         {/* Chat */}
-        <div className="flex flex-col w-[750px] h-auto mr-6 p-4 bg-white rounded-3xl shadow-lg">
-          {/* Right bubble */}
-          <div className="flex flex-row justify-between">
-            <div className="w-auto h-2 bg-white"></div>
-            <div className=" w-[320px] h-auto p-3 bg-fairpurple rounded-xl">
+        <div>
+          <div className="flex flex-col w-[750px] h-[100%] mr-6 p-4 bg-white rounded-3xl shadow-lg">
+            {/* Right bubble */}
+            <div className="flex flex-row justify-between">
+              <div className="w-auto h-2 bg-white"></div>
+              <div className=" w-[320px] h-auto p-3 bg-fairpurple rounded-xl">
+                <p>
+                  Bonjour! Je cherche un mâle pour ma femelle abyssin, votre
+                  mâle est-il toujours disponible? Merci
+                </p>
+              </div>
+            </div>
+            {/* Left bubble */}
+
+            <div className=" w-[320px] h-auto mt-3 p-3 bg-gray rounded-xl">
               <p>
-                Bonjour! Je cherche un mâle pour ma femelle abyssin, votre mâle
-                est-il toujours disponible? Merci
+                Pas de soucis! il est toujours dispo!
               </p>
             </div>
           </div>
-          {/* Left bubble */}
-
-          <div className=" w-[320px] h-auto mt-3 p-3 bg-gray rounded-xl">
-            <p>
-              Bonjour! Je cherche un mâle pour ma femelle abyssin, votre mâle
-              est-il toujours disponible? Merci
-            </p>
+          <div className="flex flex-row w-[750px] h-10 mt-4 mr-6 p-4 bg-white rounded-3xl shadow-lg justify-between">
+            <input placeholder="Tapez votre message ici..." className="pl-3 py-2 pr-[56%] outline-none bg-white" />
+            <div className="-mt-9 hover:opacity-80">
+              <Button text="Envoyer" />
+            </div>
           </div>
         </div>
         {/* own profile */}
         <div>
-          <div className="container flex flex-col w-[250px] h-[263px] bg-white rounded-3xl shadow-lg pb-5">
+          <div className="container flex flex-col w-[250px] h-[263px] rounded-3xl shadow-lg pb-5 bg-white">
             <p className="mx-auto mt-3 mb-2 font-semibold text-lg">
               {paul.name}
             </p>
