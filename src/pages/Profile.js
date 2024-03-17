@@ -22,7 +22,7 @@ export default function Profile() {
           &larr; Retour à l'accueil
         </div>
       </NavLink>
-      <div className="container flex flex-col h-screen justify-center -mt-10 mx-auto ml-72">
+      <div className="container flex flex-col h-screen justify-center -mt-10 mx-auto ml-72 animate-fade">
         <div className="container flex flex-row mb-6">
           {/* Informations */}
           <div className="container w-[988px] h-[395px] flex flex-col bg-white rounded-3xl shadow-lg mr-5">

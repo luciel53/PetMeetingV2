@@ -3,6 +3,8 @@ import Button from "../components/Button";
 import users from "../components/Users";
 import cats from "../components/Cats";
 import change from "../assets/images/icons/change.png";
+import addimage from "../assets/images/icons/addimage.png";
+import profileCard from "../assets/images/icons/profileCard.png";
 
 export default function Messages() {
   const suzanne = users.find((user) => user.name === "Suzanne");
@@ -15,8 +17,8 @@ export default function Messages() {
           &larr; Retour à l'accueil
         </div>
       </NavLink>
-      <div className="flex flex-row mt-4 mx-auto">
-        <div>
+      <div className="flex flex-row mt-4 mx-auto animate-fade">
+        <div className="mb-20">
           {/* Owner */}
           <div className="container flex flex-col w-[250px] h-[263px] mr-6 bg-white rounded-3xl shadow-lg pb-5">
             <p className="mx-auto mt-3 mb-2 font-semibold text-lg">
@@ -31,7 +33,7 @@ export default function Messages() {
             </div>
             <div className="mb-4 relative">
               <img
-                src={change}
+                src={profileCard}
                 className=" w-8 ml-48 -mt-3"
                 alt="modifier le profil"
               />
@@ -59,8 +61,8 @@ export default function Messages() {
           </div>
         </div>
         {/* Chat */}
-        <div>
-          <div className="flex flex-col w-[750px] h-[100%] mr-6 p-4 bg-white rounded-3xl shadow-lg">
+        <div className="mb-28">
+          <div className="flex flex-col w-[750px] h-[90%] mr-6 p-4 bg-white rounded-3xl shadow-lg">
             {/* Right bubble */}
             <div className="flex flex-row justify-between">
               <div className="w-auto h-2 bg-white"></div>
@@ -79,9 +81,11 @@ export default function Messages() {
               </p>
             </div>
           </div>
-          <div className="flex flex-row w-[750px] h-10 mt-4 mr-6 p-4 bg-white rounded-3xl shadow-lg justify-between">
-            <input placeholder="Tapez votre message ici..." className="w-[77%] h-auto pl-3 py-2 outline-none bg-white" />
-            <div className="-mt-9 hover:opacity-80">
+          {/* Messages input */}
+          <div className="flex flex-row w-[750px] h-10 mt-4  mb-auto mr-6 p-4 bg-white items-center rounded-3xl shadow-lg justify-between">
+            <textarea type="text" placeholder="Tapez votre message ici..." className="w-[70%] h-6 pl-3  outline-none bg-white resize-none" />
+            <img src={addimage} className="w-12 mt-1 hover:animate-wiggle-more" alt="Ajouter" />
+            <div className="-mt-3 -mr-4 hover:opacity-80">
               <Button text="Envoyer" />
             </div>
           </div>
