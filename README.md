@@ -5,7 +5,7 @@
 
 PetMeeting is a tool to help cats' breeders to find a breeder. The goal is to facilitate the genetic selection and the races devlopment.
 
-## Technologies/Installation
+## Front-end Technologies/Installation
 
 ### React
 
@@ -65,6 +65,116 @@ module.exports = {
     require('tailwindcss-animated')
   ],
 }
+```
+
+install Axios to manage http requests:
+```
+npm install axios
+```
+
+## Back-end Technologies/Installation
+
+### Django & Python
+
+I've Chosen to use Django, because it offers a lot of features and there are a lot of resources. Also, it uses Python that is a technology with which I have affinities.
+
+to install Python:
+
+```
+sudo apt-get install python3
+```
+In the root directory, create a `back-end` directory, then:
+```
+cd back-end
+```
+Install Django:
+```
+pip install django
+```
+And create Django project:
+```
+django-admin startproject PetMeetingBackEnd
+```
+
+Install Django Rest Framework:
+```
+pip install djangorestframework django-cors-headers
+```
+Go to the directory created:
+```
+cd PetMeetingBackEnd
+```
+
+Create a new Django application:
+```
+python manage.py startapp petmeeting
+```
+
+In the following file, add these lines:
+```
+cd petmeetingbackend/settings.py
+```
+```
+INSTALLED_APPS = [
+    # ...
+    # 👇 Add here your installed app's
+    'rest_framework',
+    'corsheaders',
+    'petmeeting',
+]
+
+MIDDLEWARE = [
+    # ...
+    # 👇 Add this line here
+    'corsheaders.middleware.CorsMiddleware',
+    # Add above line just before this line 👇
+    'django.middleware.common.CommonMiddleware',
+]
+
+# 👇 Add this line here
+CORS_ORIGIN_ALLOW_ALL = True
+```
+
+Inside the petmeeting directory, in the views.py, add this lines:
+
+```
+from django.shortcuts import render
+from rest_framework.decorators import api_view
+from rest_framework.response import Response
+
+@api_view(['GET'])
+def hello_world(request):
+    return Response({'message': 'Welcome to PetMeeting!'})
+```
+
+In `urls.py` in the `PetMeetingBackEnd` directory, add this lines:
+```
+from django.contrib import admin
+from django.urls import path, include
+
+urlpatterns = [
+    path('admin/', admin.site.urls),
+    path('petmeeting/', include('petmeeting.url'))
+]
+```
+Inside the `petmeeting` directory, create the `urls.py` file and add these lines:
+```
+cd petmeeting
+```
+```
+touch urls.py
+```
+```
+chmod u+x urls.py
+```
+
+```
+from django.urls import path
+from . import views
+
+urlpatterns = [
+    path('welcome/', views.welcome, name='welcome'),
+]
 ```
 
 ## Usage
