@@ -120,7 +120,7 @@ INSTALLED_APPS = [
     # 👇 Add here your installed app's
     'rest_framework',
     'corsheaders',
-    'petmeeting',
+    'PetmeetingBackEnd',
 ]
 
 MIDDLEWARE = [

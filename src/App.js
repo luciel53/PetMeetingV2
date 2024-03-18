@@ -1,6 +1,8 @@
 import "./footer.css";
 import "./styles.css";
 import "tailwindcss/tailwind.css";
+import React from "react";
+import HelloWorld from "./HelloWorld";
 import Navbar from "./components/Navbar";
 import Accueil from "./pages/Accueil";
 import Annonces from "./pages/Annonces";
@@ -14,7 +16,6 @@ import Publier from "./pages/Publier";
 import Contact from "./pages/Contact";
 import Error404 from "./pages/Error404";
 import Footer from "./components/Footer";
-import React from 'react';
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 
 
@@ -38,6 +39,7 @@ export default function App() {
           <Route path="/Profile" element={<Profile />} />
           <Route path="/Messagerie" element={<Messages />} />
         </Routes>
+        <HelloWorld />
         <Footer />
       </div>
     </Router>
