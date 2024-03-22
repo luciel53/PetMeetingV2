@@ -1,17 +1,29 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { NavLink, useLocation } from "react-router-dom";
+import axios from 'axios';
 import userIcon from "../assets/images/icons/user.svg";
 import messagesIcon from "../assets/images/icons/messages.svg";
 import logoutIcon from "../assets/images/icons/logout.svg";
 import registerIcon from "../assets/images/icons/register.png";
 import connectionIcon from "../assets/images/icons/connection.png";
 import paw from "../assets/images/icons/paw.png";
+import Logout from "../pages/Logout.js";
 
 export default function Navbar() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [connectedIcons, setConnectedIcons] = useState(true);
   const [unconnectedIcons, setUnconnectedIcons] = useState(false);
   const location = useLocation();
+
+  {/* To manage the authentication */}
+  const [isAuth, setIsAuth] = useState(false);
+
+  useEffect(() => {
+    if (localStorage.getItem('access_token') !== null) {
+      setIsAuth(true);
+    }
+  }, [isAuth]);
+
 
   function toggleMenu() {
     setIsMenuOpen(!isMenuOpen);
@@ -21,9 +33,25 @@ export default function Navbar() {
     }
   }
 
-  function toggleUnconnectedIcons() {
-    setUnconnectedIcons(!unconnectedIcons);
-  }
+  const handleLogout = async () => {
+    try {
+      const { data } = await axios.post(
+        "http://localhost:8000/logout/",
+        { refresh_token: localStorage.getItem("refresh_token") },
+        { headers: { "Content-Type": "application/json" } },
+        { withCredentials: true }
+      );
+
+      
+      console.log("YEAHHHHHHHHHHHHHHH");
+
+      localStorage.clear();
+      axios.defaults.headers.common["Authorization"] = null;
+      window.location.href = "/login";
+    } catch (e) {
+      console.log("Logout not working", e);
+    }
+  };
 
   return (
     <header className="bg-purple z-50 fixed top-0 w-full shadow-xl">
@@ -101,7 +129,7 @@ export default function Navbar() {
         </ul>
         {/* Parallelogram */}
         <div className="bg-gray w-28 md:w-36 lg:w-60 h-12 md:h-14 lg:h-20 skew-x-45 mr-8 md:mr-10 lg:mr-48 flex flex-row px-4 md:px-6 lg:px-12 justify-between items-center">
-          {connectedIcons ? (
+          {isAuth ? (
             <NavLink
               to="/Profile"
               className="flex"
@@ -122,7 +150,7 @@ export default function Navbar() {
               />
             </NavLink>
           )}
-          {connectedIcons ? (
+          {isAuth ? (
             <NavLink to="messagerie" className="flex" aria-label="messagerie">
               <img
                 src={messagesIcon}
@@ -139,12 +167,15 @@ export default function Navbar() {
               />
             </NavLink>
           )}
-          {connectedIcons && (
+          {isAuth && (
+            <NavLink to="/" className="flex" aria-label="logout">
             <img
               src={logoutIcon}
               className="-skew-x-45 w-5 md:w-6 lg:w-8 hover:opacity-70"
               alt="Icône de profil utilisateur"
+              onClick={handleLogout}
             />
+            </NavLink>
           )}
         </div>
         {/* Burger button */}
