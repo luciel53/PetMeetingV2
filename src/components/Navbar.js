@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { NavLink, useLocation } from "react-router-dom";
-import axios from 'axios';
+import axios from "axios";
 import userIcon from "../assets/images/icons/user.svg";
 import messagesIcon from "../assets/images/icons/messages.svg";
 import logoutIcon from "../assets/images/icons/logout.svg";
@@ -15,15 +15,16 @@ export default function Navbar() {
   const [unconnectedIcons, setUnconnectedIcons] = useState(false);
   const location = useLocation();
 
-  {/* To manage the authentication */}
+  {
+    /* To manage the authentication */
+  }
   const [isAuth, setIsAuth] = useState(false);
 
   useEffect(() => {
-    if (localStorage.getItem('access_token') !== null) {
+    if (localStorage.getItem("access_token") !== null) {
       setIsAuth(true);
     }
   }, [isAuth]);
-
 
   function toggleMenu() {
     setIsMenuOpen(!isMenuOpen);
@@ -42,7 +43,6 @@ export default function Navbar() {
         { withCredentials: true }
       );
 
-      
       console.log("YEAHHHHHHHHHHHHHHH");
 
       localStorage.clear();
@@ -90,18 +90,24 @@ export default function Navbar() {
               <img src={paw} alt="paw" className="z-0 absolute -top-2 left-1" />
             )}
           </li>
-          <li className="pt-8 py-4 md:py-0 md:mr-6 hover:animate-wiggle relative">
-            <NavLink
-              to="/Publier"
-              className="text-sm lg:text-xl uppercase font-semibold rounded-lg px-2 ml-1 w-full relative z-20"
-              activeClassName="text-sm lg:text-xl uppercase font-semibold rounded-lg px-2 ml-1 w-full relative"
-            >
-              Publier
-            </NavLink>
-            {location.pathname === "/Publier" && (
-              <img src={paw} alt="paw" className="z-0 absolute -top-2 left-1" />
-            )}
-          </li>
+          {isAuth && (
+            <li className="pt-8 py-4 md:py-0 md:mr-6 hover:animate-wiggle relative">
+              <NavLink
+                to="/Publier"
+                className="text-sm lg:text-xl uppercase font-semibold rounded-lg px-2 ml-1 w-full relative z-20"
+                activeClassName="text-sm lg:text-xl uppercase font-semibold rounded-lg px-2 ml-1 w-full relative"
+              >
+                Publier
+              </NavLink>
+              {location.pathname === "/Publier" && (
+                <img
+                  src={paw}
+                  alt="paw"
+                  className="z-0 absolute -top-2 left-1"
+                />
+              )}
+            </li>
+          )}
           <li className="pt-8 py-4 md:py-0 md:mr-6 hover:animate-wiggle relative">
             <NavLink
               to="/Membres"
@@ -169,12 +175,12 @@ export default function Navbar() {
           )}
           {isAuth && (
             <NavLink to="/" className="flex" aria-label="logout">
-            <img
-              src={logoutIcon}
-              className="-skew-x-45 w-5 md:w-6 lg:w-8 hover:opacity-70"
-              alt="Icône de profil utilisateur"
-              onClick={handleLogout}
-            />
+              <img
+                src={logoutIcon}
+                className="-skew-x-45 w-5 md:w-6 lg:w-8 hover:opacity-70"
+                alt="Icône de profil utilisateur"
+                onClick={handleLogout}
+              />
             </NavLink>
           )}
         </div>

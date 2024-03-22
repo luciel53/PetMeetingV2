@@ -5,6 +5,7 @@ import race from "../components/Races";
 import blood from "../components/Blood";
 import eyeColor from "../components/EyeColor";
 import département from "../components/Regions";
+import { useState } from "react";
 
 export default function Publier() {
   return (
