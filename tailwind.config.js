@@ -13,6 +13,8 @@ module.exports = {
       white: '#FCFCFC',
       fragole: '#F24156',
       yellow: '#FCC63D',
+      darkyellow: '#8f6c0b',
+      lightyellow: '#fcf6de'
     },
     extend: {
       skew: {
