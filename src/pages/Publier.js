@@ -38,7 +38,7 @@ export default function Publier() {
                 <div className="flex flex-row items-center justify-between mb-3 text-sm md:text-lg">
                   <span>LOOF*:</span>
                   <div className="ml-20">
-                    <input type="checkbox" id="LOOF_yes" name="loof_yes" />
+                    <input type="checkbox" id="LOOF_yes" name="loof_yes" required />
                     <label for="LOOF_yes" className="pl-2">
                       Oui
                     </label>
@@ -70,7 +70,7 @@ export default function Publier() {
                 <div className=" flex flex-row items-center justify-between mb-3 text-sm md:text-lg">
                   <label>Nom*:</label>
                   <input
-                    type="text"
+                    type="text" name="name" required
                     className="w-52 bg-gray border border-darkgray rounded-lg h-8 ml-2 pl-2 px-1"
                   />
                 </div>
@@ -89,7 +89,8 @@ export default function Publier() {
                   <label>N° d'identification*:</label>
                   <input
                     type="text"
-                    className="bg-gray w-52 border border-darkgray rounded-lg h-8 ml-2 pl-2 px-1"
+                    placeholder="LOOF-XXXXXXXX-AAAA-n"
+                    className="bg-gray w-52 text-sm border border-darkgray rounded-lg h-8 ml-2 pl-2 px-1"
                   />
                 </div>
                 {/* Groupe sanguin */}
@@ -107,6 +108,7 @@ export default function Publier() {
                   <label>Tests maladies*:</label>
                   <input
                     type="text"
+                    placeholder="Fiv, Felv, Pkdef, ..."
                     className="w-52 bg-gray border border-darkgray rounded-lg h-8 ml-2 pl-2 px-1"
                   />
                 </div>
