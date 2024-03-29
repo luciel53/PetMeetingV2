@@ -6,7 +6,7 @@ User = get_user_model()
 
 # Profile model
 class Profile(models.Model):
-    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    user = models.OneToOneField(User, on_delete=models.CASCADE)
     bio = models.TextField(default=None, blank=True, null=True)
     location = models.CharField(max_length=100, blank=True)
     avatar = models.ImageField(default='defaultUser.jpg', upload_to='profile.pics', blank=True)
@@ -16,4 +16,4 @@ class Profile(models.Model):
 
 
     def __str__(self):
-        return self.user.user
+        return self.user.username

@@ -39,13 +39,13 @@ export default function Publier() {
                   <span>LOOF*:</span>
                   <div className="ml-20">
                     <input type="checkbox" id="LOOF_yes" name="loof_yes" required />
-                    <label for="LOOF_yes" className="pl-2">
+                    <label htmlFor="LOOF_yes" className="pl-2">
                       Oui
                     </label>
                   </div>
                   <div>
                     <input type="checkbox" id="LOOF_no" name="loof_no" />
-                    <label for="LOOF_yes" className="pl-2 pr-9">
+                    <label htmlFor="LOOF_yes" className="pl-2 pr-9">
                       Non
                     </label>
                   </div>
@@ -55,13 +55,13 @@ export default function Publier() {
                   <span className="">Sexe*:</span>
                   <div className="ml-24">
                     <input type="checkbox" id="male" name="male" />
-                    <label for="male" className="pl-2">
+                    <label htmlFor="male" className="pl-2">
                       Mâle
                     </label>
                   </div>
                   <div>
                     <input type="checkbox" id="female" name="female" />
-                    <label for="female" className="pl-2">
+                    <label htmlFor="female" className="pl-2">
                       Femelle
                     </label>
                   </div>

@@ -1,4 +1,4 @@
-import { NavLink, useLocation } from "react-router-dom";
+import { NavLink, useLocation, useParams } from "react-router-dom";
 import facebook from "../assets/images/icons/facebook.png";
 import email from "../assets/images/icons/arobase.png";
 import location from "../assets/images/icons/location.png";
@@ -9,11 +9,29 @@ import change from "../assets/images/icons/change.png";
 import www from "../assets/images/icons/www.png";
 import users from "../components/Users";
 import cats from "../components/Cats";
+import { useState, useEffect } from "react";
+import { act } from "react-dom/test-utils";
+import axios from "axios";
 
 export default function Profile() {
+  const { id } = useParams()
+  const [profile, setProfile] = useState(null);
+
+  useEffect(() => {
+    const fetchProfile = async () => {
+      try {
+        const response = await axios.get(`http://localhost:8000/profiles/${id}`);
+        setProfile(response.data);
+      } catch (e) {
+        console.error('Error fetching profile:', e);
+      }
+    };
+    fetchProfile();
+  }, [id])
+  console.log(profile);
+
   const suzanne = users.find((user) => user.name === "Suzanne");
   const popeye = cats.find((cat) => cat.name === "Popeye");
-  console.log(suzanne);
 
   return (
     <>
