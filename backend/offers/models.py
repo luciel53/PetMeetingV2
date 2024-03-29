@@ -133,7 +133,7 @@ EYECOLOR_CHOICES = [
 
 ]
 
-class Post(models.Model):
+class PostOffer(models.Model):
     title = models.CharField(max_length=100)
     content = models.TextField()
     date_posted = models.DateTimeField(default=timezone.now)
@@ -157,3 +157,6 @@ class CatOffer(models.Model):
     qualities = models.TextField(max_length=350, default=None, blank=True, null=True)
     flaws = models.TextField(max_length=350, default=None, blank=True, null=True)
     free_descriptive_text = models.TextField(max_length=2000,default=None, blank=True)
+
+    def __str__(self):
+        return self.name

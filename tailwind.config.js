@@ -14,7 +14,9 @@ module.exports = {
       fragole: '#F24156',
       yellow: '#FCC63D',
       darkyellow: '#8f6c0b',
-      lightyellow: '#fcf6de'
+      lightyellow: '#fcf6de',
+      green: '#39731e',
+      lightgreen: '#d7f5c9'
     },
     extend: {
       skew: {

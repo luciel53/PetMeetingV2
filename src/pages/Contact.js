@@ -3,12 +3,15 @@ import Button from "../components/Button";
 import axios from "axios";
 
 export default function Contact() {
-  const [formData, setFormData] = useState({
+  const [successMessage, setSuccessMessage] = useState("");
+  const initialFormData = {
     name: "",
     email: "",
     topic: "",
     message: "",
-  });
+  };
+
+  const [formData, setFormData] = useState(initialFormData);
 
   function handleChange(e) {
     setFormData({ ...formData, [e.target.name]: e.target.value });
@@ -18,12 +21,14 @@ export default function Contact() {
     e.preventDefault();
     console.log("formData");
     console.log(formData);
-    axios
-      .post("http://localhost:8000/admin/contact/contact", formData, {
+    axios.post("http://localhost:8000/contact/contact/", formData, {
         headers: { "Content-Type": "application/json" },
       })
       .then((response) => {
         console.log(response.data);
+        setSuccessMessage('Votre message a bien été envoyé!');
+        setFormData(initialFormData);
+        console.log(successMessage);
       })
       .catch((err) => {
         console.error(err);
@@ -32,7 +37,7 @@ export default function Contact() {
 
   return (
     <div className="container flex flex-col justify-center mx-auto md:mx-auto w-[88%] md:w-[55%] lg:w-[30%] p-5 md:p-12 md:mt-60 lg:mt-52 bg-white rounded-3xl shadow-2xl text-sm md:text-lg animate-fade">
-      <form action="mailto:l.leroty@gmail.com" method="post" >
+      <form onSubmit={handleSubmit} >
         <h2 className="text-lg md:text-2xl text-darkdarkgray text-center pb-7">
           Contactez-nous:
         </h2>
@@ -81,6 +86,12 @@ export default function Contact() {
           />
         </div>
         <Button text="Envoyer" />
+         {/* Successful message */}
+         {successMessage && (
+            <div className="border border-green bg-lightgreen mx-9 rounded-lg mt-10 animate-bounce">
+              <p className="text-green-600 text-center text-green mt-3 mb-4">{successMessage}</p>
+            </div>
+        )}
       </form>
     </div>
   );
