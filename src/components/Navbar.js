@@ -113,7 +113,7 @@ export default function Navbar() {
             <NavLink
               to="/Membres"
               className="text-sm lg:text-xl uppercase font-semibold rounded-lg px-2 ml-1 w-full relative z-20"
-              activeClassName="text-sm lg:text-xl uppercase font-semibold rounded-lg px-2 ml-1 w-full relative"
+              activeClassName="active text-sm lg:text-xl uppercase font-semibold rounded-lg px-2 ml-1 w-full relative"
             >
               Membres
             </NavLink>
