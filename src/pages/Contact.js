@@ -36,7 +36,7 @@ export default function Contact() {
   }
 
   return (
-    <div className="container flex flex-col justify-center mx-auto md:mx-auto w-[88%] md:w-[55%] lg:w-[30%] p-5 md:p-12 md:mt-60 lg:mt-52 bg-white rounded-3xl shadow-2xl text-sm md:text-lg animate-fade">
+    <div className="container flex flex-col justify-center mx-auto md:mx-auto w-[88%] md:w-[55%] lg:w-[30%] p-5 md:p-12 md:mt-60 lg:mt-52 bg-white rounded-3xl shadow-2xl text-sm md:text-lg animate-fade place-items-center">
       <form onSubmit={handleSubmit} >
         <h2 className="text-lg md:text-2xl text-darkdarkgray text-center pb-7">
           Contactez-nous:
