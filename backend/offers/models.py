@@ -1,4 +1,5 @@
 from django.db import models
+from django.contrib import admin
 from django.utils import timezone
 from django.contrib.auth.models import User
 from django.core.validators import MinLengthValidator
@@ -133,15 +134,6 @@ EYECOLOR_CHOICES = [
 
 ]
 
-class PostOffer(models.Model):
-    title = models.CharField(max_length=100)
-    content = models.TextField()
-    date_posted = models.DateTimeField(default=timezone.now)
-    author = models.ForeignKey(User, on_delete=models.CASCADE)
-
-    def __str__(self):
-        return self.title
-
 class CatOffer(models.Model):
     name = models.CharField(max_length=100)
     date_posted = models.DateTimeField(auto_now_add=True)
@@ -160,3 +152,21 @@ class CatOffer(models.Model):
 
     def __str__(self):
         return self.name
+
+class CatOfferAdmin(admin.ModelAdmin):
+    offers_display = (
+        'name',
+        'date_posted',
+        'price',
+        'sex',
+        'location',
+        'blood',
+        'diseases_tests',
+        'id_num',
+        'eye_color',
+        'fur_color',
+        'age',
+        'qualities',
+        'flaws',
+        'free_descriptive_text',
+        )

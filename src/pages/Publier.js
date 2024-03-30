@@ -1,4 +1,5 @@
 import { NavLink, useLocation } from "react-router-dom";
+import axios from "axios";
 import add from "../assets/images/icons/add.png";
 import Button from "../components/Button";
 import race from "../components/Races";
@@ -8,6 +9,42 @@ import département from "../components/Regions";
 import { useState } from "react";
 
 export default function Publier() {
+  const [successMessage, setSuccessMessage] = useState("");
+  const initialFormData = {
+    name: "",
+    sex: "",
+    price: "",
+    location: "",
+    blood: "",
+    diseases_tests: "",
+    id_num: "",
+    eye_color: "",
+    fur_color: "",
+    age: "",
+    qualities: "",
+    flaws: "",
+    free_descriptive_text: "",
+  };
+
+  const [formData, setFormData] = useState(initialFormData);
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    console.log(formData);
+    axios
+      .post("http://127.0.0.1:8000/offers/offers/", formData, {
+        headers: { "Content-Type": "application/json" },
+      })
+      .then((response) => {
+        console.log(response.data);
+        setFormData(initialFormData);
+        console.log(successMessage);
+      })
+      .catch((err) => {
+        console.error(err);
+      });
+  };
+
   return (
     <>
       <NavLink to="/">
@@ -26,166 +63,190 @@ export default function Publier() {
             Ajoutez une annonce:
           </h2>
         </div>
+        {/* form */}
         <div className="flex flex-col md:flex-row items-center place-items-center my-auto mx-auto">
           {/* Description */}
-          <div className="md:w-[500px] md:h-[600px] bg-white rounded-3xl shadow-2xl md:mr-6">
-            <h3 className="text-xl md:text-2xl text-center mt-3 mb-6">
-              Description 😽:{" "}
-            </h3>
-            <form className="mx-4 pb-4 md:mx-10">
-              <fieldset>
-                {/* LOOF */}
-                <div className="flex flex-row items-center justify-between mb-3 text-sm md:text-lg">
-                  <span>LOOF*:</span>
-                  <div className="ml-20">
-                    <input type="checkbox" id="LOOF_yes" name="loof_yes" required />
-                    <label htmlFor="LOOF_yes" className="pl-2">
-                      Oui
-                    </label>
+
+            <form onSubmit={handleSubmit} className="mx-4 pb-4 md:-ml-20">
+              <fieldset className="flex flew-row justify-around md:w-[1000px]">
+                <div className="flex flex-col md:w-[500px] md:h-[600px] px-10 bg-white rounded-3xl shadow-2xl">
+                  {/* description title */}
+                  <h3 className="text-xl md:text-2xl text-center mt-3 mb-6">
+                    Description 😽:{" "}
+                  </h3>
+                  {/* LOOF */}
+                  <div className="flex flex-row items-center justify-between mb-3 text-sm md:text-lg">
+                    <span>LOOF*:</span>
+                    <div className="ml-20">
+                      <input
+                        type="checkbox"
+                        id="LOOF_yes"
+                        name="loof_yes"
+                        required
+                      />
+                      <label htmlFor="LOOF_yes" className="pl-2">
+                        Oui
+                      </label>
+                    </div>
+                    <div>
+                      <input type="checkbox" id="LOOF_no" name="loof_no" />
+                      <label htmlFor="LOOF_yes" className="pl-2 pr-9">
+                        Non
+                      </label>
+                    </div>
                   </div>
-                  <div>
-                    <input type="checkbox" id="LOOF_no" name="loof_no" />
-                    <label htmlFor="LOOF_yes" className="pl-2 pr-9">
-                      Non
-                    </label>
+                  {/* Sex */}
+                  <div className="flex flex-row items-center justify-between mb-3 text-sm md:text-lg">
+                    <span className="">Sexe*:</span>
+                    <div className="ml-24">
+                      <input type="checkbox" id="male" name="male" />
+                      <label htmlFor="male" className="pl-2">
+                        Mâle
+                      </label>
+                    </div>
+                    <div>
+                      <input type="checkbox" id="female" name="female" />
+                      <label htmlFor="female" className="pl-2">
+                        Femelle
+                      </label>
+                    </div>
+                  </div>
+                  {/* name */}
+                  <div className=" flex flex-row items-center justify-between mb-3 text-sm md:text-lg">
+                    <label>Nom*:</label>
+                    <input
+                      type="text"
+                      name="name"
+                      required
+                      className="w-52 bg-gray border border-darkgray rounded-lg h-8 ml-2 pl-2 px-1"
+                    />
+                  </div>
+                  {/* Race */}
+                  <div className="flex flex-row items-center justify-between mb-3 text-sm md:text-lg ">
+                    <span>Race*:</span>
+                    <select className="rounded-lg  bg-gray w-52 border border-darkgray ml-2">
+                      <option value="">Choisissez</option>
+                      {race.map((option) => (
+                        <option value={option.value}>{option.value}</option>
+                      ))}
+                    </select>
+                  </div>
+                  {/* Identification number */}
+                  <div className="flex flex-row items-center justify-between mb-3 text-sm md:text-lg ">
+                    <label>N° d'identification*:</label>
+                    <input
+                      type="text"
+                      placeholder="LOOF-XXXXXXXX-AAAA-n"
+                      className="bg-gray w-52 text-sm border border-darkgray rounded-lg h-8 ml-2 pl-2 px-1"
+                    />
+                  </div>
+                  {/* Groupe sanguin */}
+                  <div className="flex flex-row items-center justify-between mb-3 text-sm md:text-lg ">
+                    <span>Groupe sanguin:</span>
+                    <select className="rounded-lg bg-gray w-52 border border-darkgray ml-2">
+                      <option value="">Choisissez</option>
+                      {blood.map((option) => (
+                        <option value={option.value}>{option.value}</option>
+                      ))}
+                    </select>
+                  </div>
+                  {/* Disease tests */}
+                  <div className="flex flex-row items-center justify-between mb-3 text-sm md:text-lg ">
+                    <label>Tests maladies*:</label>
+                    <input
+                      type="text"
+                      placeholder="Fiv, Felv, Pkdef, ..."
+                      className="w-52 bg-gray border border-darkgray rounded-lg h-8 ml-2 pl-2 px-1"
+                    />
+                  </div>
+                  {/* Age */}
+                  <div className="flex flex-row items-center justify-between mb-3 text-sm md:text-lg ">
+                    <label>Âge*:</label>
+                    <input
+                      type="text"
+                      className="w-52 bg-gray border border-darkgray rounded-lg h-8 ml-2 pl-2 px-1"
+                    />
+                  </div>
+                  {/* Eye color */}
+                  <div className="flex flex-row items-center justify-between mb-3 text-sm md:text-lg ">
+                    <span>Couleur des yeux:</span>
+                    <select className="rounded-lg bg-gray w-52 border border-darkgray ml-2">
+                      <option value="">Choisissez</option>
+                      {eyeColor.map((option) => (
+                        <option value={option.value}>{option.label}</option>
+                      ))}
+                    </select>
+                  </div>
+                  {/* Robe */}
+                  <div className="flex flex-row items-center justify-between mb-3 text-sm md:text-lg ">
+                    <label>Robe:</label>
+                    <input
+                      type="text"
+                      className="w-52 bg-gray border border-darkgray rounded-lg h-8 ml-2 pl-2 px-1"
+                    />
+                  </div>
+                  {/* Localisation */}
+                  <div className="flex flex-row items-center justify-between mb-3 text-sm md:text-lg ">
+                    <span>Localisation*:</span>
+                    <select className="rounded-lg bg-gray w-52 border border-darkgray ml-2">
+                      <option value="">Choisissez</option>
+                      {département.map((option) => (
+                        <option value={option.value}>{option.label}</option>
+                      ))}
+                    </select>
+                  </div>
+                  <div className="flex flex-row items-center justify-between text-sm md:text-lg ">
+                    <label>Prix*:</label>
+                    <input
+                      type="text"
+                      className="w-52 bg-gray border border-darkgray rounded-lg h-8 ml-2 pl-2 px-1"
+                    />
                   </div>
                 </div>
-                {/* Sex */}
-                <div className="flex flex-row items-center justify-between mb-3 text-sm md:text-lg">
-                  <span className="">Sexe*:</span>
-                  <div className="ml-24">
-                    <input type="checkbox" id="male" name="male" />
-                    <label htmlFor="male" className="pl-2">
-                      Mâle
-                    </label>
+                <div className="w-96">
+                  {/* Pictures */}
+                  <div className="md:w-[500px] md:h-[600px] bg-white rounded-3xl shadow-2xl">
+                    <div className="flex flex-col justify-center mx-10 mb-3 text-sm md:text-lg">
+                      <h3 className="text-2xl text-center mt-3">
+                        Infos complémentaires 🔍:
+                      </h3>
+                      <div className="flex flex-row justify-between mt-6 mb-3">
+                        <label>Qualités:</label>
+                        <textarea
+                          type="text"
+                          className="w-72 h-20 bg-gray border border-darkgray rounded-lg ml-2 pl-2 px-1"
+                        />
+                      </div>
+                      <div className="flex flex-row justify-between mb-3">
+                        <label>Défauts:</label>
+                        <textarea
+                          type="text"
+                          className="w-72 h-20 bg-gray border border-darkgray rounded-lg ml-2 pl-2 px-1"
+                        />
+                      </div>
+                      <div className="flex flex-row justify-between mb-3">
+                        <label>Autres:</label>
+                        <textarea
+                          type="text"
+                          className="w-72 h-20 bg-gray border border-darkgray rounded-lg ml-2 pl-2 px-1"
+                        />
+                      </div>
+                    </div>
+                    <div className="flex flex-col justify-center mx-32 mb-3 text-sm md:text-lg">
+                      <h3 className="text-2xl text-center mt-3 mb-2">
+                        Photos 📸:{" "}
+                      </h3>
+                      <input type="file" name="photos" />
+                      <input type="file" name="photos" />
+                      <input type="file" name="photos" />
+                      <input type="file" name="photos" />
+                      <input type="file" name="photos" />
+                    </div>
                   </div>
-                  <div>
-                    <input type="checkbox" id="female" name="female" />
-                    <label htmlFor="female" className="pl-2">
-                      Femelle
-                    </label>
-                  </div>
-                </div>
-                {/* name */}
-                <div className=" flex flex-row items-center justify-between mb-3 text-sm md:text-lg">
-                  <label>Nom*:</label>
-                  <input
-                    type="text" name="name" required
-                    className="w-52 bg-gray border border-darkgray rounded-lg h-8 ml-2 pl-2 px-1"
-                  />
-                </div>
-                {/* Race */}
-                <div className="flex flex-row items-center justify-between mb-3 text-sm md:text-lg ">
-                  <span>Race*:</span>
-                  <select className="rounded-lg  bg-gray w-52 border border-darkgray ml-2">
-                    <option value="">Choisissez</option>
-                    {race.map((option) => (
-                      <option value={option.value}>{option.value}</option>
-                    ))}
-                  </select>
-                </div>
-                {/* Identification number */}
-                <div className="flex flex-row items-center justify-between mb-3 text-sm md:text-lg ">
-                  <label>N° d'identification*:</label>
-                  <input
-                    type="text"
-                    placeholder="LOOF-XXXXXXXX-AAAA-n"
-                    className="bg-gray w-52 text-sm border border-darkgray rounded-lg h-8 ml-2 pl-2 px-1"
-                  />
-                </div>
-                {/* Groupe sanguin */}
-                <div className="flex flex-row items-center justify-between mb-3 text-sm md:text-lg ">
-                  <span>Groupe sanguin:</span>
-                  <select className="rounded-lg bg-gray w-52 border border-darkgray ml-2">
-                    <option value="">Choisissez</option>
-                    {blood.map((option) => (
-                      <option value={option.value}>{option.value}</option>
-                    ))}
-                  </select>
-                </div>
-                {/* Disease tests */}
-                <div className="flex flex-row items-center justify-between mb-3 text-sm md:text-lg ">
-                  <label>Tests maladies*:</label>
-                  <input
-                    type="text"
-                    placeholder="Fiv, Felv, Pkdef, ..."
-                    className="w-52 bg-gray border border-darkgray rounded-lg h-8 ml-2 pl-2 px-1"
-                  />
-                </div>
-                {/* Age */}
-                <div className="flex flex-row items-center justify-between mb-3 text-sm md:text-lg ">
-                  <label>Âge*:</label>
-                  <input
-                    type="text"
-                    className="w-52 bg-gray border border-darkgray rounded-lg h-8 ml-2 pl-2 px-1"
-                  />
-                </div>
-                {/* Eye color */}
-                <div className="flex flex-row items-center justify-between mb-3 text-sm md:text-lg ">
-                  <span>Couleur des yeux:</span>
-                  <select className="rounded-lg bg-gray w-52 border border-darkgray ml-2">
-                    <option value="">Choisissez</option>
-                    {eyeColor.map((option) => (
-                      <option value={option.value}>{option.label}</option>
-                    ))}
-                  </select>
-                </div>
-                {/* Robe */}
-                <div className="flex flex-row items-center justify-between mb-3 text-sm md:text-lg ">
-                  <label>Robe:</label>
-                  <input
-                    type="text"
-                    className="w-52 bg-gray border border-darkgray rounded-lg h-8 ml-2 pl-2 px-1"
-                  />
-                </div>
-                {/* Localisation */}
-                <div className="flex flex-row items-center justify-between mb-3 text-sm md:text-lg ">
-                  <span>Localisation*:</span>
-                  <select className="rounded-lg bg-gray w-52 border border-darkgray ml-2">
-                    <option value="">Choisissez</option>
-                    {département.map((option) => (
-                      <option value={option.value}>{option.label}</option>
-                    ))}
-                  </select>
-                </div>
-                <div className="flex flex-row items-center justify-between text-sm md:text-lg ">
-                  <label>Prix*:</label>
-                  <input
-                    type="text"
-                    className="w-52 bg-gray border border-darkgray rounded-lg h-8 ml-2 pl-2 px-1"
-                  />
                 </div>
               </fieldset>
             </form>
-          </div>
-          {/* Pictures */}
-          <div className="md:w-[500px] md:h-[600px] bg-white rounded-3xl shadow-2xl">
-            <div className="flex flex-col justify-center mx-10 mb-3 text-sm md:text-lg">
-              <h3 className="text-2xl text-center mt-3">
-                Infos complémentaires 🔍:
-              </h3>
-              <div className="flex flex-row justify-between mt-6 mb-3">
-                <label>Qualités:</label>
-                <textarea type="text" className="w-72 h-20 bg-gray border border-darkgray rounded-lg ml-2 pl-2 px-1"/>
-              </div>
-              <div className="flex flex-row justify-between mb-3">
-                <label>Défauts:</label>
-                <textarea type="text" className="w-72 h-20 bg-gray border border-darkgray rounded-lg ml-2 pl-2 px-1"/>
-              </div>
-              <div className="flex flex-row justify-between mb-3">
-                <label>Autres:</label>
-                <textarea type="text" className="w-72 h-20 bg-gray border border-darkgray rounded-lg ml-2 pl-2 px-1"/>
-              </div>
-            </div>
-            <div className="flex flex-col justify-center mx-32 mb-3 text-sm md:text-lg">
-              <h3 className="text-2xl text-center mt-3 mb-2">Photos 📸: </h3>
-              <input type="file" name="photos" />
-              <input type="file" name="photos" />
-              <input type="file" name="photos" />
-              <input type="file" name="photos" />
-              <input type="file" name="photos" />
-            </div>
-          </div>
+
         </div>
       </div>
       {/* Button */}
