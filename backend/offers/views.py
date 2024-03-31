@@ -68,3 +68,23 @@ def get_form_data(request):
         'bloodtype': bloodtype,
         'eye_color': eye_color,
         })
+
+def get_all_offers(request):
+    offers = CatOffer.objects.all()
+    # serialize the offers data
+    serialized_all_offers = [{'name': offer.name,
+                            'price': offer.price,
+                            'sex': offer.sex,
+                            'race': offer.race,
+                            'location': offer.location,
+                            'blood': offer.blood,
+                            'diseases_tests': offer.diseases_tests,
+                            'id_num': offer.id_num,
+                            'eye_color': offer.eye_color,
+                            'fur_color': offer.fur_color,
+                            'age': offer.age,
+                            'qualities': offer.qualities,
+                            'flaws': offer.flaws,
+                            'free_descriptive_text': offer.free_descriptive_text } for offer in offers]
+
+    return JsonResponse({'offers': serialized_all_offers})

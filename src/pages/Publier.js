@@ -73,13 +73,15 @@ export default function Publier() {
   const handleSubmit = (e) => {
     e.preventDefault();
     console.log(formData);
-    axios.post("http://127.0.0.1:8000/offers/offers/", formData, {
+    axios
+      .post("http://127.0.0.1:8000/offers/offers/", formData, {
         headers: { "Content-Type": "application/json" },
       })
       .then((response) => {
         console.log(response.data);
-        /*setFormData(initialFormData);*/
+        setFormData(initialFormData);
         console.log(successMessage);
+        setSuccessMessage("Votre annonce a bien été postée!");
       })
       .catch((err) => {
         console.error(err);
@@ -104,6 +106,14 @@ export default function Publier() {
             Ajoutez une annonce:
           </h2>
         </div>
+        {/* Successful message */}
+        {successMessage && (
+          <div className="border border-green bg-lightgreen mx-96 rounded-lg mt-0 animate-bounce">
+            <p className="text-green-600 text-center text-green mt-3 mb-4">
+              {successMessage}
+            </p>
+          </div>
+        )}
         {/* form */}
         <div className="flex flex-col md:flex-row items-center place-items-center my-auto mx-auto">
           {/* Description */}
@@ -119,18 +129,13 @@ export default function Publier() {
                 <div className="flex flex-row items-center justify-between mb-3 text-sm md:text-lg">
                   <span>LOOF*:</span>
                   <div className="ml-20">
-                    <input
-                      type="checkbox"
-                      id="LOOF_yes"
-                      name="loof_yes"
-                      required
-                    />
+                    <input type="radio" id="LOOF_yes" name="loof" required />
                     <label htmlFor="LOOF_yes" className="pl-2">
                       Oui
                     </label>
                   </div>
                   <div>
-                    <input type="checkbox" id="LOOF_no" name="loof_no" />
+                    <input type="radio" id="LOOF_no" name="loof" />
                     <label htmlFor="LOOF_yes" className="pl-2 pr-9">
                       Non
                     </label>
@@ -143,6 +148,7 @@ export default function Publier() {
                     name="sex"
                     value={formData.sex}
                     onChange={handleChange}
+                    required
                     className="rounded-lg bg-gray w-52 border border-darkgray ml-2"
                   >
                     <option value="">Choisissez</option>
@@ -171,8 +177,10 @@ export default function Publier() {
                   <select
                     name="race"
                     value={formData.race}
+                    required
                     onChange={handleChange}
-                    className="rounded-lg  bg-gray w-52 border border-darkgray ml-2">
+                    className="rounded-lg  bg-gray w-52 border border-darkgray ml-2"
+                  >
                     <option value="">Choisissez</option>
                     {races.map((option) => (
                       <option key={option} value={option}>
@@ -188,6 +196,7 @@ export default function Publier() {
                     type="text"
                     name="id_num"
                     value={formData.id_num}
+                    required
                     placeholder="LOOF-XXXXXXXX-AAAA-n"
                     onChange={handleChange}
                     className="bg-gray w-52 text-sm border border-darkgray rounded-lg h-8 ml-2 pl-2 px-1"
@@ -216,6 +225,7 @@ export default function Publier() {
                   <input
                     type="text"
                     name="diseases_tests"
+                    required
                     value={formData.diseases_tests}
                     onChange={handleChange}
                     placeholder="Fiv, Felv, Pkdef, ..."
@@ -241,7 +251,8 @@ export default function Publier() {
                     name="eye_color"
                     value={formData.eye_color}
                     onChange={handleChange}
-                    className="rounded-lg bg-gray w-52 border border-darkgray ml-2">
+                    className="rounded-lg bg-gray w-52 border border-darkgray ml-2"
+                  >
                     <option value="">Choisissez</option>
                     {eyeColor.map((option) => (
                       <option key={option} value={option}>
@@ -267,8 +278,10 @@ export default function Publier() {
                   <select
                     name="location"
                     value={formData.location}
+                    required
                     onChange={handleChange}
-                    className="rounded-lg bg-gray w-52 border border-darkgray ml-2">
+                    className="rounded-lg bg-gray w-52 border border-darkgray ml-2"
+                  >
                     <option value="">Choisissez</option>
                     {locations.map((option) => (
                       <option key={option} value={option}>
@@ -341,7 +354,9 @@ export default function Publier() {
               </div>
             </fieldset>
             {/* Button */}
-            <Button text="Publier" className="w-auto" />
+            <div className="ml-28 mb-16">
+              <Button text="Publier" className="w-auto" />
+            </div>
           </form>
         </div>
       </div>
