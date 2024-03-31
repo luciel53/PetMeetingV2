@@ -5,6 +5,63 @@ from django.contrib.auth.models import User
 from django.core.validators import MinLengthValidator
 
 
+RACE_CHOICES = [
+  ("Abyssin", "Abyssin"),
+  ("American Bobtail", "American Bobtail"),
+  ("American Curl", "American Curl"),
+  ("American SH/WH", "American SH/WH"),
+  ("Angora Turc", "Angora Turc"),
+  ("Balinais", "Balinais"),
+  ("Bengal", "Bengal"),
+  ("Bleu russe", "Bleu russe"),
+  ("British SH/LH", "British SH/LH"),
+  ("Bombay", "Bombay"),
+  ("Burmese", "Burmese"),
+  ("Burmilla", "Burmilla"),
+  ("Céleste SH/LH", "Céleste SH/LH"),
+  ("Ceylan", "Ceylan"),
+  ("Chartreux", "Chartreux"),
+  ("Chausie", "Chausie"),
+  ("Cornish Rex", "Cornish Rex"),
+  ("Devon Rex", "Devon Rex"),
+  ("Donskoy", "Donskoy"),
+  ("European SH", "European SH"),
+  ("Exotic SH", "Exotic SH"),
+  ("German Rex", "German Rex"),
+  ("Havana Brown", "Havana Brown"),
+  ("Japanese Bobtail", "Japanese Bobtail"),
+  ("Korat", "Korat"),
+  ("Kurilian Bobtail", "Kurilian Bobtail"),
+  ("Laperm", "Laperm"),
+  ("Lykoï", "Lykoï"),
+  ("Maine Coon", "Maine Coon"),
+  ("Manx", "Manx"),
+  ("Mau Egyptien", "Mau Egyptien"),
+  ("Munchkin PC/PL", "Munchkin PC/PL"),
+  ("Norvégien", "Norvégien"),
+  ("Ocicat", "Ocicat"),
+  ("Oriental", "Oriental"),
+  ("Persan", "Persan"),
+  ("Peterbald", "Peterbald"),
+  ("PixieBob PC/PL", "PixieBob PC/PL"),
+  ("Ragdoll", "Ragdoll"),
+  ("Sacré De Birmanie", "Sacré De Birmanie"),
+  ("Savannah", "Savannah"),
+  ("Scottish & Highland F/S", "Scottish & Highland F/S"),
+  ("Selkirk Rex PC/PL", "Selkirk Rex PC/PL"),
+  ("Siamois", "Siamois"),
+  ("Sibérien", "Sibérien"),
+  ("Singapura", "Singapura"),
+  ("Snowshoe", "Snowshoe"),
+  ("Somali", "Somali"),
+  ("Sphynx", "Sphynx"),
+  ("Thai", "Thai"),
+  ("Tonkinois PC/PL", "Tonkinois PC/PL"),
+  ("Toyger", "Toyger"),
+  ("Turc du Lac de Van", "Turc du Lac de Van"),
+  ("York Chocolat", "York Chocolat"),
+]
+
 SEX_CHOICES = [
     ("M", "Male"),
     ("F", "Female")
@@ -136,6 +193,7 @@ EYECOLOR_CHOICES = [
 
 class CatOffer(models.Model):
     name = models.CharField(max_length=100)
+    race = models.CharField(choices=RACE_CHOICES, max_length=100, default=("Bengal", "Bengal"))
     date_posted = models.DateTimeField(auto_now_add=True)
     price = models.DecimalField(max_digits=7, decimal_places=2)
     sex = models.CharField(choices=SEX_CHOICES, max_length=20)
@@ -156,6 +214,7 @@ class CatOffer(models.Model):
 class CatOfferAdmin(admin.ModelAdmin):
     offers_display = (
         'name',
+        'race',
         'date_posted',
         'price',
         'sex',
@@ -170,3 +229,4 @@ class CatOfferAdmin(admin.ModelAdmin):
         'flaws',
         'free_descriptive_text',
         )
+
