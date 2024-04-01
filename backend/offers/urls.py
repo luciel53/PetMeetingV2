@@ -6,3 +6,4 @@ urlpatterns = [
     path('offers/get_form_data/', get_form_data, name="get_form_data"),
     path('offers/get_all_offers/', get_all_offers, name='get_all_offers'),
 ]
+

@@ -21,6 +21,7 @@ export default function Publier() {
     qualities: "",
     flaws: "",
     free_descriptive_text: "",
+    picture: "",
   };
 
   const [formData, setFormData] = useState(initialFormData);
@@ -87,6 +88,13 @@ export default function Publier() {
         console.error(err);
       });
   };
+
+  function handleFileChange(e) {
+    const file = e.target.files[0];
+    if (file) {
+    setFormData({ ...formData, picture: file });
+    }
+  }
 
   return (
     <>
@@ -344,7 +352,10 @@ export default function Publier() {
                     <h3 className="text-2xl text-center mt-3 mb-2">
                       Photos 📸:{" "}
                     </h3>
-                    <input type="file" name="photos" />
+                    <input
+                      type="file"
+                      name="picture"
+                      onChange={handleFileChange} />
                     <input type="file" name="photos" />
                     <input type="file" name="photos" />
                     <input type="file" name="photos" />
