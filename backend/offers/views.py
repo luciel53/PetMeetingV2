@@ -5,31 +5,28 @@ import json
 import os
 from django.conf import settings
 from django.views.decorators.csrf import csrf_exempt
+from django.core.files.base import ContentFile
+import uuid
 
 # Create your views here.
 @csrf_exempt
 def catOffer_view(request):
     if request.method == 'POST':
-        # Recover the json data
-        data = json.loads(request.body)
-
         # extract form data from json
-        name = data.get('name')
-        race = data.get('race')
-        price = data.get('price')
-        sex = data.get('sex')
-        id_num = data.get('id_num')
-        location = data.get('location')
-        blood = data.get('blood')
-        diseases_tests = data.get('diseases_tests')
-        eye_color = data.get('eye_color')
-        fur_color = data.get('fur_color')
-        age = data.get('age')
-        qualities = data.get('qualities')
-        flaws = data.get('flaws')
-        free_descriptive_text = data.get('free_descriptive_text')
-        #get uploaded file
-        picture = request.FILES.get('picture')
+        name = request.POST.get('name')
+        race = request.POST.get('race')
+        price = request.POST.get('price')
+        sex = request.POST.get('sex')
+        id_num = request.POST.get('id_num')
+        location = request.POST.get('location')
+        blood = request.POST.get('blood')
+        diseases_tests = request.POST.get('diseases_tests')
+        eye_color = request.POST.get('eye_color')
+        fur_color = request.POST.get('fur_color')
+        age = request.POST.get('age')
+        qualities = request.POST.get('qualities')
+        flaws = request.POST.get('flaws')
+        free_descriptive_text = request.POST.get('free_descriptive_text')
 
         # Error form data
         if not name or not race or not price or not sex or not location or not diseases_tests or not age:
@@ -50,15 +47,15 @@ def catOffer_view(request):
                                         qualities=qualities,
                                         flaws=flaws,
                                         free_descriptive_text=free_descriptive_text,
-                                        picture=picture,
                                         )
-
+        # Recover the file
+        picture = request.FILES.get('picture')
         if picture:
-            # define the image register path
-            picture_name = picture.name
-            picture_path = os.path.join(settings.MEDIA_ROOT, 'cat_offer_pictures', picture_name)
-    
-            print(picture_path)
+            # generate unique file name
+            picture_name = str(uuid.uuid4()) + picture.name
+            print(picture_name)
+            # save the pic in the good directory
+            offer.picture.save(picture_name, picture)
 
         # save offer in the database
         offer.save()

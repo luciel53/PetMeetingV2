@@ -70,13 +70,20 @@ export default function Publier() {
     }
   };
 
+  function handleFileChange(e) {
+    const file = e.target.files[0];
+    if (file) {
+      setFormData({ ...formData, picture: file });
+    }
+  }
+
   // post an offer
   const handleSubmit = (e) => {
     e.preventDefault();
     console.log(formData);
     axios
       .post("http://127.0.0.1:8000/offers/offers/", formData, {
-        headers: { "Content-Type": "application/json" },
+        headers: { "Content-Type": "multipart/form-data" },
       })
       .then((response) => {
         console.log(response.data);
@@ -88,13 +95,6 @@ export default function Publier() {
         console.error(err);
       });
   };
-
-  function handleFileChange(e) {
-    const file = e.target.files[0];
-    if (file) {
-    setFormData({ ...formData, picture: file });
-    }
-  }
 
   return (
     <>
@@ -161,7 +161,7 @@ export default function Publier() {
                   >
                     <option value="">Choisissez</option>
                     {sex.map((option) => (
-                      <option key={option} value={option}>
+                      <option key={option.id} value={option}>
                         {option}
                       </option>
                     ))}
@@ -191,7 +191,7 @@ export default function Publier() {
                   >
                     <option value="">Choisissez</option>
                     {races.map((option) => (
-                      <option key={option} value={option}>
+                      <option key={option.id} value={option}>
                         {option}
                       </option>
                     ))}
@@ -221,7 +221,7 @@ export default function Publier() {
                   >
                     <option value="">Choisissez</option>
                     {blood.map((option) => (
-                      <option key={option} value={option}>
+                      <option key={option.id} value={option}>
                         {option}
                       </option>
                     ))}
@@ -263,7 +263,7 @@ export default function Publier() {
                   >
                     <option value="">Choisissez</option>
                     {eyeColor.map((option) => (
-                      <option key={option} value={option}>
+                      <option key={option.id} value={option}>
                         {option}
                       </option>
                     ))}
@@ -292,7 +292,7 @@ export default function Publier() {
                   >
                     <option value="">Choisissez</option>
                     {locations.map((option) => (
-                      <option key={option} value={option}>
+                      <option key={option.id} value={option}>
                         {option}
                       </option>
                     ))}
@@ -355,11 +355,18 @@ export default function Publier() {
                     <input
                       type="file"
                       name="picture"
-                      onChange={handleFileChange} />
-                    <input type="file" name="photos" />
-                    <input type="file" name="photos" />
-                    <input type="file" name="photos" />
-                    <input type="file" name="photos" />
+                      onChange={handleFileChange}
+                    />
+                    {/* <input
+                      type="file"
+                      name="picture"
+                      onChange={handleFileChange}
+                    />
+                    <input
+                      type="file"
+                      name="picture"
+                      onChange={handleFileChange}
+                    /> */}
                   </div>
                 </div>
               </div>
