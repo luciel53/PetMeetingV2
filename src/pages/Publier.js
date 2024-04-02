@@ -22,21 +22,21 @@ export default function Publier() {
     flaws: "",
     free_descriptive_text: "",
     picture: "",
+    picture2: "",
+    picture3: "",
   };
 
   const [formData, setFormData] = useState(initialFormData);
 
   function handleChange(e) {
-    const { name, value, type, checked } = e.target;
-    // Si le champ est un champ de sélection, utilisez la propriété value directement
-    const newValue =
-      type === "select-one"
-        ? e.target.value
-        : type === "checkbox"
-        ? checked
-        : value;
-    setFormData({ ...formData, [name]: newValue });
+    const { name, value } = e.target;
+
+    setFormData(prevFormData => ({
+      ...prevFormData,
+      [name]: value,
+    }));
   }
+
 
   // function handleChange(e) {
   //   setFormData({ ...formData, [e.target.name]: e.target.value });
@@ -72,8 +72,9 @@ export default function Publier() {
 
   function handleFileChange(e) {
     const file = e.target.files[0];
+    const name = e.target.name;
     if (file) {
-      setFormData({ ...formData, picture: file });
+      setFormData({ ...formData, [name]: file });
     }
   }
 
@@ -357,16 +358,16 @@ export default function Publier() {
                       name="picture"
                       onChange={handleFileChange}
                     />
-                    {/* <input
+                    <input
                       type="file"
-                      name="picture"
+                      name="picture2"
                       onChange={handleFileChange}
                     />
                     <input
                       type="file"
-                      name="picture"
+                      name="picture3"
                       onChange={handleFileChange}
-                    /> */}
+                    />
                   </div>
                 </div>
               </div>

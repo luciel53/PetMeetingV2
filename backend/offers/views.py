@@ -48,14 +48,29 @@ def catOffer_view(request):
                                         flaws=flaws,
                                         free_descriptive_text=free_descriptive_text,
                                         )
-        # Recover the file
+        # Recover the files
         picture = request.FILES.get('picture')
+        picture2 = request.FILES.get('picture2')
+        picture3 = request.FILES.get('picture3')
+
         if picture:
             # generate unique file name
             picture_name = str(uuid.uuid4()) + picture.name
             print(picture_name)
             # save the pic in the good directory
             offer.picture.save(picture_name, picture)
+        if picture2:
+            # generate unique file name
+            picture2_name = str(uuid.uuid4()) + picture2.name
+            print(picture2_name)
+            # save the pic in the good directory
+            offer.picture2.save(picture2_name, picture2)
+        if picture3:
+            # generate unique file name
+            picture3_name = str(uuid.uuid4()) + picture3.name
+            print(picture3_name)
+            # save the pic in the good directory
+            offer.picture3.save(picture3_name, picture3)
 
         # save offer in the database
         offer.save()
@@ -101,11 +116,24 @@ def get_all_offers(request):
                                 'flaws': offer.flaws,
                                 'free_descriptive_text': offer.free_descriptive_text,
                                 }
+        #dictionary to store images url
+        picture_urls = {}
+
         # check if picture is not none before access its url
-        if offer.picture:
-            serialized_offers['picture'] = offer.picture.url
+        if offer.picture or offer.picture2 or offer.picture3:
+
+            # check each image and add its url to dict
+            if offer.picture:
+                picture_urls['picture'] = offer.picture.url
+            if offer.picture2:
+                picture_urls['picture2'] = offer.picture2.url
+            if offer.picture3:
+                picture_urls['picture3'] = offer.picture3.url
+            # add dict of images urls to serialized_offer
+            serialized_offers.update(picture_urls)
         else:
-            serialized_offers['picture'] = None
+            #if no images, exclude 'picture' key from serialized_offers
+            serialized_offers = {key: value for key, value in serialized_offers.items() if key != 'picture'}
 
         serialized_all_offers.append(serialized_offers)
 

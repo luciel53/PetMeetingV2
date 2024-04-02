@@ -63,8 +63,8 @@ RACE_CHOICES = [
 ]
 
 SEX_CHOICES = [
-    ("Male", "Male"),
-    ("Female", "Female")
+    ("Mâle", "Mâle"),
+    ("Femelle", "Femelle")
 ]
 
 LOCATION_CHOICES = [
@@ -207,7 +207,10 @@ class CatOffer(models.Model):
     qualities = models.TextField(max_length=350, default=None, blank=True, null=True)
     flaws = models.TextField(max_length=350, default=None, blank=True, null=True)
     free_descriptive_text = models.TextField(max_length=2000,default=None, blank=True)
+     # to upload files
     picture = models.ImageField(upload_to='cat_offer_pictures/', null=True, blank=True)
+    picture2 = models.ImageField(upload_to='cat_offer_pictures/', null=True, blank=True)
+    picture3 = models.ImageField(upload_to='cat_offer_pictures/', null=True, blank=True)
 
     def __str__(self):
         return self.name
