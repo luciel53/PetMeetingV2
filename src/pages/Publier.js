@@ -31,12 +31,11 @@ export default function Publier() {
   function handleChange(e) {
     const { name, value } = e.target;
 
-    setFormData(prevFormData => ({
+    setFormData((prevFormData) => ({
       ...prevFormData,
       [name]: value,
     }));
   }
-
 
   // function handleChange(e) {
   //   setFormData({ ...formData, [e.target.name]: e.target.value });
@@ -47,6 +46,7 @@ export default function Publier() {
   const [sex, setSex] = useState([]);
   const [locations, setLocations] = useState([]);
   const [eyeColor, setEyeColor] = useState([]);
+  const [showPrice, setShowPrice] = useState(true);
 
   useEffect(() => {
     fetchSelectData();
@@ -96,6 +96,11 @@ export default function Publier() {
         console.error(err);
       });
   };
+
+  useEffect(() => {
+    // if != femelle, shows the price
+    setShowPrice(formData.sex !== "Femelle");
+  }, [formData.sex]);
 
   return (
     <>
@@ -299,17 +304,19 @@ export default function Publier() {
                     ))}
                   </select>
                 </div>
-                <div className="flex flex-row items-center justify-between text-sm md:text-lg ">
-                  <label>Prix*:</label>
-                  <input
-                    type="text"
-                    name="price"
-                    value={formData.price}
-                    required
-                    onChange={handleChange}
-                    className="w-52 bg-gray border border-darkgray rounded-lg h-8 ml-2 pl-2 px-1"
-                  />
-                </div>
+                {showPrice && (
+                  <div className="flex flex-row items-center justify-between text-sm md:text-lg ">
+                    <label>Prix*:</label>
+                    <input
+                      type="text"
+                      name="price"
+                      value={formData.price}
+                      required
+                      onChange={handleChange}
+                      className="w-52 bg-gray border border-darkgray rounded-lg h-8 ml-2 pl-2 px-1"
+                    />
+                  </div>
+                )}
               </div>
               <div className="w-96">
                 {/* Pictures */}
