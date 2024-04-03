@@ -20,7 +20,7 @@ export default function Members() {
     } catch (e) {
       console.error('Error fetching profiles', e);
     }
-  } 
+  }
 
   return (
     <div>
@@ -29,8 +29,10 @@ export default function Members() {
       </div>
       <div>
         {profiles && profiles.length > 0 ? (
-          <Grid items={profiles.map(profile => ({
-            name: profile.user.username,
+          <Grid items={profiles.map(profile => (
+            {
+
+            name: profile.username,
             image: profile.avatar,
             race: profile.location,
           }))} />
