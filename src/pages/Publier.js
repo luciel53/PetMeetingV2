@@ -6,6 +6,10 @@ import { useState, useEffect } from "react";
 
 export default function Publier() {
   const [successMessage, setSuccessMessage] = useState("");
+  const [errorMessage, setErrorMessage] = useState("");
+  const [showErrorMessage, setShowErrorMessage] = useState(false);
+  const [loof, setLoof] = useState("");
+  const [vaccins, setVaccins] = useState("");
   const initialFormData = {
     name: "",
     race: "",
@@ -78,23 +82,55 @@ export default function Publier() {
     }
   }
 
+  useEffect(() => {
+    // Si loofValue est "Oui", effacer le message d'erreur
+    if (loof === "Non" || vaccins === "Non") {
+      setShowErrorMessage(true);
+    } else {
+      setShowErrorMessage(false);
+    }
+  }, [loof, vaccins]);
+
+  function handleLoofChange(e) {
+    setLoof(e.target.value);
+  }
+
+  function handleVaccinsChange(e) {
+    setVaccins(e.target.value);
+  }
+
   // post an offer
   const handleSubmit = (e) => {
     e.preventDefault();
-    console.log(formData);
-    axios
-      .post("http://127.0.0.1:8000/offers/offers/", formData, {
-        headers: { "Content-Type": "multipart/form-data" },
-      })
-      .then((response) => {
-        console.log(response.data);
-        setFormData(initialFormData);
-        console.log(successMessage);
-        setSuccessMessage("Votre annonce a bien été postée!");
-      })
-      .catch((err) => {
-        console.error(err);
-      });
+
+    //check if LOOF and Vaccins are both set on Yes
+    const loofValue = document.querySelector('input[name="loof"]:checked');
+    const vaccinsValue = document.querySelector(
+      'input[name="vaccins"]:checked'
+    );
+
+    if (loofValue === "Oui" && vaccinsValue === "Oui") {
+      console.log(formData);
+      axios
+        .post("http://127.0.0.1:8000/offers/offers/", formData, {
+          headers: { "Content-Type": "multipart/form-data" },
+        })
+        .then((response) => {
+          console.log(response.data);
+          setFormData(initialFormData);
+          console.log(successMessage);
+          setSuccessMessage("Votre annonce a bien été postée!");
+        })
+        .catch((err) => {
+          console.error(err);
+        });
+    } else {
+      setShowErrorMessage(true);
+
+      console.error(
+        "Ce champs est obligatoire. Nous n'acceptons que les chats LOOF et vaccinés."
+      );
+    }
   };
 
   useEffect(() => {
@@ -143,18 +179,76 @@ export default function Publier() {
                 <div className="flex flex-row items-center justify-between mb-3 text-sm md:text-lg">
                   <span>LOOF*:</span>
                   <div className="ml-20">
-                    <input type="radio" id="LOOF_yes" name="loof" required />
+                    <input
+                      type="radio"
+                      id="LOOF_yes"
+                      name="loof"
+                      value="Oui"
+                      required
+                      onChange={handleLoofChange}
+                    />
                     <label htmlFor="LOOF_yes" className="pl-2">
                       Oui
                     </label>
                   </div>
                   <div>
-                    <input type="radio" id="LOOF_no" name="loof" />
-                    <label htmlFor="LOOF_yes" className="pl-2 pr-9">
+                    <input
+                      type="radio"
+                      id="LOOF_no"
+                      name="loof"
+                      value="Non"
+                      onChange={handleLoofChange}
+                    />
+                    <label htmlFor="LOOF_no" className="pl-2 pr-9">
                       Non
                     </label>
                   </div>
                 </div>
+
+                {/* Vaccins */}
+                <div className="flex flex-row items-center justify-between mb-3 text-sm md:text-lg">
+                  <span>Vaccins à jour*:</span>
+                  <div className="ml-3">
+                    <input
+                      type="radio"
+                      id="vaccins_yes"
+                      name="vaccins"
+                      value="Oui"
+                      required
+                      onChange={handleVaccinsChange}
+                    />
+                    <label htmlFor="vaccins_yes" className="pl-2">
+                      Oui
+                    </label>
+                  </div>
+                  <div>
+                    <input
+                      type="radio"
+                      id="vaccins_no"
+                      name="vaccins"
+                      value="Non"
+                      onChange={handleVaccinsChange}
+                    />
+                    <label htmlFor="vaccins_no" className="pl-2 pr-9">
+                      Non
+                    </label>
+                  </div>
+                </div>
+                {/* Error message if loof or vaccins are not yes */}
+                {showErrorMessage && (
+                  <div>
+                    <div className="text-fragole border border-fragole bg-lightyellow rounded-lg p-2 text-center absolute mt-0 w-96 ml-4 shadow-xl">
+                      Ces champs sont obligatoires. Nous n'acceptons que les chats
+                      LOOF et à jour de vaccination.
+                    </div>
+                    <button
+                      className="close-button"
+                      onClick={() => setShowErrorMessage(false)}
+                    >
+                      Fermer
+                    </button>
+                  </div>
+                )}
                 {/* Sex */}
                 <div className="flex flex-row items-center justify-between mb-3 text-sm md:text-lg">
                   <span className="">Sexe*:</span>
@@ -248,7 +342,7 @@ export default function Publier() {
                 </div>
                 {/* Age */}
                 <div className="flex flex-row items-center justify-between mb-3 text-sm md:text-lg ">
-                  <label>Âge*:</label>
+                  <label>Âge* (ans):</label>
                   <input
                     type="text"
                     name="age"
@@ -258,23 +352,7 @@ export default function Publier() {
                     className="w-52 bg-gray border border-darkgray rounded-lg h-8 ml-2 pl-2 px-1"
                   />
                 </div>
-                {/* Eye color */}
-                <div className="flex flex-row items-center justify-between mb-3 text-sm md:text-lg ">
-                  <span>Couleur des yeux:</span>
-                  <select
-                    name="eye_color"
-                    value={formData.eye_color}
-                    onChange={handleChange}
-                    className="rounded-lg bg-gray w-52 border border-darkgray ml-2"
-                  >
-                    <option value="">Choisissez</option>
-                    {eyeColor.map((option) => (
-                      <option key={option.id} value={option}>
-                        {option}
-                      </option>
-                    ))}
-                  </select>
-                </div>
+
                 {/* Robe */}
                 <div className="flex flex-row items-center justify-between mb-3 text-sm md:text-lg ">
                   <label>Robe:</label>
@@ -304,6 +382,7 @@ export default function Publier() {
                     ))}
                   </select>
                 </div>
+                {/* Price */}
                 {showPrice && (
                   <div className="flex flex-row items-center justify-between text-sm md:text-lg ">
                     <label>Prix*:</label>
@@ -325,7 +404,24 @@ export default function Publier() {
                     <h3 className="text-2xl text-center mt-3">
                       Infos complémentaires 🔍:
                     </h3>
-                    <div className="flex flex-row justify-between mt-6 mb-3">
+                    {/* Eye color */}
+                    <div className="flex flex-row items-center justify-between mt-6 mb-3 text-sm md:text-lg ">
+                      <span>Couleur des yeux:</span>
+                      <select
+                        name="eye_color"
+                        value={formData.eye_color}
+                        onChange={handleChange}
+                        className="rounded-lg bg-gray w-52 border border-darkgray ml-2"
+                      >
+                        <option value="">Choisissez</option>
+                        {eyeColor.map((option) => (
+                          <option key={option.id} value={option}>
+                            {option}
+                          </option>
+                        ))}
+                      </select>
+                    </div>
+                    <div className="flex flex-row justify-between mb-3">
                       <label>Qualités:</label>
                       <textarea
                         type="text"
