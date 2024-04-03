@@ -8,6 +8,7 @@ export default function Publier() {
   const [successMessage, setSuccessMessage] = useState("");
   const [errorMessage, setErrorMessage] = useState("");
   const [showErrorMessage, setShowErrorMessage] = useState(false);
+  const [formSubmitted, setFormSubmitted] = useState(false);
   const [loof, setLoof] = useState("");
   const [vaccins, setVaccins] = useState("");
   const initialFormData = {
@@ -102,12 +103,13 @@ export default function Publier() {
   // post an offer
   const handleSubmit = (e) => {
     e.preventDefault();
+    setFormSubmitted(true);
 
     //check if LOOF and Vaccins are both set on Yes
-    const loofValue = document.querySelector('input[name="loof"]:checked');
+    const loofValue = document.querySelector('input[name="loof"]:checked')?.value;
     const vaccinsValue = document.querySelector(
       'input[name="vaccins"]:checked'
-    );
+    )?.value;
 
     if (loofValue === "Oui" && vaccinsValue === "Oui") {
       console.log(formData);
@@ -235,18 +237,13 @@ export default function Publier() {
                   </div>
                 </div>
                 {/* Error message if loof or vaccins are not yes */}
-                {showErrorMessage && (
+                {formSubmitted && showErrorMessage && (
                   <div>
                     <div className="text-fragole border border-fragole bg-lightyellow rounded-lg p-2 text-center absolute mt-0 w-96 ml-4 shadow-xl">
                       Ces champs sont obligatoires. Nous n'acceptons que les chats
-                      LOOF et à jour de vaccination.
+                      LOOF et à jour de vaccination.<br />
+                      (voir la réglementation)
                     </div>
-                    <button
-                      className="close-button"
-                      onClick={() => setShowErrorMessage(false)}
-                    >
-                      Fermer
-                    </button>
                   </div>
                 )}
                 {/* Sex */}
