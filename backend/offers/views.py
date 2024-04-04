@@ -3,14 +3,32 @@ from django.http import JsonResponse
 from .models import CatOffer, RACE_CHOICES, SEX_CHOICES, LOCATION_CHOICES, BLOOD_CHOICES, EYECOLOR_CHOICES
 import json
 import os
+from rest_framework_simplejwt.authentication import JWTAuthentication
 from django.conf import settings
 from django.views.decorators.csrf import csrf_exempt
 from django.core.files.base import ContentFile
+from django.contrib.auth.decorators import login_required
 import uuid
 
 # Create your views here.
 @csrf_exempt
 def catOffer_view(request):
+    # check if token is included in the request
+    if 'HTTP_AUTHORIZATION' in request.META:
+        # obtain the jwt token of the authorization header
+        token = request.META['HTTP_AUTHORIZATION'].split(' ')[1]
+        # crate an instance of JWTAuthentication
+        jwt_authentication = JWTAuthentication()
+        try:
+            # validate and decode jwt token to obtain the user
+            user, _ = jwt_authentication.authenticate(request)
+        except:
+            # if token not valid, throw an error
+            return JsonResponse({'error': 'Invalid JWT token'}, status=401)
+    else:
+        # if token not in request, throw an error
+        return JsonResponse({'error': 'JWT token is missing'}, status=401)
+
     if request.method == 'POST':
         # extract form data from json
         name = request.POST.get('name')
@@ -47,6 +65,7 @@ def catOffer_view(request):
                                         qualities=qualities,
                                         flaws=flaws,
                                         free_descriptive_text=free_descriptive_text,
+                                        user=user
                                         )
         # Recover the files
         picture = request.FILES.get('picture')
@@ -102,7 +121,7 @@ def get_all_offers(request):
     serialized_all_offers = []
     for offer in offers:
         serialized_offers = {'name': offer.name,
-                            'id': offer.id,
+                             'id': offer.id,
                             'price': offer.price,
                             'sex': offer.sex,
                             'race': offer.race,
@@ -116,6 +135,7 @@ def get_all_offers(request):
                             'qualities': offer.qualities,
                             'flaws': offer.flaws,
                             'free_descriptive_text': offer.free_descriptive_text,
+                            'user': offer.user.username,
                             }
         #dictionary to store images url
         picture_urls = {}

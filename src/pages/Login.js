@@ -26,7 +26,7 @@ export default function Login() {
     localStorage.setItem('refresh_token', data.refresh);
     axios.defaults.headers.common['Authorization'] = `Bearer ${data['access']}`;
     window.location.href = '/';
-  }
+  } 
 
   return (
     <div className="container flex flex-col justify-center mx-auto md:mx-auto w-[88%] md:w-[55%] lg:w-[25%] p-5 md:p-12 md:mt-60 bg-white rounded-3xl shadow-2xl text-sm md:text-lg animate-fade">

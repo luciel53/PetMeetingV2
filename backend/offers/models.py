@@ -211,6 +211,8 @@ class CatOffer(models.Model):
     picture = models.ImageField(upload_to='cat_offer_pictures/', null=True, blank=True)
     picture2 = models.ImageField(upload_to='cat_offer_pictures/', null=True, blank=True)
     picture3 = models.ImageField(upload_to='cat_offer_pictures/', null=True, blank=True)
+    # user (to link offer and user)
+    user = models.ForeignKey(User, on_delete=models.CASCADE, null=True, blank=True)
 
     def __str__(self):
         return self.name
