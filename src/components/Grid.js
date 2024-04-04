@@ -21,11 +21,7 @@ export default function Grid({ items }) {
           {item.race && (
             <p className=" flex flex-row text-center text-lg font-semibold mb-1">
               {item.race}
-              {item.sexe === "Mâle" ? (
-                <img src={male} alt="mâle" className="pl-4" />
-              ) : (
-                <img src={female} alt="femelle" />
-              )}
+              {item.sexe}
             </p>
           )}
         </div>

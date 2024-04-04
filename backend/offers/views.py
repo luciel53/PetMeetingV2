@@ -102,20 +102,20 @@ def get_all_offers(request):
     serialized_all_offers = []
     for offer in offers:
         serialized_offers = {'name': offer.name,
-                                'price': offer.price,
-                                'sex': offer.sex,
-                                'race': offer.race,
-                                'location': offer.location,
-                                'blood': offer.blood,
-                                'diseases_tests': offer.diseases_tests,
-                                'id_num': offer.id_num,
-                                'eye_color': offer.eye_color,
-                                'fur_color': offer.fur_color,
-                                'age': offer.age,
-                                'qualities': offer.qualities,
-                                'flaws': offer.flaws,
-                                'free_descriptive_text': offer.free_descriptive_text,
-                                }
+                            'price': offer.price,
+                            'sex': offer.sex,
+                            'race': offer.race,
+                            'location': offer.location,
+                            'blood': offer.blood,
+                            'diseases_tests': offer.diseases_tests,
+                            'id_num': offer.id_num,
+                            'eye_color': offer.eye_color,
+                            'fur_color': offer.fur_color,
+                            'age': offer.age,
+                            'qualities': offer.qualities,
+                            'flaws': offer.flaws,
+                            'free_descriptive_text': offer.free_descriptive_text,
+                            }
         #dictionary to store images url
         picture_urls = {}
 
