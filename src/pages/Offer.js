@@ -1,4 +1,4 @@
-import { NavLink, useLocation } from "react-router-dom";
+import { NavLink, useLocation, useParams } from "react-router-dom";
 import { useState, useEffect } from "react";
 import axios from "axios";
 import profileMsg from "../assets/images/icons/profileMsg.png";
@@ -14,22 +14,29 @@ import suzanne from "../assets/images/people/suzanne.jpg";
 
 
 export default function Offer() {
-  const [catsOffers, setCatsOffers] = useState([]);
+  const [selectedOffer, setSelectedOffer] = useState(null);
+  // useParams extracts the params of the url
+  const { id } = useParams();
+  console.log(id);
+
   useEffect(() => {
-    fetchCatsOffers();
-  }, []);
+    const fetchCatOffer = async () => {
+      try {
+        const response = await axios.get("http://127.0.0.1:8000/offers/offers/get_all_offers/");
+        const offers = response.data.offers;
+        const selected = offers.find(offer => offer.id === parseInt(id));
+        console.log(selected);
+        setSelectedOffer(selected);
+      } catch (e) {
+        console.error("Error fetching cats offers", e);
+      }
+    };
+    fetchCatOffer();
+  }, [id]);
 
-  const fetchCatsOffers = async () => {
-    try {
-      const response = await axios.get("http://127.0.0.1:8000/offers/offers/get_all_offers/");
-      setCatsOffers(response.data);
-
-    } catch (e) {
-      console.error("Error fetching cats offers", e);
-    }
-
-  };
-  console.log(catsOffers);
+  if (!selectedOffer) {
+    return null;
+  }
 
   return (
     <>
@@ -41,7 +48,7 @@ export default function Offer() {
       <div className="mx-auto">
         <div className="container flex flex-row col-end-4 mt-6 mb-32">
           {/* Owner */}
-          <div className="container flex flex-col w-[250px] h-[263px] mr-6 bg-white rounded-3xl shadow-lg">
+          <div className="container flex flex-col w-[250px] h-[263px] mr-6 bg-white rounded-3xl shadow-lg animate-fade-right">
             <p className="mx-auto mt-3 font-semibold text-lg">Name</p>
             <div className="container w-[175px] h-[183px] bg-gray rounded-full mx-auto my-auto mt-2 shadow-sm z-0 overflow-hidden">
               <img
@@ -64,7 +71,7 @@ export default function Offer() {
             </div>
           </div>
           {/* Offer Details */}
-          <div className="flex flex-col">
+          <div className="flex flex-col animate-fade-down">
             {/* Title (name), date and price */}
             <div className="container flex flex-row flex-wrap bg-white w-[500px] pl-6 pt-4 h-auto mr-6 mx-auto rounded-3xl shadow-lg">
               {/* Cat icon + title */}
@@ -74,7 +81,7 @@ export default function Offer() {
                   className="w-8 h-8 pb-1"
                   alt="icone de chat"
                 />
-                <h3 className="text-2xl pl-2 font-semibold">Nom</h3>
+                <h3 className="text-2xl pl-2 font-semibold">{selectedOffer.name}</h3>
               </div>
               <div className="flex flex-col w-1/2 pl-12 pt-1">
                 <div className="flex flex-row items-center">
@@ -85,7 +92,12 @@ export default function Offer() {
                     alt="signaler l'annonce"
                   />
                 </div>
-                <strong className="text-2xl">500€</strong>
+                {/* Price */}
+
+                <strong className="text-2xl">
+                {selectedOffer.sex === "Mâle" ? (
+                  selectedOffer.price + ' €') : (null)}
+                  </strong>
               </div>
 
               {/* Details */}
@@ -96,7 +108,10 @@ export default function Offer() {
                       <tr>
                         <td className="text-purple">Sexe:</td>
                         <td className="pl-7">
-                          <img src={male} alt="mâle" />
+                        {selectedOffer.sex === "Mâle" ? (
+                          <img src={male} alt="mâle" />) :
+                          (<img src={female} alt="femelle" />)
+                        }
                         </td>
                       </tr>
                       <tr>
@@ -105,15 +120,15 @@ export default function Offer() {
                       </tr>
                       <tr>
                         <td className="text-purple">Localisation:</td>
-                        <td className="pl-8">Loire-Atlantique</td>
+                        <td className="pl-8">{selectedOffer.location}</td>
                       </tr>
                       <tr>
                         <td className="text-purple">Groupe sanguin:</td>
-                        <td className="pl-8">B</td>
+                        <td className="pl-8">{selectedOffer.blood}</td>
                       </tr>
                       <tr>
                         <td className="text-purple">Tests maladies:</td>
-                        <td className="pl-8">fiv/felv, PRA, PKdef</td>
+                        <td className="pl-8">{selectedOffer.diseases_tests}</td>
                       </tr>
                       <tr>
                         <td className="text-purple">Vaccins à jour:</td>
@@ -121,19 +136,19 @@ export default function Offer() {
                       </tr>
                       <tr>
                         <td className="text-purple">N° d’identification:</td>
-                        <td className="pl-8">1682956689965</td>
+                        <td className="pl-8">{selectedOffer.id_num}</td>
                       </tr>
                       <tr>
                         <td className="text-purple">Couleur des yeux:</td>
-                        <td className="pl-8">Or</td>
+                        <td className="pl-8">{selectedOffer.eye_color}</td>
                       </tr>
                       <tr>
                         <td className="text-purple">Robe:</td>
-                        <td className="pl-8">Fawn</td>
+                        <td className="pl-8">{selectedOffer.fur_color}</td>
                       </tr>
                       <tr>
                         <td className="text-purple">Age:</td>
-                        <td className="pl-8">3 ans</td>
+                        <td className="pl-8">{selectedOffer.age} an(s)</td>
                       </tr>
                       <tr>
                         <td className="text-purple">Qualités:</td>
@@ -141,7 +156,7 @@ export default function Offer() {
                           className="pl-8 pr-5"
                           style={{ wordBreak: "break-word" }}
                         >
-                          Gentil, beau type
+                          {selectedOffer.qualities}
                         </td>
                       </tr>
                       <tr>
@@ -150,7 +165,7 @@ export default function Offer() {
                           className="pl-8 pr-5"
                           style={{ wordBreak: "break-word" }}
                         >
-                          Collantjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjj
+                          {selectedOffer.flaws}
                         </td>
                       </tr>
                       <tr>
@@ -159,7 +174,7 @@ export default function Offer() {
                           className="pl-8 pr-5"
                           style={{ wordBreak: "break-word" }}
                         >
-                          A déjà produit
+                          {selectedOffer.free_descriptive_text}
                         </td>
                       </tr>
                     </table>
@@ -169,7 +184,8 @@ export default function Offer() {
             </div>
           </div>
           {/* Pictures */}
-          <div className="container bg-white w-[500px]  mx-auto rounded-3xl shadow-lg">
+          <div className="container bg-white w-[500px]  mx-auto rounded-3xl shadow-lg animate-fade-left">
+            {/* Big Picture */}
             <div className="h-auto">
               <img
                 src={abyssin}
@@ -177,27 +193,23 @@ export default function Offer() {
                 alt="1"
               />
             </div>
-            <div className="h-auto mt-12">
+            {/* Mini pictures */}
+            <div className="h-auto mt-12 mb-10">
               <div className="flex flex-row justify-center">
                 <img
-                  src={abyssin1}
+                  src={`http://127.0.0.1:8000${selectedOffer.picture}`}
                   className="max-w-24 max-h-24 mr-4 rounded-lg shadow-lg"
                   alt="image1"
                 />
                 <img
-                  src={abyssin2}
+                  src={`http://127.0.0.1:8000${selectedOffer.picture2}`}
                   className="max-w-24 max-h-24 mr-4 rounded-lg shadow-lg"
                   alt="image2"
                 />
                 <img
-                  src={abyssin2}
+                  src={`http://127.0.0.1:8000${selectedOffer.picture3}`}
                   className="max-w-24 max-h-24 mr-4 rounded-lg shadow-lg"
-                  alt="image2"
-                />
-                <img
-                  src={abyssin2}
-                  className="max-w-24 max-h-24 mr-4 rounded-lg shadow-lg"
-                  alt="image2"
+                  alt="image3"
                 />
               </div>
             </div>
