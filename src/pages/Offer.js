@@ -1,4 +1,6 @@
 import { NavLink, useLocation } from "react-router-dom";
+import { useState, useEffect } from "react";
+import axios from "axios";
 import profileMsg from "../assets/images/icons/profileMsg.png";
 import profileCard from "../assets/images/icons/profileCard.png";
 import minicat from "../assets/images/icons/minicat.png";
@@ -12,6 +14,23 @@ import suzanne from "../assets/images/people/suzanne.jpg";
 
 
 export default function Offer() {
+  const [catsOffers, setCatsOffers] = useState([]);
+  useEffect(() => {
+    fetchCatsOffers();
+  }, []);
+
+  const fetchCatsOffers = async () => {
+    try {
+      const response = await axios.get("http://127.0.0.1:8000/offers/offers/get_all_offers/");
+      setCatsOffers(response.data);
+
+    } catch (e) {
+      console.error("Error fetching cats offers", e);
+    }
+
+  };
+  console.log(catsOffers);
+
   return (
     <>
     <NavLink to="/Annonces">

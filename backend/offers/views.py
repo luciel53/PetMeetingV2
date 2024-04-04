@@ -102,6 +102,7 @@ def get_all_offers(request):
     serialized_all_offers = []
     for offer in offers:
         serialized_offers = {'name': offer.name,
+                            'id': offer.id,
                             'price': offer.price,
                             'sex': offer.sex,
                             'race': offer.race,

@@ -39,6 +39,7 @@ export default function Annonces() {
           {/* Grid */}
           {catsOffers.offers && catsOffers.offers.length > 0 && (
             catsOffers.offers.map((catOffer, index) => (
+              <NavLink to={`/Annonces/${catOffer.id}`}>
               <div key={index} className="vignette flex flex-col justify-center items-center text-center bg-white z-0 md:h-96 w-72 mx-auto mr-4 mt-3 pb-2 rounded-3xl shadow-xl hover:opacity-85">
                 <p className="text-center text-lg font-semibold mt-3">
                     {catOffer.name}
@@ -58,6 +59,7 @@ export default function Annonces() {
                 </p>
 
               </div>
+              </NavLink>
             ))
           )}
         </div>

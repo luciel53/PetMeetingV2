@@ -32,6 +32,7 @@ export default function App() {
           <Route path="/Offer" element={<Offer />} />
           <Route path="/Erreur404" element={<Error404 />} />
           <Route path="/Annonces" element={<Annonces />} />
+          <Route path="/Annonces/:id" element={<Offer />} />
           <Route path="/Publier" element={<Publier />} />
           <Route path="/Membres" element={<Membres />} />
           <Route path="/Contact" element={<Contact />} />
