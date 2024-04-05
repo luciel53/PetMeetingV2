@@ -20,8 +20,13 @@ export default function Profile() {
   useEffect(() => {
     const fetchProfile = async () => {
       try {
-        const response = await axios.get(`http://localhost:8000/profiles/${id}`);
-        setProfile(response.data);
+        const response = await axios.get(`http://localhost:8000/users/profile/`);
+        const profiles = (response.data);
+        console.log(profiles);
+        const selectedProfile = (profiles.filter(profile => profile.id === parseInt(id)));
+        if (selectedProfile.length > 0) {
+          setProfile(selectedProfile[0]);
+        }
       } catch (e) {
         console.error('Error fetching profile:', e);
       }
@@ -30,7 +35,10 @@ export default function Profile() {
   }, [id])
   console.log(profile);
 
-  const suzanne = users.find((user) => user.name === "Suzanne");
+  if (!profile) {
+    return null;
+  }
+
   const popeye = cats.find((cat) => cat.name === "Popeye");
 
   return (
@@ -52,7 +60,7 @@ export default function Profile() {
                 width={28}
                 alt="adresse mail"
               ></img>{" "}
-              {suzanne.email}
+              {profile.email}
             </p>
             <p className="flex flex-row text-lg ml-40 mb-4">
               <img
@@ -61,7 +69,7 @@ export default function Profile() {
                 width={28}
                 alt="localisation"
               ></img>
-              {suzanne.location}
+              {profile.location}
             </p>
             <p className="flex flex-row text-lg ml-40 mb-4">
               <img
@@ -70,7 +78,7 @@ export default function Profile() {
                 width={28}
                 alt="anniversaire"
               ></img>
-              {suzanne.birthday}
+              {profile.birthdate}
             </p>
             <p className="flex flex-row text-lg ml-40 mb-4">
               <img
@@ -79,25 +87,25 @@ export default function Profile() {
                 width={28}
                 alt="présentez-vous"
               ></img>
-              {suzanne.presentation}
+              {profile.bio}
             </p>
             <p className="flex flex-row text-lg ml-40 mb-4">
               <img src={www} className="mr-6 w-7 h-7" alt="site web"></img>
-              <a href={suzanne.website}>{suzanne.website}</a>
+              <a href={profile.external_link}>Voir le site web</a>
             </p>
             <p className="flex flex-row text-lg ml-40 mb-4">
               <img src={facebook} className="mr-7" alt="Facebook" />
-              <a href={suzanne.facebook}>{suzanne.facebook}</a>
+              <a href={profile.facebook_link}>Voir le profil Facebook</a>
             </p>
           </div>
           {/* Avatar */}
           <div className="container flex flex-col w-[250px] h-[263px] bg-white rounded-3xl shadow-lg pb-5">
-            <p className="mx-auto mt-3 mb-2 font-semibold text-lg">{suzanne.name}</p>
+            <p className="mx-auto mt-3 mb-2 font-semibold text-lg">{profile.username}</p>
             <div className="w-44 h-44 mx-auto">
             <img
-              src={suzanne.image}
+              src={profile.avatar}
               className="w-full h-full object-cover rounded-full"
-              alt={suzanne.name}
+              alt={profile.username}
             />
             </div>
             <div className="mb-4 relative">
