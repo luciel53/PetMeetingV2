@@ -9,8 +9,9 @@ from django.views.decorators.csrf import csrf_exempt
 from django.core.files.base import ContentFile
 from django.contrib.auth.decorators import login_required
 import uuid
+from rest_framework.views import APIView
+from .serializers import serialize_offer
 
-# Create your views here.
 @csrf_exempt
 def catOffer_view(request):
     # check if token is included in the request
@@ -159,3 +160,8 @@ def get_all_offers(request):
         serialized_all_offers.append(serialized_offers)
 
     return JsonResponse({'offers': serialized_all_offers})
+
+def get_user_offers(request, user_id):
+    offersByUser = CatOffer.objects.filter(user_id=user_id)
+    serialized_offers = [serialize_offer(offer) for offer in offersByUser]
+    return JsonResponse({'offers': serialized_offers})
