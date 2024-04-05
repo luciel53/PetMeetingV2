@@ -16,24 +16,39 @@ import axios from "axios";
 export default function Profile() {
   const { id } = useParams()
   const [profile, setProfile] = useState(null);
+  const [userEmail, setUserEmail] = useState("");
+  const [userNotFound, setUserNotFound] = useState(false);
 
   useEffect(() => {
     const fetchProfile = async () => {
       try {
+        const responseUser = await axios.get(`http://localhost:8000/users/${id}/`);
         const response = await axios.get(`http://localhost:8000/users/profile/`);
         const profiles = (response.data);
+        setUserEmail(responseUser.data.email);
         console.log(profiles);
-        const selectedProfile = (profiles.filter(profile => profile.id === parseInt(id)));
+        console.log(userEmail);
+        const selectedProfile = (profiles.filter(profile => profile.user === parseInt(id)));
         if (selectedProfile.length > 0) {
           setProfile(selectedProfile[0]);
+        } else {
+          setUserNotFound(true);
         }
+
       } catch (e) {
         console.error('Error fetching profile:', e);
+        setUserNotFound(true);
       }
     };
     fetchProfile();
-  }, [id])
+  }, [id, userEmail])
+
   console.log(profile);
+  console.log(userEmail)
+
+  if (userNotFound) {
+    return <div>L'utilisateur n'a pas été trouvé.</div>
+  }
 
   if (!profile) {
     return null;
@@ -60,7 +75,7 @@ export default function Profile() {
                 width={28}
                 alt="adresse mail"
               ></img>{" "}
-              {profile.email}
+              {userEmail}
             </p>
             <p className="flex flex-row text-lg ml-40 mb-4">
               <img

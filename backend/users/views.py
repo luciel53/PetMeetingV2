@@ -1,6 +1,6 @@
 from rest_framework import generics
 from .models import Profile
-from .serializers import ProfileSerializer
+from .serializers import ProfileSerializer, UserSerializer
 from rest_framework.response import Response
 from django.contrib.auth.models import User
 
@@ -23,9 +23,13 @@ class ProfileListAPIView(generics.ListAPIView):
             user_id = profile_data['user']  # Obtenez l'ID de l'utilisateur
             user = User.objects.get(pk=user_id)  # Récupérez l'objet utilisateur complet
             profile_data['username'] = user.username
-
+            print(user_id)
         return Response(data)
 
 class ProfileDetailAPIView(generics.RetrieveAPIView):
     queryset = Profile.objects.all()
     serializer_class = ProfileSerializer
+
+class UserDetailAPIView(generics.RetrieveAPIView):
+    queryset = User.objects.all()
+    serializer_class = UserSerializer

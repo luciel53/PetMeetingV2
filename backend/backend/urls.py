@@ -30,7 +30,7 @@ urlpatterns = [
     path('token/refresh/',
           jwt_views.TokenRefreshView.as_view(),
           name ='token_refresh'),
-    # path('', include('auth.urls')),
+    path('', include('auth.urls')),
     path('contact/', include('contact.urls')),
     path('offers/', include('offers.urls')),
     # path('media/', include('media.urls')),

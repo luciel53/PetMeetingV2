@@ -46,6 +46,7 @@ class RegisterView(APIView):
         # create a new user
         user = User.objects.create(username=username,email=email, password=make_password(password))
         print (User)
+        print("ID de l'utilisateur créé :", user.id)
         print (make_password(password))
         user.save()
 
