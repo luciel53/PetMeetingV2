@@ -49,7 +49,7 @@ export default function Offer() {
         <div className="container flex flex-row col-end-4 mt-6 mb-32">
           {/* Owner */}
           <div className="container flex flex-col w-[250px] h-[263px] mr-6 bg-white rounded-3xl shadow-lg animate-fade-right">
-            <p className="mx-auto mt-3 font-semibold text-lg">Name</p>
+            <p className="mx-auto mt-3 font-semibold text-lg">{selectedOffer.user}</p>
             <div className="container w-[175px] h-[183px] bg-gray rounded-full mx-auto my-auto mt-2 shadow-sm z-0 overflow-hidden">
               <img
                 src={suzanne}

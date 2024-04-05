@@ -3,6 +3,7 @@ import Grid from "../components/Grid";
 import users from "../components/Users";
 import cats from "../components/Cats";
 import { useState, useEffect } from "react";
+import { NavLink } from "react-router-dom";
 import axios from "axios";
 
 export default function Members() {
@@ -27,18 +28,39 @@ export default function Members() {
       <div className="mt-32">
         <SearchMembers />
       </div>
-      <div>
+      <div className="grid grid-cols-2 place-content-center md:max-w-max md:mx-auto md:grid-cols-3 lg:grid-cols-4 mt-12 mb-20 animate-fade-down">
+        {profiles && profiles.length > 0 ? (
+          profiles.map((profile, index) => (
+            <NavLink to={`/Profile/${profile.id}`}>
+              <div
+                key={index}
+                className="vignette flex flex-col justify-center items-center text-center bg-white z-0 md:h-96 w-72 mx-auto mr-3 mt-3 pb-2 rounded-3xl shadow-xl hover:opacity-85"
+              >
+                <p className="text-center text-lg font-semibold mt-3">{profile.username}</p>
+                <img
+                  src={profile.avatar}
+                  className="z-20 h-40 md:h-3/4 w-56 my-3 object-cover mx-auto shadow-sm rounded-3xl"
+                  alt={profile.username}
+                />
+                <p className="text-center text-lg font-semibold mt-3">{profile.location}</p>
+              </div>
+            </NavLink>
+          ))
+        ) : ( <p>Loading profiles...</p> ) }
+      </div>
+
+      {/* <div>
         {profiles && profiles.length > 0 ? (
           <Grid items={profiles.map(profile => (
             {
-
             name: profile.username,
             image: profile.avatar,
             race: profile.location,
-          }))} />
+          }
+          ))} />
         ) : ( <p>Loading profiles...</p> )
           }
-      </div>
+      </div> */}
     </div>
   );
 }
