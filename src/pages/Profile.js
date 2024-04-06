@@ -18,14 +18,19 @@ export default function Profile() {
   const [profile, setProfile] = useState(null);
   const [userEmail, setUserEmail] = useState("");
   const [userNotFound, setUserNotFound] = useState(false);
+  const [catsOffers, setCatsOffers] = useState([]);
 
   useEffect(() => {
     const fetchProfile = async () => {
       try {
         const responseUser = await axios.get(`http://localhost:8000/users/${id}/`);
         const response = await axios.get(`http://localhost:8000/users/profile/`);
+        const responseOffersByUser = await axios.get(`http://localhost:8000/offers/offers_by_user/${id}/`);
         const profiles = (response.data);
+        const OffersByUser = (responseOffersByUser.data);
+        console.log(OffersByUser);
         setUserEmail(responseUser.data.email);
+        setCatsOffers(OffersByUser);
         console.log(profiles);
         console.log(userEmail);
         const selectedProfile = (profiles.filter(profile => profile.user === parseInt(id)));
@@ -135,41 +140,44 @@ export default function Profile() {
         {/* Offers list */}
         <div className="container w-[988px] h-[395px] flex flex-col bg-white rounded-3xl shadow-lg mr-5">
           <h3 className="mx-auto mt-4 mb-8 text-2xl">Mes annonces:</h3>
-          <table className="text-center">
-            <thead>
-              <tr className="">
-                <th>Nom</th>
-                <th>Race</th>
-                <th>Sexe</th>
-                <th>Date</th>
-                <th>Photo</th>
-                <th>Supprimer</th>
+            <table className="text-center">
+              <thead>
+                <tr className="">
+                  <th>Nom</th>
+                  <th>Race</th>
+                  <th>Sexe</th>
+                  <th>Date</th>
+                  <th>Photo</th>
+                  <th>Supprimer</th>
+                </tr>
+              </thead>
+              <tr>
+                <td colSpan="6" className="h-0.5 border-0 bg-darkgray"></td>
               </tr>
-            </thead>
-            <tr>
-              <td colSpan="6" className="h-0.5 border-0 bg-darkgray"></td>
-            </tr>
-            <tr>
-              <td>{popeye.name}</td>
-              <td>{popeye.race}</td>
-              <td>{popeye.sexe}</td>
-              <td>date de publi</td>
-              <td>
-                <img
-                  src={popeye.image}
-                  className="w-9 mx-auto"
-                  alt={popeye.name}
-                />
-              </td>
-              <td>
-                <img
-                  src={garbage}
-                  className="w-9 mx-auto"
-                  alt="supprimer l'annonce"
-                />
-              </td>
-            </tr>
-          </table>
+              {catsOffers.offers.map(offer => (
+              <tr>
+                <td>{offer.name}</td>
+                <td>{offer.race}</td>
+                <td>{offer.sexe}</td>
+                <td>date de publi</td>
+                <td>
+                  <img
+                    src={`http://localhost:8000${offer.picture}`}
+                    className="w-9 mx-auto"
+                    alt={offer.name}
+                  />
+                </td>
+                <td>
+                  <img
+                    src={garbage}
+                    className="w-9 mx-auto"
+                    alt="supprimer l'annonce"
+                  />
+                </td>
+              </tr>
+              ))}
+            </table>
+
         </div>
       </div>
     </>
