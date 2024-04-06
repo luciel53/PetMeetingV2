@@ -158,7 +158,7 @@ export default function Profile() {
               <tr>
                 <td>{offer.name}</td>
                 <td>{offer.race}</td>
-                <td>{offer.sexe}</td>
+                <td>{offer.sex}</td>
                 <td>date de publi</td>
                 <td>
                   <img
