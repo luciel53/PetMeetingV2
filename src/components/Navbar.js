@@ -15,7 +15,7 @@ export default function Navbar() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [connectedIcons, setConnectedIcons] = useState(true);
   const [unconnectedIcons, setUnconnectedIcons] = useState(false);
-  const [userId, setUserId] = useState(""); // Initialiser l'ID utilisateur à une chaîne vide
+  const [userId, setUserId] = useState("1");
   const location = useLocation();
 
   {/* To manage the authentication */}
@@ -24,8 +24,35 @@ export default function Navbar() {
   useEffect(() => {
     if (localStorage.getItem("access_token") !== null) {
       setIsAuth(true);
+      const token = localStorage.getItem("access_token");
+      try {
+        const decodedToken = jwtDecode(token);
+        setUserId(decodedToken.user_id);
+
+      } catch (error) {
+        console.error("Error decoding token", error);
+      }
     }
-  }, [isAuth]);
+  },[]);
+
+  console.log(userId);
+
+  // const ToDecodeToken = async () => {
+  //   if (isAuth) {
+  //   const token = localStorage.getItem("access_token");
+  //     try {
+  //       const decodedToken = jwtDecode(token);
+  //       setUserId(decodedToken.userId);
+  //       console.log(userId);
+  //     } catch (error) {
+  //       console.error("Error decoding token");
+  //     }
+  //   }
+  // };
+
+  // useEffect(() => {
+  //   ToDecodeToken();
+  // }, [isAuth, ToDecodeToken])
 
   function toggleMenu() {
     setIsMenuOpen(!isMenuOpen);
@@ -44,7 +71,7 @@ export default function Navbar() {
         { withCredentials: true }
       );
 
-      console.log("YEAHHHHHHHHHHHHHHH");
+      console.log("YEAHHHHHHHHHHHHHHH! You're disconnected babe");
 
       localStorage.clear();
       axios.defaults.headers.common["Authorization"] = null;
@@ -53,6 +80,8 @@ export default function Navbar() {
       console.log("Logout not working", e);
     }
   };
+
+  console.log(userId);
 
   return (
     <header className="bg-purple z-50 fixed top-0 w-full shadow-xl">
@@ -138,7 +167,7 @@ export default function Navbar() {
         <div className="bg-gray w-28 md:w-36 lg:w-60 h-12 md:h-14 lg:h-20 skew-x-45 mr-8 md:mr-10 lg:mr-48 flex flex-row px-4 md:px-6 lg:px-12 justify-between items-center">
           {isAuth ? (
             <NavLink
-              to={`/Profile/${userId}`}
+              to={`/Profile/${userId.toString()}`}
               className="flex"
               aria-label="Page d'accueil de PetMeeting"
             >
