@@ -19,6 +19,7 @@ export default function Profile() {
   const [userEmail, setUserEmail] = useState("");
   const [userNotFound, setUserNotFound] = useState(false);
   const [catsOffers, setCatsOffers] = useState([]);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     const fetchProfile = async () => {

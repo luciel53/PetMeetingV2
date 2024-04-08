@@ -8,7 +8,7 @@ import axios from "axios";
 export default function Login() {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
-
+  const [errorMessage, setErrorMessage] = useState(false);
   // Create the submit method
   const submit = async e => {
     e.preventDefault();
@@ -17,16 +17,21 @@ export default function Login() {
       password: password,
     };
 
-    //create post request
-    const {data} = await axios.post('http://localhost:8000/token/', user, {headers: {'Content-Type': 'application/json'}, withCredentials: true});
+    try {
+      //create post request
+      const {data} = await axios.post('http://localhost:8000/token/', user, {headers: {'Content-Type': 'application/json'}, withCredentials: true});
 
-    // initialize access and refresh token in localstorage
-    localStorage.clear();
-    localStorage.setItem('access_token', data.access);
-    localStorage.setItem('refresh_token', data.refresh);
-    axios.defaults.headers.common['Authorization'] = `Bearer ${data['access']}`;
-    window.location.href = '/';
-  } 
+      // initialize access and refresh token in localstorage
+      localStorage.clear();
+      localStorage.setItem('access_token', data.access);
+      localStorage.setItem('refresh_token', data.refresh);
+      axios.defaults.headers.common['Authorization'] = `Bearer ${data['access']}`;
+      window.location.href = '/';
+    } catch (error) {
+      console.log("Une erreur est survenue lors de la connexion. Veuillez vérifier vos identifiants.", error);
+      setErrorMessage(true);
+    }
+  }
 
   return (
     <div className="container flex flex-col justify-center mx-auto md:mx-auto w-[88%] md:w-[55%] lg:w-[25%] p-5 md:p-12 md:mt-60 bg-white rounded-3xl shadow-2xl text-sm md:text-lg animate-fade">
@@ -57,7 +62,15 @@ export default function Login() {
             onChange={e => setPassword(e.target.value)}
             className="h-12 w-[90%] ml-4 mb-4 pt-1 pl-8 border-b border-darkgray focus:outline-none"
           />
+
         </div>
+        <div className="flex flex-col">
+            {errorMessage && (
+              <div className="text-fragole border border-fragole bg-lightyellow rounded-lg p-2 text-center mt-0 w-96 ml-0 shadow-xl">
+                Veuillez vérifier vos identifiants.
+              </div>
+            )}
+          </div>
         <Button text="Connexion" />
         <hr class="h-px my-8 bg-gray-200 border-0 bg-darkgray"></hr>
         <p className=" flex flex-row mx-auto">
