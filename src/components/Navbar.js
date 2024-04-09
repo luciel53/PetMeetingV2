@@ -10,7 +10,6 @@ import paw from "../assets/images/icons/paw.png";
 import Logout from "../pages/Logout.js";
 import { jwtDecode } from "jwt-decode";
 
-
 export default function Navbar() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [connectedIcons, setConnectedIcons] = useState(true);
@@ -18,7 +17,9 @@ export default function Navbar() {
   const [userId, setUserId] = useState("1");
   const location = useLocation();
 
-  {/* To manage the authentication */}
+  {
+    /* To manage the authentication */
+  }
   const [isAuth, setIsAuth] = useState(false);
 
   useEffect(() => {
@@ -28,12 +29,11 @@ export default function Navbar() {
       try {
         const decodedToken = jwtDecode(token);
         setUserId(decodedToken.user_id);
-
       } catch (error) {
         console.error("Error decoding token", error);
       }
     }
-  },[]);
+  }, []);
 
   console.log(userId);
 
@@ -164,54 +164,61 @@ export default function Navbar() {
           </li>
         </ul>
         {/* Parallelogram */}
-        <div className="bg-gray w-28 md:w-36 lg:w-60 h-12 md:h-14 lg:h-20 skew-x-45 mr-8 md:mr-10 lg:mr-48 flex flex-row px-4 md:px-6 lg:px-12 justify-between items-center">
-          {isAuth ? (
-            <NavLink
-              to={`/Profile/${userId.toString()}`}
-              className="flex"
-              aria-label="Page d'accueil de PetMeeting"
-            >
-              <img
-                src={userIcon}
-                className="-skew-x-45 w-5 md:w-6 lg:w-8 hover:opacity-70"
-                alt="Icône de profil utilisateur"
-              />
-            </NavLink>
-          ) : (
-            <NavLink to="/Login" className="flex" aria-label="Login">
-              <img
-                src={connectionIcon}
-                className="-skew-x-45 w-9 lg:w-14 mr-2 hover:opacity-70"
-                alt="Connexion"
-              />
-            </NavLink>
-          )}
-          {isAuth ? (
-            <NavLink to="messagerie" className="flex" aria-label="messagerie">
-              <img
-                src={messagesIcon}
-                className="-skew-x-45 w-5 md:w-6 lg:w-8 hover:opacity-70"
-                alt="Icône de profil utilisateur"
-              />
-            </NavLink>
-          ) : (
-            <NavLink to="/Register" className="flex" aria-label="Register">
-              <img
-                src={registerIcon}
-                className="-skew-x-45 w-10 lg:w-14 hover:opacity-70"
-                alt="Enregistrement"
-              />
-            </NavLink>
-          )}
+        <div className="flex flex-col bg-gray w-28 md:w-36 lg:w-60 h-12 md:h-14 lg:h-20 skew-x-45 mr-8 md:mr-10 lg:mr-48 px-4 md:px-6 lg:px-12 justify-between items-center">
+          <div class="flex flex-row mt-4">
+            {isAuth ? (
+              <NavLink
+                to={`/Profile/${userId.toString()}`}
+                className="flex"
+                aria-label="Page d'accueil de PetMeeting"
+              >
+                <img
+                  src={userIcon}
+                  className="-skew-x-45 w-5 md:w-6 lg:w-8 hover:opacity-70 mr-4"
+                  alt="Icône de profil utilisateur"
+                />
+              </NavLink>
+            ) : (
+              <NavLink to="/Login" className="flex" aria-label="Login">
+                <img
+                  src={connectionIcon}
+                  className="-skew-x-45 w-9 lg:w-14 mr-2 hover:opacity-70"
+                  alt="Connexion"
+                />
+              </NavLink>
+            )}
+            {isAuth ? (
+              <NavLink to="messagerie" className="flex" aria-label="messagerie">
+                <img
+                  src={messagesIcon}
+                  className="-skew-x-45 w-5 md:w-6 lg:w-8 hover:opacity-70"
+                  alt="Icône de profil utilisateur"
+                />
+              </NavLink>
+            ) : (
+              <NavLink to="/Register" className="flex" aria-label="Register">
+                <img
+                  src={registerIcon}
+                  className="-skew-x-45 w-10 lg:w-14 hover:opacity-70"
+                  alt="Enregistrement"
+                />
+              </NavLink>
+            )}
+            {isAuth && (
+              <NavLink to="/" className="flex" aria-label="logout">
+                <img
+                  src={logoutIcon}
+                  className="-skew-x-45 w-5 md:w-6 lg:w-8 hover:opacity-70 ml-4"
+                  alt="Icône de profil utilisateur"
+                  onClick={handleLogout}
+                />
+              </NavLink>
+            )}
+          </div>
           {isAuth && (
-            <NavLink to="/" className="flex" aria-label="logout">
-              <img
-                src={logoutIcon}
-                className="-skew-x-45 w-5 md:w-6 lg:w-8 hover:opacity-70"
-                alt="Icône de profil utilisateur"
-                onClick={handleLogout}
-              />
-            </NavLink>
+            <div className="-skew-x-45">
+              <p>Hello Lucie</p>
+            </div>
           )}
         </div>
         {/* Burger button */}

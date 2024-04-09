@@ -35,9 +35,7 @@ export default function Profile() {
           `http://localhost:8000/offers/offers_by_user/${id}/`
         );
 
-        axios.defaults.headers.common[
-          "Authorization"
-        ] = `Bearer ${localStorage.getItem("access_token")}`;
+        axios.defaults.headers.common["Authorization"] = `Bearer ${localStorage.getItem("access_token")}`;
         const profiles = response.data;
         const OffersByUser = responseOffersByUser.data;
         console.log(OffersByUser);
