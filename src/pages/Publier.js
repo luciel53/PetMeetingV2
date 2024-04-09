@@ -86,7 +86,7 @@ export default function Publier() {
 
   // manage the error message if loof or vaccines are "No"
   useEffect(() => {
-    // Si loofValue est "Oui", effacer le message d'erreur
+    // if loof and vaccines are true, delete the error message
     if (loof === "Non" || vaccins === "Non") {
       setShowErrorMessage(true);
     } else {
@@ -110,13 +110,13 @@ export default function Publier() {
     setFormSubmitted(true);
 
     //check if LOOF and Vaccins are both set on Yes
-    const loofValue = document.querySelector('input[name="loof"]:checked')?.value;
-    const vaccinsValue = document.querySelector(
-      'input[name="vaccins"]:checked'
-    )?.value;
+    // const loofValue = document.querySelector('input[name="loof"]:checked')?.value;
+    // const vaccinsValue = document.querySelector(
+    //   'input[name="vaccins"]:checked'
+    // )?.value;
 
     try {
-      if (loofValue === "Oui" && vaccinsValue === "Oui") {
+      if (loof === "Oui" && vaccins === "Oui") {
         console.log('data: ', formData);
           const response = await axios.post("http://127.0.0.1:8000/offers/offers/",
             formData,
@@ -124,8 +124,8 @@ export default function Publier() {
               headers: { "Content-Type": "multipart/form-data" },
             }
           );
+          // authorize the token
           axios.defaults.headers.common["Authorization"] = `Bearer ${localStorage.getItem("access_token")}`;
-
           console.log(response.data);
           setFormData(initialFormData);
           setSuccessMessage("Votre annonce a bien été postée!");
@@ -144,10 +144,12 @@ export default function Publier() {
     };
   }
 
-  // useEffect(() => {
-  //   // if != femelle, shows the price
-  //   setShowPrice(formData.sex !== "Femelle");
-  // }, [formData.sex]);
+  useEffect(() => {
+    // if != femelle, shows the price
+    if (formData.sex === 'Femelle') {
+      setFormData(prevFormData => ({ ...prevFormData, price: '0'}))
+    }
+  }, [formData.sex]);
 
   return (
     <>

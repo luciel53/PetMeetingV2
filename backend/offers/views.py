@@ -14,6 +14,7 @@ from .serializers import serialize_offer
 
 @csrf_exempt
 def catOffer_view(request):
+    user = None
     # check if token is included in the request
     if 'HTTP_AUTHORIZATION' in request.META:
         # obtain the jwt token of the authorization header
@@ -136,7 +137,7 @@ def get_all_offers(request):
                             'qualities': offer.qualities,
                             'flaws': offer.flaws,
                             'free_descriptive_text': offer.free_descriptive_text,
-                            'user': offer.user.username,
+                            'user': offer.user.username if offer.user else None,
                             }
         #dictionary to store images url
         picture_urls = {}

@@ -27,7 +27,8 @@ export default function Profile() {
         const responseUser = await axios.get(`http://localhost:8000/users/${id}/`);
         const response = await axios.get(`http://localhost:8000/users/profile/`);
         const responseOffersByUser = await axios.get(`http://localhost:8000/offers/offers_by_user/${id}/`);
-        const profiles = (response.data);
+
+        axios.defaults.headers.common["Authorization"] = `Bearer ${localStorage.getItem("access_token")}`;const profiles = (response.data);
         const OffersByUser = (responseOffersByUser.data);
         console.log(OffersByUser);
         setUserEmail(responseUser.data.email);
