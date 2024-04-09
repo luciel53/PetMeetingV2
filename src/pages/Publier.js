@@ -400,6 +400,7 @@ export default function Publier() {
                       value={formData.price}
                       required
                       onChange={handleChange}
+                      disabled={formData.sex === 'Femelle'}
                       className="w-52 bg-gray border border-darkgray rounded-lg h-8 ml-2 pl-2 px-1"
                     />
                   </div>
