@@ -9,13 +9,14 @@ axios.interceptors.response.use(
     if (error.response.status === 401 && !refresh) {
 
         refresh = true;
-        console.log(localStorage.getItem('refresh_token'))
-        const response = await axios.post(
-          "http://localhost:8000/token/refresh/",
-          { refresh: localStorage.getItem('refresh_token') },
-          { headers: { "Content-Type": "application/json" } },
-          { withCredentials: true }
-        );
+        // console.log(localStorage.getItem('refresh_token'))
+        try {
+          const response = await axios.post(
+            "http://localhost:8000/token/refresh/",
+            { refresh: localStorage.getItem('refresh_token') },
+            { headers: { "Content-Type": "application/json" } },
+            // { withCredentials: true }
+          );
         if (response.status === 200) {
           axios.defaults.headers.common[
             "Authorization"
@@ -25,10 +26,15 @@ axios.interceptors.response.use(
 
           return axios(error.config);
         }
+      } catch (refreshError) {
+        // handle refresh token request error
+        console.error("Error refreshing token: ", refreshError);
+      } finally {
+        refresh = false;
       }
-      refresh = false;
-      return error;
     }
+    return Promise.reject(error);
+  }
 );
 
 export default axios;

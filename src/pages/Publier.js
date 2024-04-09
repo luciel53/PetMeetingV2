@@ -75,6 +75,7 @@ export default function Publier() {
     }
   };
 
+  // manage the images
   function handleFileChange(e) {
     const file = e.target.files[0];
     const name = e.target.name;
@@ -83,6 +84,7 @@ export default function Publier() {
     }
   }
 
+  // manage the error message if loof or vaccines are "No"
   useEffect(() => {
     // Si loofValue est "Oui", effacer le message d'erreur
     if (loof === "Non" || vaccins === "Non") {
@@ -92,16 +94,18 @@ export default function Publier() {
     }
   }, [loof, vaccins]);
 
+  // manage the loof change event
   function handleLoofChange(e) {
     setLoof(e.target.value);
   }
 
+  // manage the Vaccines change event
   function handleVaccinsChange(e) {
     setVaccins(e.target.value);
   }
 
-  // post an offer
-  const handleSubmit = (e) => {
+  // POST an offer
+  const handleSubmit = async (e) => {
     e.preventDefault();
     setFormSubmitted(true);
 
@@ -111,34 +115,39 @@ export default function Publier() {
       'input[name="vaccins"]:checked'
     )?.value;
 
-    if (loofValue === "Oui" && vaccinsValue === "Oui") {
-      console.log(formData);
-      axios
-        .post("http://127.0.0.1:8000/offers/offers/", formData, {
-          headers: { "Content-Type": "multipart/form-data" },
-        })
-        .then((response) => {
+    try {
+      if (loofValue === "Oui" && vaccinsValue === "Oui") {
+        console.log('data: ', formData);
+          const response = await axios.post("http://127.0.0.1:8000/offers/offers/",
+            formData,
+            {
+              headers: { "Content-Type": "multipart/form-data" },
+            }
+          );
+          axios.defaults.headers.common["Authorization"] = `Bearer ${localStorage.getItem("access_token")}`;
+
           console.log(response.data);
           setFormData(initialFormData);
-          console.log(successMessage);
           setSuccessMessage("Votre annonce a bien été postée!");
-        })
-        .catch((err) => {
-          console.error(err);
-        });
-    } else {
+      } else {
+        setShowErrorMessage(true);
+        setErrorMessage("Ce champs est obligatoire. Nous n'acceptons que les chats LOOF et vaccinés");
+      }
+    } catch (error) {
+      console.error("Votre annonce n'a pas pu être publiée", error);
+      if (error.response && error.response === 401) {
+        setErrorMessage("Vous n'êtes pas autorisé à publier cette annonce");
+      } else {
+        setErrorMessage("Une erreur s'est produite lors de la publication de l'annonce. Veuillez réessayer plus tard.");
+      }
       setShowErrorMessage(true);
+    };
+  }
 
-      console.error(
-        "Ce champs est obligatoire. Nous n'acceptons que les chats LOOF et vaccinés."
-      );
-    }
-  };
-
-  useEffect(() => {
-    // if != femelle, shows the price
-    setShowPrice(formData.sex !== "Femelle");
-  }, [formData.sex]);
+  // useEffect(() => {
+  //   // if != femelle, shows the price
+  //   setShowPrice(formData.sex !== "Femelle");
+  // }, [formData.sex]);
 
   return (
     <>

@@ -195,7 +195,7 @@ class CatOffer(models.Model):
     name = models.CharField(max_length=100)
     race = models.CharField(choices=RACE_CHOICES, max_length=100, default=("Bengal", "Bengal"))
     date_posted = models.DateTimeField(auto_now_add=True)
-    price = models.DecimalField(max_digits=7, decimal_places=2)
+    price = models.IntegerField(blank=True, default=None)
     sex = models.CharField(choices=SEX_CHOICES, max_length=20)
     location = models.CharField(choices=LOCATION_CHOICES, max_length=100)
     blood = models.CharField(choices=BLOOD_CHOICES, blank=True, max_length=10)

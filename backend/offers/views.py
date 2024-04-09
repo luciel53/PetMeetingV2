@@ -18,7 +18,7 @@ def catOffer_view(request):
     if 'HTTP_AUTHORIZATION' in request.META:
         # obtain the jwt token of the authorization header
         token = request.META['HTTP_AUTHORIZATION'].split(' ')[1]
-        # crate an instance of JWTAuthentication
+        # create an instance of JWTAuthentication
         jwt_authentication = JWTAuthentication()
         try:
             # validate and decode jwt token to obtain the user
@@ -26,9 +26,9 @@ def catOffer_view(request):
         except:
             # if token not valid, throw an error
             return JsonResponse({'error': 'Invalid JWT token'}, status=401)
-    else:
-        # if token not in request, throw an error
-        return JsonResponse({'error': 'JWT token is missing'}, status=401)
+    # else:
+    #     # if token not in request, throw an error
+    #     return JsonResponse({'error': 'JWT token is missing'}, status=401)
 
     if request.method == 'POST':
         # extract form data from json
@@ -48,7 +48,7 @@ def catOffer_view(request):
         free_descriptive_text = request.POST.get('free_descriptive_text')
 
         # Error form data
-        if not name or not race or not price or not sex or not location or not diseases_tests or not age:
+        if not name or not race or not sex or not location or not diseases_tests or not age:
             return JsonResponse({'error': 'Ce champs est obligatoire.'}, status=400)
 
         # create an instance of CatOffer model with form data
