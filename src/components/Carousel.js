@@ -49,7 +49,7 @@ export default function Carousel() {
                     const imageIndex = (startIndex + index) % cats.length;
                     const image = cats[imageIndex];
                     return (
-                        <div key={index} className="container flex flex-col bg-white z-0 md:h-80 w-80 mx-auto mr-3 pb-2 rounded-3xl shadow-xl transition: all 0.5s ease-in-out">
+                        <div key={index} className="container flex flex-col bg-white z-0 md:h-80 w-80 mx-auto mr-3 pb-2 rounded-3xl shadow-xl transition: all 0.5s ease-in-out hover:scale-125 transition duration-500 cursor-pointer">
                             <p className="text-center">{image.name}</p>
                             <img src={image.image} className="z-20 h-40 md:h-72 my-3 object-cover mx-auto" alt={image.name} />
                             <p className="text-center">{image.race}</p>

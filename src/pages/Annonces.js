@@ -40,13 +40,13 @@ export default function Annonces() {
           {catsOffers.offers && catsOffers.offers.length > 0 && (
             catsOffers.offers.map((catOffer, index) => (
               <NavLink to={`/Annonces/${catOffer.id}`}>
-              <div key={index} className="vignette flex flex-col justify-center items-center text-center bg-white z-0 md:h-96 w-72 mx-auto mr-4 mt-3 pb-2 rounded-3xl shadow-xl hover:opacity-85">
+              <div key={index} className="vignette flex flex-col justify-center items-center text-center bg-white z-0 md:h-96 w-72 mx-auto mr-4 mt-3 pb-2 rounded-3xl shadow-xl hover:opacity-85 hover:scale-105 transition duration-500 cursor-pointer">
                 <p className="text-center text-lg font-semibold mt-3">
                     {catOffer.name}
                 </p>
                 <img
                   src={"http://127.0.0.1:8000" + catOffer.picture}
-                  className="z-20 h-40 md:h-3/4 w-56 my-3 object-cover mx-auto shadow-sm rounded-3xl"
+                  className="z-20 h-40 md:h-3/4 w-56 my-3 object-cover mx-auto shadow-sm rounded-3xl "
                   alt={catOffer.name}
                 />
                 <p className="flex flex-row">
