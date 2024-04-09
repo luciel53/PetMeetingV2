@@ -12,9 +12,10 @@ import cats from "../components/Cats";
 import { useState, useEffect } from "react";
 import { act } from "react-dom/test-utils";
 import axios from "axios";
+import React from "react";
 
 export default function Profile() {
-  const { id } = useParams()
+  const { id } = useParams();
   const [profile, setProfile] = useState(null);
   const [userEmail, setUserEmail] = useState("");
   const [userNotFound, setUserNotFound] = useState(false);
@@ -24,37 +25,47 @@ export default function Profile() {
   useEffect(() => {
     const fetchProfile = async () => {
       try {
-        const responseUser = await axios.get(`http://localhost:8000/users/${id}/`);
-        const response = await axios.get(`http://localhost:8000/users/profile/`);
-        const responseOffersByUser = await axios.get(`http://localhost:8000/offers/offers_by_user/${id}/`);
+        const responseUser = await axios.get(
+          `http://localhost:8000/users/${id}/`
+        );
+        const response = await axios.get(
+          `http://localhost:8000/users/profile/`
+        );
+        const responseOffersByUser = await axios.get(
+          `http://localhost:8000/offers/offers_by_user/${id}/`
+        );
 
-        axios.defaults.headers.common["Authorization"] = `Bearer ${localStorage.getItem("access_token")}`;const profiles = (response.data);
-        const OffersByUser = (responseOffersByUser.data);
+        axios.defaults.headers.common[
+          "Authorization"
+        ] = `Bearer ${localStorage.getItem("access_token")}`;
+        const profiles = response.data;
+        const OffersByUser = responseOffersByUser.data;
         console.log(OffersByUser);
         setUserEmail(responseUser.data.email);
         setCatsOffers(OffersByUser);
         console.log(profiles);
         console.log(userEmail);
-        const selectedProfile = (profiles.filter(profile => profile.user === parseInt(id)));
+        const selectedProfile = profiles.filter(
+          (profile) => profile.user === parseInt(id)
+        );
         if (selectedProfile.length > 0) {
           setProfile(selectedProfile[0]);
         } else {
           setUserNotFound(true);
         }
-
       } catch (e) {
-        console.error('Error fetching profile:', e);
+        console.error("Error fetching profile:", e);
         setUserNotFound(true);
       }
     };
     fetchProfile();
-  }, [id, userEmail])
+  }, [id, userEmail]);
 
   console.log(profile);
-  console.log(userEmail)
+  console.log(userEmail);
 
   if (userNotFound) {
-    return <div>L'utilisateur n'a pas été trouvé.</div>
+    return <div>L'utilisateur n'a pas été trouvé.</div>;
   }
 
   if (!profile) {
@@ -122,64 +133,86 @@ export default function Profile() {
           </div>
           {/* Avatar */}
           <div className="container flex flex-col w-[250px] h-[263px] bg-white rounded-3xl shadow-lg pb-5">
-            <p className="mx-auto mt-3 mb-2 font-semibold text-lg">{profile.username}</p>
+            <p className="mx-auto mt-3 mb-2 font-semibold text-lg">
+              {profile.username}
+            </p>
             <div className="w-44 h-44 mx-auto">
-            <img
-              src={profile.avatar}
-              className="w-full h-full object-cover rounded-full"
-              alt={profile.username}
-            />
+              <img
+                src={profile.avatar}
+                className="w-full h-full object-cover rounded-full"
+                alt={profile.username}
+              />
             </div>
             <div className="mb-4 relative">
-            <img
-              src={change}
-              className=" w-8 ml-48 -mt-3"
-              alt="modifier le profil"
-            />
+              <img
+                src={change}
+                className=" w-8 ml-48 -mt-3"
+                alt="modifier le profil"
+              />
             </div>
           </div>
         </div>
         {/* Offers list */}
         <div className="container w-[988px] h-[395px] flex flex-col bg-white rounded-3xl shadow-lg mr-5">
           <h3 className="mx-auto mt-4 mb-8 text-2xl">Mes annonces:</h3>
-            <table className="text-center">
-              <thead>
-                <tr className="">
-                  <th>Nom</th>
-                  <th>Race</th>
-                  <th>Sexe</th>
-                  <th>Date</th>
-                  <th>Photo</th>
-                  <th>Supprimer</th>
-                </tr>
-              </thead>
-              <tr>
-                <td colSpan="6" className="h-0.5 border-0 bg-darkgray"></td>
+          <table className="text-center">
+            <thead>
+              <tr className="">
+                <th>Nom</th>
+                <th>Race</th>
+                <th>Sexe</th>
+                <th>Date</th>
+                <th>Photo</th>
+                <th>Supprimer</th>
               </tr>
-              {catsOffers.offers.map(offer => (
-              <tr>
-                <td>{offer.name}</td>
-                <td>{offer.race}</td>
-                <td>{offer.sex}</td>
-                <td>date de publi</td>
-                <td>
-                  <img
-                    src={`http://localhost:8000${offer.picture}`}
-                    className="w-9 mx-auto"
-                    alt={offer.name}
-                  />
-                </td>
-                <td>
-                  <img
-                    src={garbage}
-                    className="w-9 mx-auto"
-                    alt="supprimer l'annonce"
-                  />
-                </td>
-              </tr>
-              ))}
-            </table>
+            </thead>
+            <tr>
+              <td colSpan="6" className="h-0.5 border-0 bg-darkgray"></td>
+            </tr>
 
+            {catsOffers.offers.map((catOffer) => (
+              <React.Fragment key={catOffer.id}>
+                <tr>
+                  <td>
+                    <NavLink to={`/Annonces/${catOffer.id}`}>
+                      {catOffer.name}
+                    </NavLink>
+                  </td>
+                  <td>
+                    <NavLink to={`/Annonces/${catOffer.id}`}>
+                      {catOffer.race}
+                    </NavLink>
+                  </td>
+                  <td>
+                    <NavLink to={`/Annonces/${catOffer.id}`}>
+                      {catOffer.sex}
+                    </NavLink>
+                  </td>
+                  <td>
+                    <NavLink to={`/Annonces/${catOffer.id}`}>
+                      {catOffer.name}
+                    </NavLink>
+                  </td>
+                  <td>
+                    <NavLink to={`/Annonces/${catOffer.id}`}>
+                      <img
+                        src={`http://localhost:8000${catOffer.picture}`}
+                        className="w-9 mx-auto"
+                        alt={catOffer.name}
+                      />
+                    </NavLink>
+                  </td>
+                  <td>
+                    <img
+                      src={garbage}
+                      className="w-9 mx-auto"
+                      alt="supprimer l'annonce"
+                    />
+                  </td>
+                </tr>
+              </React.Fragment>
+            ))}
+          </table>
         </div>
       </div>
     </>
