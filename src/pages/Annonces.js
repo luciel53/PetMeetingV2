@@ -1,6 +1,5 @@
-import { NavLink, useLocation } from "react-router-dom";
+import { NavLink } from "react-router-dom";
 import SearchBar from "../components/SearchBar";
-import Grid from "../components/Grid";
 import male from "../assets/images/icons/male.png";
 import female from "../assets/images/icons/female.png";
 import axios from "axios";
@@ -22,7 +21,6 @@ export default function Annonces() {
     }
 
   };
-  console.log(catsOffers);
 
   return (
     <>
@@ -39,7 +37,7 @@ export default function Annonces() {
           {/* Grid */}
           {catsOffers.offers && catsOffers.offers.length > 0 && (
             catsOffers.offers.map((catOffer, index) => (
-              <NavLink to={`/Annonces/${catOffer.id}`}>
+              <NavLink key={catOffer.id} to={`/Annonces/${catOffer.id}`}>
               <div key={index} className="vignette flex flex-col justify-center items-center text-center bg-white z-0 md:h-96 w-72 mx-auto mr-4 mt-3 pb-2 rounded-3xl shadow-xl hover:opacity-85 hover:scale-105 transition duration-500 cursor-pointer">
                 <p className="text-center text-lg font-semibold mt-3">
                     {catOffer.name}

@@ -1,4 +1,7 @@
-import { NavLink, useLocation, useParams } from "react-router-dom";
+import React from "react";
+import { useState, useEffect } from "react";
+import axios from "axios";
+import { NavLink, useParams } from "react-router-dom";
 import facebook from "../assets/images/icons/facebook.png";
 import email from "../assets/images/icons/arobase.png";
 import location from "../assets/images/icons/location.png";
@@ -7,12 +10,6 @@ import garbage from "../assets/images/icons/garbage.png";
 import hello from "../assets/images/icons/hello.png";
 import change from "../assets/images/icons/change.png";
 import www from "../assets/images/icons/www.png";
-import users from "../components/Users";
-import cats from "../components/Cats";
-import { useState, useEffect } from "react";
-import { act } from "react-dom/test-utils";
-import axios from "axios";
-import React from "react";
 
 export default function Profile() {
   const { id } = useParams();
@@ -25,27 +22,36 @@ export default function Profile() {
   useEffect(() => {
     const fetchProfile = async () => {
       try {
-        const responseUser = await axios.get(
-          `http://localhost:8000/users/${id}/`
-        );
-        const response = await axios.get(
-          `http://localhost:8000/users/profile/`
-        );
-        const responseOffersByUser = await axios.get(
-          `http://localhost:8000/offers/offers_by_user/${id}/`
-        );
+        // define the token access in header of each axios request
+        const accessToken = localStorage.getItem('access_token');
+        const headers = { Authorization: `Bearer ${accessToken}` };
+        // get all the profiles
+        const response = await axios.get(`http://localhost:8000/users/profile/`, { headers });
+        // get the user by id
+        const responseUser = await axios.get(`http://localhost:8000/users/${id}/`, { headers });
+        // get the offers by id user
+        const responseOffersByUser = await axios.get(`http://localhost:8000/offers/offers_by_user/${id}/`, { headers });
 
-        axios.defaults.headers.common["Authorization"] = `Bearer ${localStorage.getItem("access_token")}`;
+        // //authorize access with token
+        // axios.defaults.headers.common["Authorization"] = `Bearer ${localStorage.getItem("access_token")}`;
+
+        // store the profiles data in a variable
         const profiles = response.data;
+        // store the offers data of the user in a variable
         const OffersByUser = responseOffersByUser.data;
+        console.log(responseUser.data);
         console.log(OffersByUser);
+        // set the email address of the user
         setUserEmail(responseUser.data.email);
+        // set the offers by user
         setCatsOffers(OffersByUser);
         console.log(profiles);
         console.log(userEmail);
+        // filter the users by id
         const selectedProfile = profiles.filter(
           (profile) => profile.user === parseInt(id)
         );
+
         if (selectedProfile.length > 0) {
           setProfile(selectedProfile[0]);
         } else {
@@ -59,9 +65,6 @@ export default function Profile() {
     fetchProfile();
   }, [id, userEmail]);
 
-  console.log(profile);
-  console.log(userEmail);
-
   if (userNotFound) {
     return <div>L'utilisateur n'a pas été trouvé.</div>;
   }
@@ -69,8 +72,6 @@ export default function Profile() {
   if (!profile) {
     return null;
   }
-
-  const popeye = cats.find((cat) => cat.name === "Popeye");
 
   return (
     <>

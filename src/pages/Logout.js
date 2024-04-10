@@ -12,6 +12,7 @@ export default function Logout() {
           { headers: { "Content-Type": "application/json" } },
           { withCredentials: true }
         );
+        
         axios.defaults.headers.common["Authorization"] = null;
         localStorage.clear();
         window.location.href = "/login";

@@ -1,4 +1,4 @@
-import { NavLink, useLocation } from "react-router-dom";
+import { NavLink } from "react-router-dom";
 import axios from "axios";
 import Button from "../components/Button";
 import add from "../assets/images/icons/add.png";
@@ -269,7 +269,7 @@ export default function Publier() {
                   >
                     <option value="">Choisissez</option>
                     {sex.map((option) => (
-                      <option key={option.id} value={option}>
+                      <option key={option} value={option}>
                         {option}
                       </option>
                     ))}

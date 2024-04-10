@@ -1,7 +1,4 @@
 import SearchMembers from "../components/SearchMembers";
-import Grid from "../components/Grid";
-import users from "../components/Users";
-import cats from "../components/Cats";
 import { useState, useEffect } from "react";
 import { NavLink } from "react-router-dom";
 import axios from "axios";
@@ -34,7 +31,7 @@ export default function Members() {
             <NavLink to={`/Profile/${profile.user}`}>
               <div
                 key={index}
-                className="vignette flex flex-col justify-center items-center text-center bg-white z-0 md:h-96 w-72 mx-auto mr-3 mt-3 pb-2 rounded-3xl shadow-xl hover:opacity-85"
+                className="vignette flex flex-col justify-center items-center text-center bg-white z-0 md:h-96 w-72 mx-auto mr-3 mt-3 pb-2 rounded-3xl shadow-xl hover:opacity-85 hover:scale-105 transition duration-500 cursor-pointer"
               >
                 <p className="text-center text-lg font-semibold mt-3">{profile.username}</p>
                 <img

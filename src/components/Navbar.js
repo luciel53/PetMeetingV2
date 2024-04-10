@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { NavLink, useLocation } from "react-router-dom";
+import { NavLink, useLocation, useParams } from "react-router-dom";
 import axios from "axios";
 import userIcon from "../assets/images/icons/user.svg";
 import messagesIcon from "../assets/images/icons/messages.svg";
@@ -15,11 +15,11 @@ export default function Navbar() {
   const [connectedIcons, setConnectedIcons] = useState(true);
   const [unconnectedIcons, setUnconnectedIcons] = useState(false);
   const [userId, setUserId] = useState("1");
+  const [username, setUsername] = useState("");
   const location = useLocation();
+  const { id } = useParams();
 
-  {
-    /* To manage the authentication */
-  }
+  {/* To manage the authentication */}
   const [isAuth, setIsAuth] = useState(false);
 
   useEffect(() => {
@@ -29,14 +29,22 @@ export default function Navbar() {
       try {
         const decodedToken = jwtDecode(token);
         setUserId(decodedToken.user_id);
+        fetchUsernameByUserId(decodedToken.user_id);
       } catch (error) {
         console.error("Error decoding token", error);
       }
     }
   }, []);
 
-  console.log(userId);
-
+  const fetchUsernameByUserId = async () => {
+    try {
+      const response = await axios.get(`http://localhost:8000/users/${userId}/`);
+      console.log(response.data);
+      setUsername(response.data.username);
+    } catch (error) {
+      console.log("Error fetching username", error);
+    }
+  };
   // const ToDecodeToken = async () => {
   //   if (isAuth) {
   //   const token = localStorage.getItem("access_token");
@@ -81,8 +89,6 @@ export default function Navbar() {
     }
   };
 
-  console.log(userId);
-
   return (
     <header className="bg-purple z-50 fixed top-0 w-full shadow-xl">
       <nav
@@ -112,7 +118,7 @@ export default function Navbar() {
             <NavLink
               to="/Annonces"
               className="text-sm lg:text-xl uppercase font-semibold rounded-lg px-2 ml-1 w-full relative z-20"
-              activeClassName="text-sm lg:text-xl uppercase font-semibold rounded-lg px-2 ml-1 w-full relative"
+              activeClassName="active text-sm lg:text-xl uppercase font-semibold rounded-lg px-2 ml-1 w-full relative"
             >
               annonces
             </NavLink>
@@ -125,7 +131,7 @@ export default function Navbar() {
               <NavLink
                 to="/Publier"
                 className="text-sm lg:text-xl uppercase font-semibold rounded-lg px-2 ml-1 w-full relative z-20"
-                activeClassName="text-sm lg:text-xl uppercase font-semibold rounded-lg px-2 ml-1 w-full relative"
+                activeClassName="active text-sm lg:text-xl uppercase font-semibold rounded-lg px-2 ml-1 w-full relative"
               >
                 Publier
               </NavLink>
@@ -154,7 +160,7 @@ export default function Navbar() {
             <NavLink
               to="/Contact"
               className="text-sm lg:text-xl uppercase font-semibold rounded-lg px-2 ml-1 w-full relative z-20"
-              activeClassName="text-sm lg:text-xl uppercase font-semibold rounded-lg px-2 ml-1 w-full relative"
+              activeClassName="active text-sm lg:text-xl uppercase font-semibold rounded-lg px-2 ml-1 w-full relative"
             >
               Contact
             </NavLink>
@@ -217,7 +223,7 @@ export default function Navbar() {
           </div>
           {isAuth && (
             <div className="-skew-x-45">
-              <p>Hello Lucie</p>
+              <p>Hello {username}</p>
             </div>
           )}
         </div>
