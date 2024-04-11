@@ -23,14 +23,14 @@ export default function Profile() {
     const fetchProfile = async () => {
       try {
         // define the token access in header of each axios request
-        const accessToken = localStorage.getItem('access_token');
-        const headers = { Authorization: `Bearer ${accessToken}` };
+        // const accessToken = localStorage.getItem('access_token');
+        // const headers = { Authorization: `Bearer ${accessToken}` };
         // get all the profiles
-        const response = await axios.get(`http://localhost:8000/users/profile/`, { headers });
+        const response = await axios.get(`http://localhost:8000/users/profile/`);
         // get the user by id
-        const responseUser = await axios.get(`http://localhost:8000/users/${id}/`, { headers });
+        const responseUser = await axios.get(`http://localhost:8000/users/${id}/`);
         // get the offers by id user
-        const responseOffersByUser = await axios.get(`http://localhost:8000/offers/offers_by_user/${id}/`, { headers });
+        const responseOffersByUser = await axios.get(`http://localhost:8000/offers/offers_by_user/${id}/`);
 
         // //authorize access with token
         // axios.defaults.headers.common["Authorization"] = `Bearer ${localStorage.getItem("access_token")}`;

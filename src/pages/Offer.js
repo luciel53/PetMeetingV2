@@ -55,7 +55,7 @@ export default function Offer() {
           {/* Owner */}
           <div className="container flex flex-col w-[250px] h-[263px] mr-6 bg-white rounded-3xl shadow-lg animate-fade-right">
             <NavLink to={`/profile/${selectedOffer.user_id}`}>
-              <p className="mx-auto mt-3 font-semibold text-lg">{selectedOffer.user}</p>
+              <p className="mx-auto mt-3 font-semibold text-lg text-center">{selectedOffer.user}</p>
               </NavLink>
             <div className="container w-[175px] h-[183px] bg-gray rounded-full mx-auto my-auto mt-2 shadow-sm z-0 overflow-hidden">
               <img
@@ -66,7 +66,9 @@ export default function Offer() {
             </div>
             <div className="flex flex-row">
               <div className="ml-6">
+              <NavLink to={`/profile/${selectedOffer.user_id}`}>
                 <img src={profileCard} className="h-8" alt="profil" />
+                </NavLink>
               </div>
               <div className="ml-36 z-20 pb-5">
                 <img
