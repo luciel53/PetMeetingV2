@@ -2,6 +2,7 @@ import React from "react";
 import { useState, useEffect } from "react";
 import axios from "axios";
 import { NavLink, useParams } from "react-router-dom";
+import { jwtDecode } from "jwt-decode";
 import facebook from "../assets/images/icons/facebook.png";
 import email from "../assets/images/icons/arobase.png";
 import location from "../assets/images/icons/location.png";
@@ -18,6 +19,43 @@ export default function Profile() {
   const [userNotFound, setUserNotFound] = useState(false);
   const [catsOffers, setCatsOffers] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [isAuth, setIsAuth] = useState(false);
+  const [username, setUsername] = useState('');
+  const [userId, setUserId] = useState('');
+  const [showGarbage, setShowGarbage] = useState(false);
+
+  useEffect(() => {
+    if (localStorage.getItem("access_token") !== null) {
+      setIsAuth(true);
+      const token = localStorage.getItem("access_token");
+      try {
+        const decodedToken = jwtDecode(token);
+        setUserId(decodedToken.user_id);
+        fetchUsernameByUserId(decodedToken.user_id);
+      } catch (error) {
+        console.error("Error decoding token", error);
+      }
+    }
+  }, []);
+
+  const fetchUsernameByUserId = async () => {
+    try {
+      const response = await axios.get(`http://localhost:8000/users/${userId}/`);
+      console.log(response.data);
+      setUsername(response.data.username);
+    } catch (error) {
+      console.log("Error fetching username", error);
+    }
+  };
+
+  // to show the garbage icon if user is logged and owner
+  useEffect(() => {
+    if (profile && userId && profile.user === parseInt(userId)) {
+      setShowGarbage(true);
+    } else {
+      setShowGarbage(false);
+    }
+  }, [profile, userId]);
 
   useEffect(() => {
     const fetchProfile = async () => {
@@ -72,6 +110,10 @@ export default function Profile() {
   if (!profile) {
     return null;
   }
+
+  console.log("owner's id: ", profile);
+  console.log("userId ::::::", userId);
+
 
   return (
     <>
@@ -162,7 +204,9 @@ export default function Profile() {
                 <th>Sexe</th>
                 <th>Date</th>
                 <th>Photo</th>
+                {showGarbage && (
                 <th>Supprimer</th>
+                )}
               </tr>
             </thead>
             <tr>
@@ -201,13 +245,15 @@ export default function Profile() {
                       />
                     </NavLink>
                   </td>
-                  <td>
-                    <img
-                      src={garbage}
-                      className="w-9 mx-auto"
-                      alt="supprimer l'annonce"
-                    />
-                  </td>
+                  {showGarbage && (
+                    <td>
+                      <img
+                        src={garbage}
+                        className="w-9 mx-auto"
+                        alt="supprimer l'annonce"
+                      />
+                    </td>
+                  )}
                 </tr>
               </React.Fragment>
             ))}
