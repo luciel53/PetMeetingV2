@@ -11,7 +11,7 @@ import abyssin from "../assets/images/grid-carousel/abyssin.png";
 import abyssin1 from "../assets/images/grid-carousel/abyssin1.jpg";
 import abyssin2 from "../assets/images/grid-carousel/abyssin2.jpg";
 import suzanne from "../assets/images/people/suzanne.jpg";
-
+import noPic from "../assets/images/nopicture.png";
 
 export default function Offer() {
   const [selectedOffer, setSelectedOffer] = useState(null);
@@ -23,12 +23,13 @@ export default function Offer() {
   useEffect(() => {
     const fetchCatOffer = async () => {
       try {
-        const response = await axios.get("http://127.0.0.1:8000/offers/offers/get_all_offers/");
+        const response = await axios.get(
+          "http://127.0.0.1:8000/offers/offers/get_all_offers/"
+        );
         const offers = response.data.offers;
-        const selected = offers.find(offer => offer.id === parseInt(id));
+        const selected = offers.find((offer) => offer.id === parseInt(id));
 
         setSelectedOffer(selected);
-
       } catch (e) {
         console.error("Error fetching cats offers", e);
       }
@@ -42,21 +43,22 @@ export default function Offer() {
 
   console.log(selectedOffer);
 
-
   return (
     <>
-    <NavLink to="/Annonces">
-    <div className="ml-20 mt-28 flex flex-row text-verydarkgray hover:opacity-80">
+      <NavLink to="/Annonces">
+        <div className="ml-20 mt-28 flex flex-row text-verydarkgray hover:opacity-80">
           &larr; Retour aux annonces
         </div>
-    </NavLink>
+      </NavLink>
       <div className="mx-auto">
         <div className="container flex flex-row col-end-4 mt-6 mb-32">
           {/* Owner */}
           <div className="container flex flex-col w-[250px] h-[263px] mr-6 bg-white rounded-3xl shadow-lg animate-fade-right">
             <NavLink to={`/profile/${selectedOffer.user_id}`}>
-              <p className="mx-auto mt-3 font-semibold text-lg text-center">{selectedOffer.user}</p>
-              </NavLink>
+              <p className="mx-auto mt-3 font-semibold text-lg text-center">
+                {selectedOffer.user}
+              </p>
+            </NavLink>
             <div className="container w-[175px] h-[183px] bg-gray rounded-full mx-auto my-auto mt-2 shadow-sm z-0 overflow-hidden">
               <img
                 src={suzanne}
@@ -66,8 +68,8 @@ export default function Offer() {
             </div>
             <div className="flex flex-row">
               <div className="ml-6">
-              <NavLink to={`/profile/${selectedOffer.user_id}`}>
-                <img src={profileCard} className="h-8" alt="profil" />
+                <NavLink to={`/profile/${selectedOffer.user_id}`}>
+                  <img src={profileCard} className="h-8" alt="profil" />
                 </NavLink>
               </div>
               <div className="ml-36 z-20 pb-5">
@@ -90,7 +92,9 @@ export default function Offer() {
                   className="w-8 h-8 pb-1"
                   alt="icone de chat"
                 />
-                <h3 className="text-2xl pl-2 font-semibold">{selectedOffer.name}</h3>
+                <h3 className="text-2xl pl-2 font-semibold">
+                  {selectedOffer.name}
+                </h3>
               </div>
               <div className="flex flex-col w-1/2 pl-12 pt-1">
                 <div className="flex flex-row items-center">
@@ -104,9 +108,10 @@ export default function Offer() {
                 {/* Price */}
 
                 <strong className="text-2xl">
-                {selectedOffer.sex === "Mâle" ? (
-                  selectedOffer.price + ' €') : (null)}
-                  </strong>
+                  {selectedOffer.sex === "Mâle"
+                    ? selectedOffer.price + " €"
+                    : null}
+                </strong>
               </div>
 
               {/* Details */}
@@ -117,10 +122,11 @@ export default function Offer() {
                       <tr>
                         <td className="text-purple">Sexe:</td>
                         <td className="pl-7">
-                        {selectedOffer.sex === "Mâle" ? (
-                          <img src={male} alt="mâle" />) :
-                          (<img src={female} alt="femelle" />)
-                        }
+                          {selectedOffer.sex === "Mâle" ? (
+                            <img src={male} alt="mâle" />
+                          ) : (
+                            <img src={female} alt="femelle" />
+                          )}
                         </td>
                       </tr>
                       <tr>
@@ -210,16 +216,32 @@ export default function Offer() {
                   className="max-w-24 max-h-24 mr-4 rounded-lg shadow-lg"
                   alt="image1"
                 />
-                <img
-                  src={`http://127.0.0.1:8000${selectedOffer.picture2}`}
-                  className="max-w-24 max-h-24 mr-4 rounded-lg shadow-lg"
-                  alt="image2"
-                />
-                <img
-                  src={`http://127.0.0.1:8000${selectedOffer.picture3}`}
-                  className="max-w-24 max-h-24 mr-4 rounded-lg shadow-lg"
-                  alt="image3"
-                />
+                {selectedOffer.picture2 ? (
+                  <img
+                    src={`http://127.0.0.1:8000${selectedOffer.picture2}`}
+                    className="max-w-24 max-h-24 mr-4 rounded-lg shadow-lg"
+                    alt="image2"
+                  />
+                ) : (
+                  <img
+                    src={noPic}
+                    alt="Vide"
+                    className="max-w-24 max-h-24 mr-4 rounded-lg shadow-lg"
+                  />
+                )}
+                {selectedOffer.picture3 ? (
+                  <img
+                    src={`http://127.0.0.1:8000${selectedOffer.picture3}`}
+                    className="max-w-24 max-h-24 mr-4 rounded-lg shadow-lg"
+                    alt="image3"
+                  />
+                ) : (
+                  <img
+                    src={noPic}
+                    alt="Vide"
+                    className="max-w-24 max-h-24 mr-4 rounded-lg shadow-lg"
+                  />
+                )}
               </div>
             </div>
           </div>
