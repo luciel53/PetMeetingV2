@@ -1,13 +1,17 @@
 import React, { useState } from "react";
+import { useLocation } from "react-router-dom";
 import Button from "../components/Button";
 import axios from "axios";
 
 export default function Contact() {
+  const location = useLocation();
+  const searchParams = new URLSearchParams(location.search);
+
   const [successMessage, setSuccessMessage] = useState("");
   const initialFormData = {
-    name: "",
-    email: "",
-    topic: "",
+    name: "" || searchParams.get("name"),
+    email: "" || searchParams.get("email"),
+    topic: "" || searchParams.get("topic"),
     message: "",
   };
 

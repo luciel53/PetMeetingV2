@@ -99,11 +99,13 @@ export default function Offer() {
               <div className="flex flex-col w-1/2 pl-12 pt-1">
                 <div className="flex flex-row items-center">
                   <small className="">01/02/2024 20:58</small>
+                  <NavLink to={`/contact?&email=&topic=Signalement d'une annonce`}>
                   <img
                     src={warning}
                     className="mr-4"
                     alt="signaler l'annonce"
                   />
+                  </NavLink>
                 </div>
                 {/* Price */}
 
