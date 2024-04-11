@@ -123,7 +123,7 @@ def get_all_offers(request):
     serialized_all_offers = []
     for offer in offers:
         serialized_offers = {'name': offer.name,
-                             'id': offer.id,
+                            'id': offer.id,
                             'price': offer.price,
                             'sex': offer.sex,
                             'race': offer.race,
@@ -138,6 +138,7 @@ def get_all_offers(request):
                             'flaws': offer.flaws,
                             'free_descriptive_text': offer.free_descriptive_text,
                             'user': offer.user.username if offer.user else None,
+                            'user_id': offer.user.id if offer.user else None,
                             }
         #dictionary to store images url
         picture_urls = {}

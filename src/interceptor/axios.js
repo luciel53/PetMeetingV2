@@ -8,6 +8,12 @@ axios.interceptors.response.use(
     // (401 when token expires)
     if (error.response.status === 401 && !refresh) {
       refresh = true;
+      const refreshToken = localStorage.getItem('refresh_token');
+      if (!refreshToken) {
+        // Handle case where refresh token is not available
+        console.log("No refresh token available");
+        return Promise.reject(error);
+      }
       console.log(localStorage.getItem('refresh_token'))
 
       try {

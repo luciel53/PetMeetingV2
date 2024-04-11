@@ -1,4 +1,4 @@
-import { NavLink, useLocation, useParams } from "react-router-dom";
+import { NavLink, useNavigate, useLocation, useParams } from "react-router-dom";
 import { useState, useEffect } from "react";
 import axios from "axios";
 import profileMsg from "../assets/images/icons/profileMsg.png";
@@ -15,6 +15,7 @@ import suzanne from "../assets/images/people/suzanne.jpg";
 
 export default function Offer() {
   const [selectedOffer, setSelectedOffer] = useState(null);
+  const [userProfile, setUserProfile] = useState(null);
   // useParams extracts the params of the url
   const { id } = useParams();
   console.log(id);
@@ -25,8 +26,9 @@ export default function Offer() {
         const response = await axios.get("http://127.0.0.1:8000/offers/offers/get_all_offers/");
         const offers = response.data.offers;
         const selected = offers.find(offer => offer.id === parseInt(id));
-        console.log(selected);
+
         setSelectedOffer(selected);
+
       } catch (e) {
         console.error("Error fetching cats offers", e);
       }
@@ -37,6 +39,9 @@ export default function Offer() {
   if (!selectedOffer) {
     return null;
   }
+
+  console.log(selectedOffer);
+
 
   return (
     <>
@@ -49,7 +54,9 @@ export default function Offer() {
         <div className="container flex flex-row col-end-4 mt-6 mb-32">
           {/* Owner */}
           <div className="container flex flex-col w-[250px] h-[263px] mr-6 bg-white rounded-3xl shadow-lg animate-fade-right">
-            <p className="mx-auto mt-3 font-semibold text-lg">{selectedOffer.user}</p>
+            <NavLink to={`/profile/${selectedOffer.user_id}`}>
+              <p className="mx-auto mt-3 font-semibold text-lg">{selectedOffer.user}</p>
+              </NavLink>
             <div className="container w-[175px] h-[183px] bg-gray rounded-full mx-auto my-auto mt-2 shadow-sm z-0 overflow-hidden">
               <img
                 src={suzanne}
