@@ -7,7 +7,7 @@ import search from "../assets/images/icons/search.png";
 import cross from "../assets/images/icons/cross.png";
 import { useState } from "react";
 
-export default function SearchBar() {
+export default function SearchBar({ onSearch }) {
   const [sex, setSex] = useState("");
   const [Race, setRace] = useState("");
   const [colorEye, setColorEye] = useState("");
@@ -32,6 +32,23 @@ export default function SearchBar() {
 
   function handleRemoveColorEyeCross() {
     setColorEye("");
+  }
+
+  // manage the searchbar button
+  function handleSearchBarButton(e) {
+    e.preventDefault();
+    // object that contains the criteria for research
+    const criteria = {
+      selectedSex: sex,
+      selectedRace: Race,
+      selectedBlood: groupeSanguin,
+      selectedEyeColor: colorEye,
+      selectedLocation: localisation,
+    };
+
+    if (onSearch) {
+      onSearch(criteria);
+    }
   }
 
   return (
@@ -103,6 +120,7 @@ export default function SearchBar() {
         {/* SearchBar Button */}
         <button
           type="button"
+          onClick={handleSearchBarButton}
           className="bg-fragole text-white lg:text-xl lg:w-40 px-4 rounded-full lg:ml-6 shadow-lg hover:opacity-85"
         >
           <img src={search} className="hover:animate-spin" alt="search" />

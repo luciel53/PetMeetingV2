@@ -24,7 +24,7 @@ export default function Annonces() {
   };
 
   const [sex, setSex] = useState("");
-  const [race, setrace] = useState("");
+  const [race, setRace] = useState("");
   const [eyeColor, setEyeColor] = useState("");
   const [blood, setBlood] = useState("");
   const [location, setLocation] = useState("");
@@ -45,6 +45,20 @@ export default function Annonces() {
     setFilteredOffers(filtered);
   }, [catsOffers, sex, race, eyeColor, blood, location]);
 
+  function handleSearch(criteria) {
+    setSex(criteria.selectedSex);
+    setRace(criteria.selectedRace);
+    setEyeColor(criteria.selectedEyeColor);
+    setBlood(criteria.selectedBlood);
+    setLocation(criteria.selectedLocation);
+  }
+
+  console.log("SEXE:::: ", sex);
+  console.log("RACE:::: ", race);
+  console.log("EYECOLOR:::: ", eyeColor);
+  console.log("BLOOD:::: ", blood);
+  console.log("LOCATION:::: ", location);
+
   return (
     <>
       <NavLink to="/">
@@ -54,7 +68,7 @@ export default function Annonces() {
       </NavLink>
       <div className="container flex flex-col mx-auto text-center mt-8">
         {/* SearchBar */}
-        <SearchBar />
+        <SearchBar onSearch={handleSearch} />
         {/* Selection */}
         <div className="grid grid-cols-2 place-content-center md:max-w-max md:mx-auto md:grid-cols-3 lg:grid-cols-4 mt-12 mb-20 animate-fade-down">
           {/* Grid */}
@@ -87,7 +101,7 @@ export default function Annonces() {
               </NavLink>
             ))
           ) : (
-            <p>Aucune annonce ne correspond aux critères de recherche.</p>
+            <p className="mx-auto">Patience, nous cherchons votre perle rare...</p>
           )}
         </div>
       </div>
