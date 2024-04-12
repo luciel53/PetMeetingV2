@@ -13,14 +13,37 @@ export default function Annonces() {
 
   const fetchCatsOffers = async () => {
     try {
-      const response = await axios.get("http://127.0.0.1:8000/offers/offers/get_all_offers/");
-      setCatsOffers(response.data);
-
+      const response = await axios.get(
+        "http://127.0.0.1:8000/offers/offers/get_all_offers/"
+      );
+      setCatsOffers(response.data.offers);
+      console.log("testtttt", response.data);
     } catch (e) {
       console.error("Error fetching cats offers", e);
     }
-
   };
+
+  const [sex, setSex] = useState("");
+  const [race, setrace] = useState("");
+  const [eyeColor, setEyeColor] = useState("");
+  const [blood, setBlood] = useState("");
+  const [location, setLocation] = useState("");
+  const [filteredOffers, setFilteredOffers] = useState("");
+
+  useEffect(() => {
+    // Filtrer les annonces en fonction des critères sélectionnés
+    const filtered = catsOffers.filter((offer) => {
+      // Vérifie si chaque critère correspond aux critères sélectionnés
+      return (
+        (!sex || offer.sex === sex) &&
+        (!race || offer.race === race) &&
+        (!eyeColor || offer.eyeColor === eyeColor) &&
+        (!blood || offer.bloodGroup === blood) &&
+        (!location || offer.location === location)
+      );
+    });
+    setFilteredOffers(filtered);
+  }, [catsOffers, sex, race, eyeColor, blood, location]);
 
   return (
     <>
@@ -35,30 +58,36 @@ export default function Annonces() {
         {/* Selection */}
         <div className="grid grid-cols-2 place-content-center md:max-w-max md:mx-auto md:grid-cols-3 lg:grid-cols-4 mt-12 mb-20 animate-fade-down">
           {/* Grid */}
-          {catsOffers.offers && catsOffers.offers.length > 0 && (
-            catsOffers.offers.map((catOffer, index) => (
+          {filteredOffers.length > 0 ? (
+            filteredOffers.map((catOffer, index) => (
+              // {catsOffers.offers && catsOffers.offers.length > 0 && (
+              //   catsOffers.offers.map((catOffer, index) => (
               <NavLink key={catOffer.id} to={`/Annonces/${catOffer.id}`}>
-              <div key={index} className="vignette flex flex-col justify-center items-center text-center bg-white z-0 md:h-96 w-72 mx-auto mr-4 mt-3 pb-2 rounded-3xl shadow-xl hover:opacity-85 hover:scale-105 transition duration-500 cursor-pointer">
-                <p className="text-center text-lg font-semibold mt-3">
+                <div
+                  key={index}
+                  className="vignette flex flex-col justify-center items-center text-center bg-white z-0 md:h-96 w-72 mx-auto mr-4 mt-3 pb-2 rounded-3xl shadow-xl hover:opacity-85 hover:scale-105 transition duration-500 cursor-pointer"
+                >
+                  <p className="text-center text-lg font-semibold mt-3">
                     {catOffer.name}
-                </p>
-                <img
-                  src={"http://127.0.0.1:8000" + catOffer.picture}
-                  className="z-20 h-40 md:h-3/4 w-56 my-3 object-cover mx-auto shadow-sm rounded-3xl "
-                  alt={catOffer.name}
-                />
-                <p className="flex flex-row">
-                  {catOffer.race}
-                  {catOffer.sex === "Mâle" ? (
-                    <img src={male} alt="mâle" className="pl-4" />
-                  ) : (
-                    <img src={female} alt="femelle" />
-                  )}
-                </p>
-
-              </div>
+                  </p>
+                  <img
+                    src={"http://127.0.0.1:8000" + catOffer.picture}
+                    className="z-20 h-40 md:h-3/4 w-56 my-3 object-cover mx-auto shadow-sm rounded-3xl "
+                    alt={catOffer.name}
+                  />
+                  <p className="flex flex-row">
+                    {catOffer.race}
+                    {catOffer.sex === "Mâle" ? (
+                      <img src={male} alt="mâle" className="pl-4" />
+                    ) : (
+                      <img src={female} alt="femelle" />
+                    )}
+                  </p>
+                </div>
               </NavLink>
             ))
+          ) : (
+            <p>Aucune annonce ne correspond aux critères de recherche.</p>
           )}
         </div>
       </div>

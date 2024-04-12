@@ -22,7 +22,7 @@ export default function Profile() {
   const [isAuth, setIsAuth] = useState(false);
   const [username, setUsername] = useState('');
   const [userId, setUserId] = useState('');
-  const [showGarbage, setShowGarbage] = useState(false);
+  const [connectedUser, setconnectedUser] = useState(false);
 
   useEffect(() => {
     if (localStorage.getItem("access_token") !== null) {
@@ -51,9 +51,9 @@ export default function Profile() {
   // to show the garbage icon if user is logged and owner
   useEffect(() => {
     if (profile && userId && profile.user === parseInt(userId)) {
-      setShowGarbage(true);
+      setconnectedUser(true);
     } else {
-      setShowGarbage(false);
+      setconnectedUser(false);
     }
   }, [profile, userId]);
 
@@ -126,7 +126,9 @@ export default function Profile() {
         <div className="container flex flex-row mb-6">
           {/* Informations */}
           <div className="container w-[988px] h-[395px] flex flex-col bg-white rounded-3xl shadow-lg mr-5">
-            <h3 className="mx-auto my-4 text-2xl">Mes informations:</h3>
+            <h3 className="mx-auto my-4 text-2xl">
+              {connectedUser ? ('Mes informations') : ('Informations')}
+              </h3>
             <p className="flex flex-row text-lg ml-40 mt-4 mb-4">
               <img
                 src={email}
@@ -195,7 +197,8 @@ export default function Profile() {
         </div>
         {/* Offers list */}
         <div className="container w-[988px] h-[395px] flex flex-col bg-white rounded-3xl shadow-lg mr-5">
-          <h3 className="mx-auto mt-4 mb-8 text-2xl">Mes annonces:</h3>
+          <h3 className="mx-auto mt-4 mb-8 text-2xl">
+            {connectedUser ? ('Mes annonces') : ('Annonces')}</h3>
           <table className="text-center">
             <thead>
               <tr className="">
@@ -204,7 +207,7 @@ export default function Profile() {
                 <th>Sexe</th>
                 <th>Date</th>
                 <th>Photo</th>
-                {showGarbage && (
+                {connectedUser && (
                 <th>Supprimer</th>
                 )}
               </tr>
@@ -245,7 +248,7 @@ export default function Profile() {
                       />
                     </NavLink>
                   </td>
-                  {showGarbage && (
+                  {connectedUser && (
                     <td>
                       <img
                         src={garbage}
