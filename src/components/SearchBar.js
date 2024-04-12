@@ -49,7 +49,7 @@ export default function SearchBar({ onSearch }) {
     if (onSearch) {
       onSearch(criteria);
     }
-  }
+  } 
 
   return (
     <div>
