@@ -31,19 +31,21 @@ export default function Annonces() {
   const [filteredOffers, setFilteredOffers] = useState("");
 
   useEffect(() => {
-    // Filtrer les annonces en fonction des critères sélectionnés
+    // Filter offers according to selected criteria
     const filtered = catsOffers.filter((offer) => {
-      // Vérifie si chaque critère correspond aux critères sélectionnés
+      console.log("CKOIIIIIIIIIII", offer.eye_color);
+      // Checks if each criteria matches the selected criteria
       return (
         (!sex || offer.sex === sex) &&
         (!race || offer.race === race) &&
-        (!eyeColor || offer.eyeColor === eyeColor) &&
-        (!blood || offer.bloodGroup === blood) &&
+        (!eyeColor || offer.eye_color === eyeColor) &&
+        (!blood || offer.blood === blood) &&
         (!location || offer.location === location)
       );
     });
     setFilteredOffers(filtered);
   }, [catsOffers, sex, race, eyeColor, blood, location]);
+  console.log("jetesttttttttt", race);
 
   function handleSearch(criteria) {
     setSex(criteria.selectedSex);
