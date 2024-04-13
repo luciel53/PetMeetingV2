@@ -14,8 +14,9 @@ import suzanne from "../assets/images/people/suzanne.jpg";
 import noPic from "../assets/images/nopicture.png";
 
 export default function Offer() {
+  const [ownerProfile, setOwnerProfile] = useState(null);
   const [selectedOffer, setSelectedOffer] = useState(null);
-  const [userProfile, setUserProfile] = useState(null);
+  const [avatar, setAvatar] = useState(null);
   // useParams extracts the params of the url
   const { id } = useParams();
   console.log(id);
@@ -28,14 +29,19 @@ export default function Offer() {
         );
         const offers = response.data.offers;
         const selected = offers.find((offer) => offer.id === parseInt(id));
-
         setSelectedOffer(selected);
+
+        const ownerResponse = await axios.get(
+          `http://127.0.0.1:8000/users/profile/${selected.user_id}`
+        );
+        const profile = ownerResponse.data;
+        setAvatar(profile.avatar);
       } catch (e) {
         console.error("Error fetching cats offers", e);
       }
     };
     fetchCatOffer();
-  }, [id]);
+  }, [id, avatar]);
 
   if (!selectedOffer) {
     return null;
@@ -61,7 +67,7 @@ export default function Offer() {
             </NavLink>
             <div className="container w-[175px] h-[183px] bg-gray rounded-full mx-auto my-auto mt-2 shadow-sm z-0 overflow-hidden">
               <img
-                src={suzanne}
+                src={avatar}
                 className="max-w-[175px] m-h-[183] rounded-full"
                 alt="Propriétaire"
               />
@@ -99,7 +105,7 @@ export default function Offer() {
               <div className="flex flex-col w-1/2 pl-12 pt-1">
                 <div className="flex flex-row items-center">
                   <small className="">01/02/2024 20:58</small>
-                  <NavLink to={`/contact?&email=&topic=Signalement d'une annonce`}>
+                  <NavLink to={`/contact?&email=&topic=Signalement d'une annonce&message=Bonjour, je souhaite signaler l'annonce n°${selectedOffer.id} - ${selectedOffer.name}, car `}>
                   <img
                     src={warning}
                     className="mr-4"

@@ -34,7 +34,7 @@ export default function SearchMembers({ profiles, setFilteredProfiles }) {
         <input
           type="text"
           className="rounded-full w-3/4 pl-6 outline-none"
-          placeholder="Chercher un membre"
+          placeholder="Chercher un membre, une localisation"
           value={searchQuery}
           onChange={handleSearchMembers}
           onKeyUp={handleKeyPress}
