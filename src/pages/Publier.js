@@ -3,6 +3,7 @@ import axios from "axios";
 import Button from "../components/Button";
 import add from "../assets/images/icons/add.png";
 import { useState, useEffect } from "react";
+import { jwtDecode } from "jwt-decode";
 
 export default function Publier() {
   const [successMessage, setSuccessMessage] = useState("");
@@ -29,6 +30,7 @@ export default function Publier() {
     picture: "",
     picture2: "",
     picture3: "",
+    user_id: "",
   };
 
   const [formData, setFormData] = useState(initialFormData);
@@ -108,7 +110,12 @@ export default function Publier() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     setFormSubmitted(true);
-
+    // Récupérer l'user_id du token JWT
+    const userId = jwtDecode(localStorage.getItem("access_token")).user_id;
+    setFormData(prevFormData => ({
+      ...prevFormData,
+      user_id: userId
+    }));
     //check if LOOF and Vaccins are both set on Yes
     // const loofValue = document.querySelector('input[name="loof"]:checked')?.value;
     // const vaccinsValue = document.querySelector(
@@ -118,6 +125,7 @@ export default function Publier() {
     try {
       if (loof === "Oui" && vaccins === "Oui") {
         console.log('data: ', formData);
+        axios.defaults.headers.common["Authorization"] = `Bearer ${localStorage.getItem("access_token")}`;
           const response = await axios.post("http://127.0.0.1:8000/offers/offers/",
             formData,
             {
@@ -135,7 +143,7 @@ export default function Publier() {
       }
     } catch (error) {
       console.error("Votre annonce n'a pas pu être publiée", error);
-      if (error.response && error.response === 401) {
+      if (error.response && error.response.status === 401) {
         setErrorMessage("Vous n'êtes pas autorisé à publier cette annonce");
       } else {
         setErrorMessage("Une erreur s'est produite lors de la publication de l'annonce. Veuillez réessayer plus tard.");

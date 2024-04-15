@@ -96,7 +96,7 @@ export default function Navbar() {
     }
   };
 
-  console.log("gooooooooooooooooo", username);
+  console.log("moi c'est ", username);
 
   return (
     <header className="bg-purple z-50 fixed top-0 w-full shadow-xl">
