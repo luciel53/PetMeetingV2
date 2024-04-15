@@ -125,7 +125,7 @@ export default function Publier() {
             }
           );
           // authorize the token
-          axios.defaults.headers.common["Authorization"] = `Bearer ${localStorage.getItem("access_token")}`;
+          // axios.defaults.headers.common["Authorization"] = `Bearer ${localStorage.getItem("access_token")}`;
           console.log(response.data);
           setFormData(initialFormData);
           setSuccessMessage("Votre annonce a bien été postée!");

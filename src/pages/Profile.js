@@ -114,6 +114,66 @@ export default function Profile() {
   console.log("owner's id: ", profile);
   console.log("userId ::::::", userId);
 
+  const refreshToken = async () => {
+    try {
+      const refreshToken = localStorage.getItem("refresh_token");
+      const response = await axios.post(
+        "http://localhost:8000/token/refresh/",
+        { refresh: refreshToken }
+      );
+      const newAccessToken = response.data.access;
+      // Stocker le nouveau jeton d'accès dans le stockage local
+      localStorage.setItem("access_token", newAccessToken);
+      return newAccessToken;
+    } catch (error) {
+      console.error("Error refreshing token: ", error);
+      throw error; // Propager l'erreur pour la gestion ultérieure
+    }
+  };
+
+  const handleDelete = async (offerId) => {
+    let newAccessToken;
+    try {
+      const token = localStorage.getItem("access_token");
+      const response = await axios.delete(`http://localhost:8000/offers/offers/${offerId}`,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`, // Inclure le jeton JWT dans l'en-tête Authorization
+            'Content-Type': 'application/json'
+          },
+          withCredentials: true
+        }
+      );
+      // update offers list after delete
+      setCatsOffers(catsOffers.filter(offer => offer.id !== offerId));
+    } catch (error) {
+      // check if error is because of an invalid or expired token
+      if (error.response && error.response.status === 401) {
+        // refresh token
+        try {
+          newAccessToken = await refreshToken();
+          // retry request with new access token
+          const response = await axios.delete(`http://localhost:8000/offers/offers/${offerId}`,
+            {
+              headers: {
+                Authorization: `Bearer ${newAccessToken}`, // Inclure le jeton JWT dans l'en-tête Authorization
+                'Content-Type': 'application/json'
+              },
+              withCredentials: true
+            }
+          );
+          // update offers list after delete
+          setCatsOffers(catsOffers.filter(offer => offer.id !== offerId));
+        } catch (refreshError) {
+          console.error("Error deleting offers: ", refreshError);
+        }
+      } else {
+        console.error("Error deleting offer: ", error);
+      }
+    }
+  }
+
+
 
   return (
     <>
@@ -253,6 +313,7 @@ export default function Profile() {
                       <img
                         src={garbage}
                         className="w-9 mx-auto"
+                        onClick={() => handleDelete(catOffer.id)}
                         alt="supprimer l'annonce"
                       />
                     </td>

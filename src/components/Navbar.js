@@ -36,10 +36,15 @@ export default function Navbar() {
     }
   }, []);
 
+  // set the auth to false if disconnected
+  const updateIsAuthLogout = () => {
+    setIsAuth(false);
+  }
+
   const fetchUsernameByUserId = async () => {
     try {
       const response = await axios.get(`http://localhost:8000/users/${userId}/`);
-      console.log(response.data);
+      console.log("euuuuuuuuh", response.data);
       setUsername(response.data.username);
       console.log(response.data.username);
     } catch (error) {
@@ -73,24 +78,25 @@ export default function Navbar() {
 
   const handleLogout = async () => {
     try {
-      const { data } = await axios.post(
-        "http://localhost:8000/logout/",
-        { refresh_token: localStorage.getItem("refresh_token") },
-        { headers: { "Content-Type": "application/json" } },
-        { withCredentials: true }
-      );
+      // const response = await axios.post(
+      //   "http://localhost:8000/logout/",
+      //   { refresh_token: localStorage.getItem("refresh_token") },
+      //     { headers: { "Content-Type": "application/json" } },
+      //     { withCredentials: true }
+      // );
 
       console.log("YEAHHHHHHHHHHHHHHH! You're disconnected babe");
 
       localStorage.clear();
       axios.defaults.headers.common["Authorization"] = null;
+      updateIsAuthLogout();
       window.location.href = "/login";
     } catch (e) {
       console.log("Logout not working", e);
     }
   };
 
-  console.log("gooooo", username);
+  console.log("gooooooooooooooooo", username);
 
   return (
     <header className="bg-purple z-50 fixed top-0 w-full shadow-xl">

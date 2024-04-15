@@ -1,5 +1,5 @@
 from django.shortcuts import render
-from django.http import JsonResponse
+from django.http import JsonResponse, HttpResponseNotAllowed
 from .models import CatOffer, RACE_CHOICES, SEX_CHOICES, LOCATION_CHOICES, BLOOD_CHOICES, EYECOLOR_CHOICES
 import json
 import os
@@ -11,6 +11,40 @@ from django.contrib.auth.decorators import login_required
 import uuid
 from rest_framework.views import APIView
 from .serializers import serialize_offer
+from rest_framework_simplejwt.authentication import JWTAuthentication
+from rest_framework.permissions import IsAuthenticated
+from rest_framework.decorators import api_view, authentication_classes, permission_classes
+
+
+@api_view(['DELETE'])
+@authentication_classes([JWTAuthentication])
+@permission_classes([IsAuthenticated])
+def delete_offer(request, offerId):
+    user = request.user
+    # to delete an offer
+    if request.method != 'DELETE':
+        return HttpResponseNotAllowed(['DELETE'])
+
+    if request.method == 'DELETE':
+        if not offerId:
+            return JsonResponse({'error': 'Offer ID is required to delete'}, status=400)
+
+        try:
+            # get the offer
+            offer = CatOffer.objects.get(pk=offerId)
+            print('coucou', offer)
+        except CatOffer.DoesNotExist:
+            return JsonResponse({'error': 'Offer not found'}, status=404)
+
+        # check if the author is the owner of the offer
+        if offer.user != user:
+            return JsonResponse({'error': 'You are not the owner of the offer'}, status=403)
+
+        # Delete the offer
+        offer.delete()
+        return JsonResponse({'success': 'The offer has been successfully deleted'})
+
+
 
 @csrf_exempt
 def catOffer_view(request):
@@ -100,6 +134,8 @@ def catOffer_view(request):
         return JsonResponse({'success': True})
 
     return JsonResponse({'error': 'Only POST requests are allowed'})
+
+
 
 def get_form_data(request):
     # get the data from the database

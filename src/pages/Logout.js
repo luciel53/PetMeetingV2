@@ -1,6 +1,5 @@
 import { useEffect } from "react";
 import axios from "axios";
-import logoutIcon from "../assets/images/icons/logout.svg";
 
 export default function Logout() {
   useEffect(() => {
@@ -12,7 +11,7 @@ export default function Logout() {
           { headers: { "Content-Type": "application/json" } },
           { withCredentials: true }
         );
-        
+
         axios.defaults.headers.common["Authorization"] = null;
         localStorage.clear();
         window.location.href = "/login";

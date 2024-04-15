@@ -16,9 +16,11 @@ class HomeView(APIView):
 
 # logout class
 class LogoutView(APIView):
-     permission_classes = (IsAuthenticated,)
+    # only authenticated users can access this view (must have a valid authentication token)
+    permission_classes = (IsAuthenticated,)
+    print("test", permission_classes)
 
-     def post(self, request):
+    def post(self, request):
 
           try:
             refresh_token = request.data["refresh_token"]

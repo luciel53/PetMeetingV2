@@ -8,9 +8,6 @@ import warning from "../assets/images/icons/warning.png";
 import male from "../assets/images/icons/male.png";
 import female from "../assets/images/icons/female.png";
 import abyssin from "../assets/images/grid-carousel/abyssin.png";
-import abyssin1 from "../assets/images/grid-carousel/abyssin1.jpg";
-import abyssin2 from "../assets/images/grid-carousel/abyssin2.jpg";
-import suzanne from "../assets/images/people/suzanne.jpg";
 import noPic from "../assets/images/nopicture.png";
 
 export default function Offer() {
