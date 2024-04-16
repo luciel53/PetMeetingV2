@@ -39,7 +39,14 @@ export default function Navbar() {
   // set the auth to false if disconnected
   const updateIsAuthLogout = () => {
     setIsAuth(false);
-  }
+    console.log("just to change the username");
+  };
+
+  useEffect(() => {
+    if (!isAuth) {
+      setUsername("");
+    }
+  }, [isAuth]);
 
   const fetchUsernameByUserId = async () => {
     try {
@@ -96,7 +103,7 @@ export default function Navbar() {
     }
   };
 
-  console.log("moi c'est ", username);
+  console.log("moi c'est: ", username);
 
   return (
     <header className="bg-purple z-50 fixed top-0 w-full shadow-xl">

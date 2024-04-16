@@ -1,8 +1,12 @@
 from rest_framework import generics
 from rest_framework.decorators import api_view
 from .models import Profile
+from rest_framework.views import APIView
+from rest_framework import status
+from rest_framework.permissions import IsAuthenticated
 from .serializers import ProfileSerializer, UserSerializer
 from rest_framework.response import Response
+from django.views.decorators.csrf import csrf_exempt
 from django.contrib.auth.models import User
 
 
@@ -22,7 +26,7 @@ class ProfileListAPIView(generics.ListAPIView):
 
         # add the username to each profile
         for profile_data in data:
-            user_id = profile_data['user']  # obtain the user id
+            user_id = profile_data['user']
             user = User.objects.get(pk=user_id) # obtain the object user complete
             profile_data['username'] = user.username
             print(user_id)
@@ -35,3 +39,15 @@ class ProfileDetailAPIView(generics.RetrieveAPIView):
 class UserDetailAPIView(generics.RetrieveAPIView):
     queryset = User.objects.all()
     serializer_class = UserSerializer
+
+class UpdateProfileAPIView(APIView):
+    permission_classes = [IsAuthenticated]
+
+    def put(self, request, *args, **kwargs):
+        user = request.user
+
+        serializer = UserSerializer(user, data=request.data, partial=True)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)

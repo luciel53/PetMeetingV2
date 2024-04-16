@@ -25,14 +25,18 @@ export default function Offer() {
           "http://127.0.0.1:8000/offers/offers/get_all_offers/"
         );
         const offers = response.data.offers;
+        console.log("offers????", offers);
         const selected = offers.find((offer) => offer.id === parseInt(id));
+        console.log("selecteed???????", selected);
         setSelectedOffer(selected);
 
         const ownerResponse = await axios.get(
           `http://127.0.0.1:8000/users/profile/${selected.user_id}`
         );
         const profile = ownerResponse.data;
+        console.log("quel Profil???", ownerResponse.data);
         setAvatar(profile.avatar);
+        console.log("image???",avatar);
       } catch (e) {
         console.error("Error fetching cats offers", e);
       }
@@ -43,8 +47,6 @@ export default function Offer() {
   if (!selectedOffer) {
     return null;
   }
-
-  console.log(selectedOffer);
 
   return (
     <>

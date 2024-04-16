@@ -11,7 +11,6 @@ from django.contrib.auth.decorators import login_required
 import uuid
 from rest_framework.views import APIView
 from .serializers import serialize_offer
-from rest_framework_simplejwt.authentication import JWTAuthentication
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.decorators import api_view, authentication_classes, permission_classes
 
@@ -32,7 +31,7 @@ def delete_offer(request, offerId):
         try:
             # get the offer
             offer = CatOffer.objects.get(pk=offerId)
-            print('coucou', offer)
+
         except CatOffer.DoesNotExist:
             return JsonResponse({'error': 'Offer not found'}, status=404)
 
@@ -54,10 +53,12 @@ def catOffer_view(request):
         # obtain the jwt token of the authorization header
         token = request.META['HTTP_AUTHORIZATION'].split(' ')[1]
         # create an instance of JWTAuthentication
+        print("salouteee", token)
         jwt_authentication = JWTAuthentication()
         try:
             # validate and decode jwt token to obtain the user
             user, _ = jwt_authentication.authenticate(request)
+            print("coucou", user)
         except:
             # if token not valid, throw an error
             return JsonResponse({'error': 'Invalid JWT token'}, status=401)
@@ -66,6 +67,7 @@ def catOffer_view(request):
     #     return JsonResponse({'error': 'JWT token is missing'}, status=401)
 
     if request.method == 'POST':
+        print(1)
         # extract form data from json
         name = request.POST.get('name')
         race = request.POST.get('race')
@@ -81,12 +83,14 @@ def catOffer_view(request):
         qualities = request.POST.get('qualities')
         flaws = request.POST.get('flaws')
         free_descriptive_text = request.POST.get('free_descriptive_text')
+        print(2)
 
         # Error form data
         if not name or not race or not sex or not location or not diseases_tests or not age:
             return JsonResponse({'error': 'Ce champs est obligatoire.'}, status=400)
 
         # create an instance of CatOffer model with form data
+        print(3)
         offer = CatOffer.objects.create(name=name,
                                         price=price,
                                         sex=sex,
@@ -103,6 +107,7 @@ def catOffer_view(request):
                                         free_descriptive_text=free_descriptive_text,
                                         user=user
                                         )
+        print(4)
         # Recover the files
         picture = request.FILES.get('picture')
         picture2 = request.FILES.get('picture2')
