@@ -311,6 +311,34 @@ export default function Profile() {
     }
   };
 
+  const handleSaveFacebook = async () => {
+    try {
+      console.log("quel facebook?????", changedFacebook);
+      const accessToken = localStorage.getItem("access_token");
+      const response = await axios.put("http://localhost:8000/users/profile/update/",
+        {
+          facebook_link: changedFacebook,
+         },
+          {
+            headers: {
+              Authorization: `Bearer ${accessToken}`,
+              'Content-Type': 'application/json',
+            },
+          }
+      );
+      if (response.status === 200) {
+        setIsEditFacebook(false);
+        setUserFacebook(changedFacebook);
+        setProfile((prevProfile) => ({
+          ...prevProfile,
+          facebook_link: changedFacebook,
+        }));
+      }
+    } catch (error) {
+      console.error("Error saving facebook link", error);
+    }
+  };
+
   return (
     <>
       <NavLink to="/">
@@ -505,10 +533,47 @@ export default function Profile() {
               )}
             </div>
             {/* facebook */}
-            <p className="flex flex-row text-lg ml-40 mb-4">
-              <img src={facebook} className="mr-7" alt="Facebook" />
-              <a href={profile.facebook_link}>Voir le profil Facebook</a>
-            </p>
+            <div className="flex flex-row">
+              <p className="flex flex-row text-lg ml-40 mt-4 mb-4">
+                <img
+                  src={facebook}
+                  className="mr-6"
+                  width={28}
+                  alt="Facebook"
+                ></img>
+                {profile ? (
+                  <>
+                    {isEditFacebook ? (
+                      <input
+                        type="url"
+                        value={changedFacebook}
+                        onChange={(e) => setChangedFacebook(e.target.value)}
+                        placeholder="Entrez l'adresse de votre profil Facebook"
+                        className="w-60"
+                      />
+                    ) : (
+                      <a href={profile.facebook_link}>{profile.facebook_link}</a>
+                    )}
+                  </>
+                ) : (
+                  <p>Chargement...</p>
+                )}
+              </p>
+              {!isEditFacebook ? (
+                <img
+                  src={change}
+                  alt="modifier"
+                  className=" w-8 h-8 ml-28 mt-3"
+                  onClick={() => setIsEditFacebook(!isEditFacebook)}
+                />
+              ) : (
+                <img src={save}
+                  alt="sauvegarder"
+                  className="w-6 h-6 ml-24 mt-3.5"
+                  onClick={handleSaveFacebook}
+                  ></img>
+              )}
+            </div>
           </div>
           {/* Avatar */}
           <div className="container flex flex-col w-[250px] h-[263px] bg-white rounded-3xl shadow-lg pb-5">
