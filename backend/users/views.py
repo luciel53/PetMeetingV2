@@ -45,9 +45,22 @@ class UpdateProfileAPIView(APIView):
 
     def put(self, request, *args, **kwargs):
         user = request.user
+        user_serializer = UserSerializer(user, data=request.data, partial=True)
 
-        serializer = UserSerializer(user, data=request.data, partial=True)
-        if serializer.is_valid():
-            serializer.save()
-            return Response(serializer.data)
-        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+        profile = request.user.profile
+        profile_serializer = ProfileSerializer(profile, data=request.data, partial=True)
+
+        user_is_valid = user_serializer.is_valid()
+        profile_is_valid = profile_serializer.is_valid()
+
+        if user_is_valid and profile_is_valid:
+            user_serializer.save()
+            profile_serializer.save()
+            return Response(profile_serializer.data)
+        else:
+            combined_errors = {}
+            if not user_is_valid:
+                combined_errors.update(user_serializer.errors)
+            if not profile_is_valid:
+                combined_errors.update(profile_serializer.errors)
+            return Response(combined_errors, status=status.HTTP_400_BAD_REQUEST)

@@ -17,8 +17,16 @@ export default function Profile() {
   const { id } = useParams();
   const [profile, setProfile] = useState(null);
   const [isEditEmail, setIsEditEmail] = useState(false);
+  const [isEditLocation, setIsEditLocation] = useState(false);
   const [userEmail, setUserEmail] = useState("");
+  const [userLocation, setUserLocation] = useState("");
   const [changedMail, setChangedMail] = useState("");
+  const [changedLocation, setChangedLocation] = useState("");
+  const [changedBirthdate, setChangedBirthdate] = useState("");
+  const [changedBio, setChangedBio] = useState("");
+  const [changedWebsite, setChangedWebsite] = useState("");
+  const [changedFacebook, setChangedFacebook] = useState("");
+  const [changedAvatar, setChangedAvatar] = useState(null);
   const [userNotFound, setUserNotFound] = useState(false);
   const [catsOffers, setCatsOffers] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -26,13 +34,6 @@ export default function Profile() {
   const [username, setUsername] = useState("");
   const [userId, setUserId] = useState("");
   const [connectedUser, setconnectedUser] = useState(false);
-
-  // useEffect(() => {
-  //   if (isEditEmail) {
-  //     setUserEmail(profile.email);
-  //     console.log("usermaillll", userEmail);
-  //   }
-  // }, [isEditEmail, profile.email]);
 
   useEffect(() => {
     if (localStorage.getItem("access_token") !== null) {
@@ -47,6 +48,7 @@ export default function Profile() {
       }
     }
   }, []);
+
 
   const fetchUsernameByUserId = async () => {
     try {
@@ -99,6 +101,7 @@ export default function Profile() {
         console.log(OffersByUser);
         // set the email address of the user
         setUserEmail(responseUser.data.email);
+
         // set the offers by user
         setCatsOffers(OffersByUser);
         console.log(profiles);
@@ -195,10 +198,11 @@ export default function Profile() {
 
   const handleSaveEmail = async () => {
     try {
-      console.log("quel mail???", changedMail);
       const accessToken = localStorage.getItem("access_token");
       const response = await axios.put("http://localhost:8000/users/profile/update/",
-        { email: changedMail },
+        {
+          email: changedMail,
+         },
           {
             headers: {
               Authorization: `Bearer ${accessToken}`,
@@ -207,10 +211,37 @@ export default function Profile() {
           }
       );
       console.log("Email update response: ", response.data);
-      setIsEditEmail(false);
-      setUserEmail(changedMail);
+      if (response.status === 200) {
+        setIsEditEmail(false);
+        setUserEmail(changedMail);
+      }
     } catch (error) {
       console.error("Error saving email", error);
+    }
+  };
+
+  const handleSaveLocation = async () => {
+    try {
+      const accessToken = localStorage.getItem("access_token");
+      const response = await axios.put("http://localhost:8000/users/profile/update/",
+        {
+          location: changedLocation,
+         },
+          {
+            headers: {
+              Authorization: `Bearer ${accessToken}`,
+              'Content-Type': 'application/json',
+            },
+          }
+      );
+      setIsEditLocation(false);
+      setUserLocation(changedLocation);
+      setProfile((prevProfile) => ({
+        ...prevProfile,
+        location: changedLocation,
+      }));
+    } catch (error) {
+      console.error("Error saving location", error);
     }
   };
 
@@ -271,15 +302,48 @@ export default function Profile() {
                   ></img>
               )}
             </div>
-            <p className="flex flex-row text-lg ml-40 mb-4">
-              <img
-                src={location}
-                className="mr-6"
-                width={28}
-                alt="localisation"
-              ></img>
-              {profile.location}
-            </p>
+            {/* location */}
+            <div className="flex flex-row">
+              <p className="flex flex-row text-lg ml-40 mt-4 mb-4">
+                <img
+                  src={location}
+                  className="mr-6"
+                  width={28}
+                  alt="adresse mail"
+                ></img>
+                {profile ? (
+                  <>
+                    {isEditLocation ? (
+                      <input
+                        type="text"
+                        value={changedLocation}
+                        onChange={(e) => setChangedLocation(e.target.value)}
+                        placeholder="Entrez votre Localisation"
+                        className="w-60"
+                      />
+                    ) : (
+                      <span>{profile.location}</span>
+                    )}
+                  </>
+                ) : (
+                  <p>Chargement...</p>
+                )}
+              </p>
+              {!isEditLocation ? (
+                <img
+                  src={change}
+                  alt="modifier"
+                  className=" w-8 h-8 ml-28 mt-3"
+                  onClick={() => setIsEditLocation(!isEditLocation)}
+                />
+              ) : (
+                <img src={save}
+                  alt="sauvegarder"
+                  className="w-6 h-6 ml-24 mt-3.5"
+                  onClick={handleSaveLocation}
+                  ></img>
+              )}
+            </div>
             <p className="flex flex-row text-lg ml-40 mb-4">
               <img
                 src={birthday}
