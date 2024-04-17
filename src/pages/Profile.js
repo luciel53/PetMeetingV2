@@ -18,8 +18,17 @@ export default function Profile() {
   const [profile, setProfile] = useState(null);
   const [isEditEmail, setIsEditEmail] = useState(false);
   const [isEditLocation, setIsEditLocation] = useState(false);
+  const [isEditBirthdate, setIsEditBirthdate] = useState(false);
+  const [isEditBio, setIsEditBio] = useState(false);
+  const [isEditWebsite, setIsEditWebsite] = useState(false);
+  const [isEditFacebook, setIsEditFacebook] = useState(false);
+  const [isEditAvatar, setIsEditAvatar] = useState(false);
   const [userEmail, setUserEmail] = useState("");
   const [userLocation, setUserLocation] = useState("");
+  const [userBio, setUserBio] = useState("");
+  const [userBirthdate, setUserBirthdate] = useState("");
+  const [userWebsite, setUserWebsite] = useState("");
+  const [userFacebook, setUserFacebook] = useState("");
   const [changedMail, setChangedMail] = useState("");
   const [changedLocation, setChangedLocation] = useState("");
   const [changedBirthdate, setChangedBirthdate] = useState("");
@@ -234,14 +243,71 @@ export default function Profile() {
             },
           }
       );
-      setIsEditLocation(false);
-      setUserLocation(changedLocation);
-      setProfile((prevProfile) => ({
-        ...prevProfile,
-        location: changedLocation,
-      }));
+      if (response.status === 200) {
+        setIsEditLocation(false);
+        setUserLocation(changedLocation);
+        setProfile((prevProfile) => ({
+          ...prevProfile,
+          location: changedLocation,
+        }));
+      }
     } catch (error) {
       console.error("Error saving location", error);
+    }
+  };
+
+  const handleSaveBio = async () => {
+    try {
+      const accessToken = localStorage.getItem("access_token");
+      const response = await axios.put("http://localhost:8000/users/profile/update/",
+        {
+          bio: changedBio,
+         },
+          {
+            headers: {
+              Authorization: `Bearer ${accessToken}`,
+              'Content-Type': 'application/json',
+            },
+          }
+      );
+      if (response.status === 200) {
+        setIsEditBio(false);
+        setUserBio(changedBio);
+        setProfile((prevProfile) => ({
+          ...prevProfile,
+          bio: changedBio,
+        }));
+      }
+    } catch (error) {
+      console.error("Error saving location", error);
+    }
+  };
+
+  const handleSaveWebsite = async () => {
+    try {
+      console.log("quel site?????", changedWebsite);
+      const accessToken = localStorage.getItem("access_token");
+      const response = await axios.put("http://localhost:8000/users/profile/update/",
+        {
+          external_link: changedWebsite,
+         },
+          {
+            headers: {
+              Authorization: `Bearer ${accessToken}`,
+              'Content-Type': 'application/json',
+            },
+          }
+      );
+      if (response.status === 200) {
+        setIsEditWebsite(false);
+        setUserWebsite(changedWebsite);
+        setProfile((prevProfile) => ({
+          ...prevProfile,
+          external_link: changedWebsite,
+        }));
+      }
+    } catch (error) {
+      console.error("Error saving website", error);
     }
   };
 
@@ -344,6 +410,7 @@ export default function Profile() {
                   ></img>
               )}
             </div>
+            {/* Birthdate */}
             <p className="flex flex-row text-lg ml-40 mb-4">
               <img
                 src={birthday}
@@ -353,19 +420,91 @@ export default function Profile() {
               ></img>
               {profile.birthdate}
             </p>
-            <p className="flex flex-row text-lg ml-40 mb-4">
-              <img
-                src={hello}
-                className="mr-6"
-                width={28}
-                alt="présentez-vous"
-              ></img>
-              {profile.bio}
-            </p>
-            <p className="flex flex-row text-lg ml-40 mb-4">
-              <img src={www} className="mr-6 w-7 h-7" alt="site web"></img>
-              <a href={profile.external_link}>Voir le site web</a>
-            </p>
+            {/* Bio */}
+            <div className="flex flex-row">
+              <p className="flex flex-row text-lg ml-40 mt-4 mb-4">
+                <img
+                  src={hello}
+                  className="mr-6"
+                  width={28}
+                  alt="adresse mail"
+                ></img>
+                {profile ? (
+                  <>
+                    {isEditBio ? (
+                      <input
+                        type="text"
+                        value={changedBio}
+                        onChange={(e) => setChangedBio(e.target.value)}
+                        placeholder="Entrez votre Présentation"
+                        className="w-60"
+                      />
+                    ) : (
+                      <span>{profile.bio}</span>
+                    )}
+                  </>
+                ) : (
+                  <p>Chargement...</p>
+                )}
+              </p>
+              {!isEditBio ? (
+                <img
+                  src={change}
+                  alt="modifier"
+                  className=" w-8 h-8 ml-28 mt-3"
+                  onClick={() => setIsEditBio(!isEditBio)}
+                />
+              ) : (
+                <img src={save}
+                  alt="sauvegarder"
+                  className="w-6 h-6 ml-24 mt-3.5"
+                  onClick={handleSaveBio}
+                  ></img>
+              )}
+            </div>
+            {/* website */}
+            <div className="flex flex-row">
+              <p className="flex flex-row text-lg ml-40 mt-4 mb-4">
+                <img
+                  src={www}
+                  className="mr-6"
+                  width={28}
+                  alt="Site web"
+                ></img>
+                {profile ? (
+                  <>
+                    {isEditWebsite ? (
+                      <input
+                        type="url"
+                        value={changedWebsite}
+                        onChange={(e) => setChangedWebsite(e.target.value)}
+                        placeholder="Entrez l'adresse de votre site web"
+                        className="w-60"
+                      />
+                    ) : (
+                      <a href={profile.external_link}>{profile.external_link}</a>
+                    )}
+                  </>
+                ) : (
+                  <p>Chargement...</p>
+                )}
+              </p>
+              {!isEditWebsite ? (
+                <img
+                  src={change}
+                  alt="modifier"
+                  className=" w-8 h-8 ml-28 mt-3"
+                  onClick={() => setIsEditWebsite(!isEditWebsite)}
+                />
+              ) : (
+                <img src={save}
+                  alt="sauvegarder"
+                  className="w-6 h-6 ml-24 mt-3.5"
+                  onClick={handleSaveWebsite}
+                  ></img>
+              )}
+            </div>
+            {/* facebook */}
             <p className="flex flex-row text-lg ml-40 mb-4">
               <img src={facebook} className="mr-7" alt="Facebook" />
               <a href={profile.facebook_link}>Voir le profil Facebook</a>
