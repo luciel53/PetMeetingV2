@@ -414,15 +414,15 @@ export default function Profile() {
       <div className="container flex flex-col h-screen justify-center -mt-10 mx-auto ml-72 animate-fade">
         <div className="container flex flex-row mb-6">
           {/* Informations */}
-          <div className="container w-[988px] h-[395px] flex flex-col bg-white rounded-3xl shadow-lg mr-5">
+          <div className="container w-[988px] h-auto flex flex-col bg-white rounded-3xl shadow-lg mr-5">
             {/* informations title */}
             <h3 className="mx-auto my-4 text-2xl">
               {connectedUser ? "Mes informations" : "Informations"}
             </h3>
             {/* email */}
-            <div className="flex flex-row">
+            <div className="flex flex-row justify-between mx-40">
               {isOwner && (
-                <p className="flex flex-row text-lg ml-40 mt-4 mb-4">
+                <p className="flex flex-row text-lg mt-4 mb-4">
                   <img
                     src={email}
                     className="mr-6"
@@ -467,8 +467,8 @@ export default function Profile() {
               )}
             </div>
             {/* location */}
-            <div className="flex flex-row">
-              <p className="flex flex-row text-lg ml-40 mt-4 mb-4">
+            <div className="flex flex-row  justify-between mx-40">
+              <p className="flex flex-row text-lg mt-4 mb-4">
                 <img
                   src={location}
                   className="mr-6"
@@ -512,9 +512,9 @@ export default function Profile() {
               )}
             </div>
             {/* Birthdate */}
-            <div className="flex flex-row">
+            <div className="flex flex-row justify-between mx-40">
               {isOwner && (
-                <p className="flex flex-row text-lg ml-40 mt-4 mb-4">
+                <p className="flex flex-row text-lg mt-4 mb-4">
                   <img
                     src={birthday}
                     className="mr-6"
@@ -559,8 +559,8 @@ export default function Profile() {
               )}
             </div>
             {/* Bio */}
-            <div className="flex flex-row">
-              <p className="flex flex-row text-lg ml-40 mt-4 mb-4">
+            <div className="flex flex-row justify-between mx-40">
+              <p className="flex flex-row text-lg mt-4 mb-4">
                 <img
                   src={hello}
                   className="mr-6"
@@ -604,8 +604,8 @@ export default function Profile() {
               )}
             </div>
             {/* website */}
-            <div className="flex flex-row">
-              <p className="flex flex-row text-lg ml-40 mt-4 mb-4">
+            <div className="flex flex-row justify-between mx-40">
+              <p className="flex flex-row text-lg mt-4 mb-4">
                 <img src={www} className="mr-6" width={28} alt="Site web"></img>
                 {profile ? (
                   <>
@@ -646,8 +646,8 @@ export default function Profile() {
               )}
             </div>
             {/* facebook */}
-            <div className="flex flex-row">
-              <p className="flex flex-row text-lg ml-40 mt-4 mb-4">
+            <div className="flex flex-row justify-between mx-40">
+              <p className="flex flex-row text-lg mt-4 mb-8">
                 <img
                   src={facebook}
                   className="mr-6"
@@ -696,12 +696,11 @@ export default function Profile() {
           {/* Avatar */}
           <div className="flex flex-row">
             <>
-
-                <p className="flex flex-row text-lg ml-40 mt-4 mb-4">
+                <p className="flex flex-row text-lg ml-2 mt-0 mb-4">
                   {profile ? (
                     <>
                       {isOwner && isEditAvatar ? (
-                        <div className="container flex flex-col w-[350px] h-[363px] bg-white rounded-3xl shadow-lg pb-5">
+                        <div className="container flex flex-col w-[350px] h-[303px] bg-white rounded-3xl shadow-lg pb-5">
                           <p className="mx-auto mt-3 mb-2 font-semibold text-lg">
                             {profile.username}
                           </p>
@@ -716,12 +715,12 @@ export default function Profile() {
                             <input
                               type="file"
                               onChange={(e) => setChangedAvatar(e.target.files[0])}
-                              className="w-60"
+                              className="w-60 ml-5 mt-5"
                             />
                             <img
                               src={save}
                               alt="sauvegarder"
-                              className="w-6 h-6 ml-24 mt-3.5"
+                              className="w-6 h-6 ml-10 mt-6"
                               onClick={handleSaveAvatar}
                             ></img>
                           </div>
@@ -739,7 +738,7 @@ export default function Profile() {
                               alt={profile.username}
                             />
                           </div>
-                          <div className="mb-4 relative">
+                          <div className="mb-0 relative">
                             {isOwner && !isEditAvatar ? (
                               <img
                                 src={change}
@@ -765,7 +764,7 @@ export default function Profile() {
                     <p>Chargement...</p>
                   )}
                 </p>
-              
+
 
             </>
           </div>
@@ -796,29 +795,29 @@ export default function Profile() {
                 <tr>
                   <td>
                     <NavLink to={`/Annonces/${catOffer.id}`}>
-                      {catOffer.name}
+                      <p className="mt-3">{catOffer.name}</p>
                     </NavLink>
                   </td>
                   <td>
                     <NavLink to={`/Annonces/${catOffer.id}`}>
-                      {catOffer.race}
+                      <p className="mt-3">{catOffer.race}</p>
                     </NavLink>
                   </td>
                   <td>
                     <NavLink to={`/Annonces/${catOffer.id}`}>
-                      {catOffer.sex}
+                    <p className="mt-3">{catOffer.sex}</p>
                     </NavLink>
                   </td>
                   <td>
                     <NavLink to={`/Annonces/${catOffer.id}`}>
-                      {catOffer.name}
+                    <p className="mt-3">{catOffer.name}</p>
                     </NavLink>
                   </td>
                   <td>
                     <NavLink to={`/Annonces/${catOffer.id}`}>
                       <img
                         src={`http://localhost:8000${catOffer.picture}`}
-                        className="w-9 mx-auto"
+                        className="w-9 mt-3 mx-auto"
                         alt={catOffer.name}
                       />
                     </NavLink>
