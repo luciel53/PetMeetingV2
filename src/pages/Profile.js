@@ -43,6 +43,7 @@ export default function Profile() {
   const [username, setUsername] = useState("");
   const [userId, setUserId] = useState("");
   const [connectedUser, setconnectedUser] = useState(false);
+  const [isOwner, setIsOwner] = useState(false);
 
   useEffect(() => {
     if (localStorage.getItem("access_token") !== null) {
@@ -75,8 +76,10 @@ export default function Profile() {
   useEffect(() => {
     if (profile && userId && profile.user === parseInt(userId)) {
       setconnectedUser(true);
+      setIsOwner(true);
     } else {
       setconnectedUser(false);
+      setIsOwner(false);
     }
   }, [profile, userId]);
 
@@ -229,6 +232,34 @@ export default function Profile() {
     }
   };
 
+  const handleSaveBirthdate = async () => {
+    try {
+      console.log("quelle date?????", changedBirthdate);
+      const accessToken = localStorage.getItem("access_token");
+      const response = await axios.put("http://localhost:8000/users/profile/update/",
+        {
+          birthdate: changedBirthdate,
+         },
+          {
+            headers: {
+              Authorization: `Bearer ${accessToken}`,
+              'Content-Type': 'application/json',
+            },
+          }
+      );
+      if (response.status === 200) {
+        setIsEditBirthdate(false);
+        setUserBirthdate(changedBirthdate);
+        setProfile((prevProfile) => ({
+          ...prevProfile,
+          birthdate: changedBirthdate,
+        }));
+      }
+    } catch (error) {
+      console.error("Error saving birthdate", error);
+    }
+  };
+
   const handleSaveLocation = async () => {
     try {
       const accessToken = localStorage.getItem("access_token");
@@ -356,39 +387,41 @@ export default function Profile() {
             </h3>
             {/* email */}
             <div className="flex flex-row">
-              <p className="flex flex-row text-lg ml-40 mt-4 mb-4">
-                <img
-                  src={email}
-                  className="mr-6"
-                  width={28}
-                  alt="adresse mail"
-                ></img>
-                {profile ? (
-                  <>
-                    {isEditEmail ? (
-                      <input
-                        type="email"
-                        value={changedMail}
-                        onChange={(e) => setChangedMail(e.target.value)}
-                        placeholder="Entrez votre adresse mail"
-                        className="w-60"
-                      />
-                    ) : (
-                      <span>{userEmail}</span>
-                    )}
-                  </>
-                ) : (
-                  <p>Chargement...</p>
+              {isOwner && (
+                <p className="flex flex-row text-lg ml-40 mt-4 mb-4">
+                  <img
+                    src={email}
+                    className="mr-6"
+                    width={28}
+                    alt="adresse mail"
+                  ></img>
+                  {profile ? (
+                    <>
+                      {isEditEmail ? (
+                        <input
+                          type="email"
+                          value={changedMail}
+                          onChange={(e) => setChangedMail(e.target.value)}
+                          placeholder="Entrez votre adresse mail"
+                          className="w-60"
+                        />
+                      ) : (
+                        <span>{userEmail}</span>
+                      )}
+                    </>
+                  ) : (
+                    <p>Chargement...</p>
+                  )}
+                </p>
                 )}
-              </p>
-              {!isEditEmail ? (
+              {isOwner && !isEditEmail ? (
                 <img
                   src={change}
                   alt="modifier"
                   className=" w-8 h-8 ml-28 mt-3"
                   onClick={() => setIsEditEmail(!isEditEmail)}
                 />
-              ) : (
+              ) : isOwner && (
                 <img src={save}
                   alt="sauvegarder"
                   className="w-6 h-6 ml-24 mt-3.5"
@@ -423,14 +456,14 @@ export default function Profile() {
                   <p>Chargement...</p>
                 )}
               </p>
-              {!isEditLocation ? (
+              {isOwner && !isEditLocation ? (
                 <img
                   src={change}
                   alt="modifier"
                   className=" w-8 h-8 ml-28 mt-3"
                   onClick={() => setIsEditLocation(!isEditLocation)}
                 />
-              ) : (
+              ) : isOwner && (
                 <img src={save}
                   alt="sauvegarder"
                   className="w-6 h-6 ml-24 mt-3.5"
@@ -439,15 +472,49 @@ export default function Profile() {
               )}
             </div>
             {/* Birthdate */}
-            <p className="flex flex-row text-lg ml-40 mb-4">
-              <img
-                src={birthday}
-                className="mr-6"
-                width={28}
-                alt="anniversaire"
-              ></img>
-              {profile.birthdate}
-            </p>
+            <div className="flex flex-row">
+              {isOwner && (
+                <p className="flex flex-row text-lg ml-40 mt-4 mb-4">
+                  <img
+                    src={birthday}
+                    className="mr-6"
+                    width={28}
+                    alt="Date de naissance"
+                  ></img>
+                  {profile ? (
+                    <>
+                      {isEditBirthdate ? (
+                        <input
+                          type="date"
+                          value={changedBirthdate}
+                          onChange={(e) => setChangedBirthdate(e.target.value)}
+                          placeholder="Votre date de naissance au format YYYY-MM-DD"
+                          className="w-60"
+                        />
+                      ) : (
+                        <span>{profile.birthdate}</span>
+                      )}
+                    </>
+                  ) : (
+                    <p>Chargement...</p>
+                  )}
+                </p>
+                )}
+              {isOwner && !isEditBirthdate ? (
+                <img
+                  src={change}
+                  alt="modifier"
+                  className=" w-8 h-8 ml-28 mt-3"
+                  onClick={() => setIsEditBirthdate(!isEditBirthdate)}
+                />
+              ) : isOwner && (
+                <img src={save}
+                  alt="sauvegarder"
+                  className="w-6 h-6 ml-24 mt-3.5"
+                  onClick={handleSaveBirthdate}
+                  ></img>
+              )}
+            </div>
             {/* Bio */}
             <div className="flex flex-row">
               <p className="flex flex-row text-lg ml-40 mt-4 mb-4">
@@ -475,14 +542,14 @@ export default function Profile() {
                   <p>Chargement...</p>
                 )}
               </p>
-              {!isEditBio ? (
+              {isOwner && !isEditBio ? (
                 <img
                   src={change}
                   alt="modifier"
                   className=" w-8 h-8 ml-28 mt-3"
                   onClick={() => setIsEditBio(!isEditBio)}
                 />
-              ) : (
+              ) : isOwner && (
                 <img src={save}
                   alt="sauvegarder"
                   className="w-6 h-6 ml-24 mt-3.5"
@@ -517,14 +584,14 @@ export default function Profile() {
                   <p>Chargement...</p>
                 )}
               </p>
-              {!isEditWebsite ? (
+              {isOwner && !isEditWebsite ? (
                 <img
                   src={change}
                   alt="modifier"
                   className=" w-8 h-8 ml-28 mt-3"
                   onClick={() => setIsEditWebsite(!isEditWebsite)}
                 />
-              ) : (
+              ) : isOwner && (
                 <img src={save}
                   alt="sauvegarder"
                   className="w-6 h-6 ml-24 mt-3.5"
@@ -559,14 +626,14 @@ export default function Profile() {
                   <p>Chargement...</p>
                 )}
               </p>
-              {!isEditFacebook ? (
+              {isOwner && !isEditFacebook ? (
                 <img
                   src={change}
                   alt="modifier"
                   className=" w-8 h-8 ml-28 mt-3"
                   onClick={() => setIsEditFacebook(!isEditFacebook)}
                 />
-              ) : (
+              ) : isOwner && (
                 <img src={save}
                   alt="sauvegarder"
                   className="w-6 h-6 ml-24 mt-3.5"
