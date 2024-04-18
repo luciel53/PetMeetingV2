@@ -25,7 +25,7 @@ export default function Annonces() {
 
   const [sex, setSex] = useState("");
   const [race, setRace] = useState("");
-  const [eyeColor, setEyeColor] = useState("");
+  const [eye_color, setEye_color] = useState("");
   const [blood, setBlood] = useState("");
   const [location, setLocation] = useState("");
   const [filteredOffers, setFilteredOffers] = useState("");
@@ -38,26 +38,26 @@ export default function Annonces() {
       return (
         (!sex || offer.sex === sex) &&
         (!race || offer.race === race) &&
-        (!eyeColor || offer.eye_color === eyeColor) &&
+        (!eye_color || offer.eye_color === eye_color) &&
         (!blood || offer.blood === blood) &&
         (!location || offer.location === location)
       );
     });
     setFilteredOffers(filtered);
-  }, [catsOffers, sex, race, eyeColor, blood, location]);
+  }, [catsOffers, sex, race, eye_color, blood, location]);
   console.log("jetesttttttttt", race);
 
   function handleSearch(criteria) {
     setSex(criteria.selectedSex);
     setRace(criteria.selectedRace);
-    setEyeColor(criteria.selectedEyeColor);
+    setEye_color(criteria.selectedEyeColor);
     setBlood(criteria.selectedBlood);
     setLocation(criteria.selectedLocation);
   }
 
   console.log("SEXE:::: ", sex);
   console.log("RACE:::: ", race);
-  console.log("EYECOLOR:::: ", eyeColor);
+  console.log("EYECOLOR:::: ", eye_color);
   console.log("BLOOD:::: ", blood);
   console.log("LOCATION:::: ", location);
 

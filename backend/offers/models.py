@@ -183,12 +183,10 @@ BLOOD_CHOICES = [
 ]
 
 EYECOLOR_CHOICES = [
-    ('blue', 'bleu'),
-    ('green', 'verts'),
-    ('gold', 'Or'),
-    ('vairons', 'vairons'),
-    ('', '')
-
+    ('Bleus', 'Bleus'),
+    ('Verts', 'Verts'),
+    ('Or', 'Or'),
+    ('Vairons', 'Vairons'),
 ]
 
 class CatOffer(models.Model):

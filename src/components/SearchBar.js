@@ -10,7 +10,7 @@ import { useState } from "react";
 export default function SearchBar({ onSearch }) {
   const [sex, setSex] = useState("");
   const [Race, setRace] = useState("");
-  const [colorEye, setColorEye] = useState("");
+  const [eye_color, setEye_color] = useState("");
   const [groupeSanguin, setGroupeSanguin] = useState("");
   const [localisation, setLocalisation] = useState("");
 
@@ -31,7 +31,7 @@ export default function SearchBar({ onSearch }) {
   }
 
   function handleRemoveColorEyeCross() {
-    setColorEye("");
+    setEye_color("");
   }
 
   // manage the searchbar button
@@ -42,21 +42,25 @@ export default function SearchBar({ onSearch }) {
       selectedSex: sex,
       selectedRace: Race,
       selectedBlood: groupeSanguin,
-      selectedEyeColor: colorEye,
+      selectedEyeColor: eye_color,
       selectedLocation: localisation,
     };
 
     if (onSearch) {
       onSearch(criteria);
     }
-  } 
+  }
+
+  console.log("couleur::::", eye_color);
 
   return (
     <div>
       <div className=" flex flex-row bg-white rounded-full md:w-[650px] lg:w-[719px] h-16 border-fragole border mx-auto shadow-lg md:text-xs lg:text-lg animate-fade animate-delay-100">
+        {/* Sex */}
         <select
           className="bg-white rounded-full outline-none pl-4 hover:opacity-50 cursor-pointer"
           onChange={(e) => setSex(e.target.value)}
+          value=""
         >
           <option value="" className="text-center">
             Sexe
@@ -67,9 +71,11 @@ export default function SearchBar({ onSearch }) {
             </option>
           ))}
         </select>
+        {/* Race */}
         <select
           className="bg-white w-20 pr-2 pl-3 rounded-full outline-none hover:opacity-50 cursor-pointer"
           onChange={(e) => setRace(e.target.value)}
+          value=""
         >
           <option value="" className="text-center">
             Race
@@ -80,20 +86,24 @@ export default function SearchBar({ onSearch }) {
             </option>
           ))}
         </select>
+        {/* Eye color */}
         <select
           className="bg-white pl-3 pr-2 w-48 rounded-full outline-none hover:opacity-50 cursor-pointer"
-          onChange={(e) => setColorEye(e.target.value)}
+          onChange={(e) => setEye_color(e.target.value)}
+          value=""
         >
           <option value="" className="text-center">
             Couleur des yeux
           </option>
           {eyeColor.map((option) => (
-            <option value={option.value}>{option.label}</option>
+            <option value={option.value}>{option.value}</option>
           ))}
         </select>
+        {/* Blood */}
         <select
           className="bg-white ml-3 pr-2 rounded-full outline-none hover:opacity-50 cursor-pointer"
           onChange={(e) => setGroupeSanguin(e.target.value)}
+          value=""
         >
           <option value="" className="text-center">
             Groupe sanguin
@@ -104,9 +114,11 @@ export default function SearchBar({ onSearch }) {
             </option>
           ))}
         </select>
+        {/* Location */}
         <select
           className="bg-white rounded-full w-24 pl-2 outline-none hover:opacity-50 cursor-pointer"
           onChange={(e) => setLocalisation(e.target.value)}
+        value=""
         >
           <option value="" className="text-center">
             Région
@@ -149,10 +161,10 @@ export default function SearchBar({ onSearch }) {
               </p>
             </li>
           )}
-          {colorEye && (
+          {eye_color && (
             <li className="container flex flex-row bg-white border-fragole border h-10 w-auto text-center p-2 mr-3 rounded-lg">
               <p className="flex flex-row">
-                {colorEye}
+                {eye_color}
                 <button onClick={handleRemoveColorEyeCross}>
                   <img src={cross} className="w-3.5 h-3.5 ml-3" alt="delete" />
                 </button>

@@ -44,14 +44,14 @@ export default function Carousel() {
             </div>
 
             {/* Carousel */}
-            <div className="relative mt-4 md:mt-8 md:p-5 shadow-xl mb-5 flex flex-nowrap bg-white rounded-3xl font-semibold">
+            <div className="relative mt-4 md:mt-8 md:p-5 shadow-xl mb-5 flex flex-nowrap bg-white rounded-3xl font-semibold overflow-x-scroll snap-mandatory">
                 {Array.from({ length: itemsToShow }).map((_, index) => {
                     const imageIndex = (startIndex + index) % cats.length;
                     const image = cats[imageIndex];
                     return (
-                        <div key={index} className="container flex flex-col bg-white z-0 md:h-80 w-80 mx-auto mr-3 pb-2 rounded-3xl shadow-xl transition: all 0.5s ease-in-out hover:scale-125 transition duration-500 cursor-pointer">
+                        <div key={index} className="container flex flex-col bg-white z-0 md:h-80 w-80 mx-auto mr-3 pt-2 pb-2 rounded-3xl shadow-xl transition: all 0.5s ease-in-out hover:scale-110 transition duration-500 cursor-pointer">
                             <p className="text-center">{image.name}</p>
-                            <img src={image.image} className="z-20 h-40 md:h-72 my-3 object-cover mx-auto" alt={image.name} />
+                            <img src={image.image} className="z-20 h-[100px] md:h-[244px] my-3 object-cover mx-auto" alt={image.name} />
                             <p className="text-center">{image.race}</p>
 
                         </div>
