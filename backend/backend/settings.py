@@ -45,6 +45,7 @@ INSTALLED_APPS = [
     'offers.apps.OffersConfig',
     'users.apps.UsersConfig',
     'contact.apps.ContactConfig',
+    'messaging.apps.MessagingConfig',
 ]
 
 MIDDLEWARE = [
