@@ -33,6 +33,7 @@ urlpatterns = [
     path('', include('auth.urls')),
     path('contact/', include('contact.urls')),
     path('offers/', include('offers.urls')),
+    path('messaging/', include('messaging.urls')),
     # path('media/', include('media.urls')),
 
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

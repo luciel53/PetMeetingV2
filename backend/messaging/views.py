@@ -3,7 +3,12 @@ from django.contrib.auth.models import User
 from messaging.serializers import MessageSerializer
 from messaging.models import ChatMessage
 from rest_framework import generics
+from rest_framework import status
+from rest_framework.response import Response
+from rest_framework.permissions import IsAuthenticated
 from django.db.models import Subquery, OuterRef, Q
+from users.serializers import ProfileSerializer
+from users.models import Profile
 
 class Inbox(generics.ListAPIView):
     serializer_class = MessageSerializer
@@ -41,3 +46,28 @@ class GetMessages(generics.ListAPIView):
             receiver__in=[receiver_id, sender_id]
         )
         return messages
+
+class SendMessage(generics.CreateAPIView):
+    serializer_class = MessageSerializer
+
+class SearchUserEmail(generics.ListAPIView):
+    serializer_class = ProfileSerializer
+    queryset = Profile.objects.all()
+    # permission_classes = [IsAuthenticated]
+
+    def list(self, request, *args, **kwargs):
+        username = self.kwargs['username']
+        logged_in_user = self.request.user
+        users = Profile.objects.filter(
+            Q(user__username__icontains=username),
+            
+        )
+
+        if not users.exists():
+            return Response(
+                {'detail': 'No user found'},
+                status=status.HTTP_404_NOT_FOUND
+                )
+
+        serializer = self.get_serializer(users, many=True)
+        return Response(serializer.data)
