@@ -29,22 +29,36 @@ function Message() {
               className="p-1 border border-darkgray rounded-lg outline-none"
             />
           </div>
-          <div className="flex flex-row pl-10 mt-6">
+          {/* 1 conversation */}
+          <div className="flex flex-row py-2 pl-10 mt-6 hover:bg-fairpurple">
             <div>
+              {/* Mini avatar */}
               <img
                 src={suzanne.image}
                 className="w-12 h-12 object-cover rounded-full mr-6"
                 alt={suzanne.name}
               />
             </div>
+            {/* name + status */}
             <div className="pt-0">
               <div>
                 <strong>Suzanne</strong>
               </div>
-              <div className="flex flex-row italic text-sm">
-				<p className="mr-3">En ligne</p>
-				<div className="w-2.5 h-2.5 mt-1.5 rounded-full bg-green"></div>
-				</div>
+              <div className="flex flex-row text-sm">
+                <p className="mr-3">
+                  <em>En ligne</em>
+                </p>
+                <div className="w-2.5 h-2.5 mt-1.5 rounded-full bg-green"></div>
+              </div>
+              <div>
+                <p>
+                  <em>Pas de soucis! il est...</em>
+                </p>
+              </div>
+            </div>
+            {/* Number of no read messages */}
+            <div className="h-6 w-6 rounded-full mr-8 bg-fragole text-white mx-auto">
+              <p className="text-center mt-0.5">6</p>
             </div>
           </div>
         </aside>
@@ -93,14 +107,20 @@ function Message() {
         {/* Chat */}
         <div className="mb-28">
           <div className="flex flex-col w-[750px] h-[90%] mr-6 p-4 bg-white rounded-3xl shadow-lg">
+            <div className="text-center w-28 text-verydarkgray mx-auto mb-2">
+              Aujourd'hui
+            </div>
             {/* Right bubble */}
             <div className="flex flex-row justify-between">
               <div className="w-auto h-2 bg-white"></div>
-              <div className=" w-[320px] h-auto p-3 bg-fairpurple rounded-xl">
-                <p>
-                  Bonjour! Je cherche un mâle pour ma femelle abyssin, votre
-                  mâle est-il toujours disponible? Merci
-                </p>
+              <div className="flex flex-col">
+                <div className=" w-[320px] h-auto p-3 bg-fairpurple rounded-xl">
+                  <p>
+                    Bonjour! Je cherche un mâle pour ma femelle abyssin, votre
+                    mâle est-il toujours disponible? Merci
+                  </p>
+                </div>
+                <p className="text-end text-verydarkgray mt-1 mr-2">10:50</p>
               </div>
             </div>
             {/* Left bubble */}
@@ -108,6 +128,7 @@ function Message() {
             <div className=" w-[320px] h-auto mt-3 p-3 bg-gray rounded-xl">
               <p>Pas de soucis! il est toujours dispo!</p>
             </div>
+			<p className="text-verydarkgray mt-2 ml-2">14:29</p>
           </div>
           {/* Messages input */}
           <div className="flex flex-row w-[750px] h-10 mt-4  mb-auto mr-6 p-4 bg-white items-center rounded-3xl shadow-lg justify-between">
