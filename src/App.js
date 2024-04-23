@@ -16,6 +16,7 @@ import Publier from "./pages/Publier";
 import Contact from "./pages/Contact";
 import Error404 from "./pages/Error404";
 import Footer from "./components/Footer";
+import Message from "./components/Chat/Message";
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 
 
@@ -40,6 +41,7 @@ export default function App() {
           <Route path="/Contact" element={<Contact />} />
           <Route path="/Profile/:id" element={<Profile />} />
           <Route path="/Messagerie" element={<Messages />} />
+          <Route path="/inbox" element={<Message />} exact />
         </Routes>
         <Footer />
       </div>
