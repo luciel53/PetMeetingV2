@@ -35,7 +35,7 @@ class Inbox(generics.ListAPIView):
         return messages
 
 class GetMessages(generics.ListAPIView):
-    serializer_class = ChatMessage
+    serializer_class = MessageSerializer
 
     def get_queryset(self):
         sender_id = self.kwargs['sender_id']
@@ -43,7 +43,7 @@ class GetMessages(generics.ListAPIView):
 
         messages = ChatMessage.objects.filter(
             sender__in=[sender_id, receiver_id],
-            receiver__in=[receiver_id, sender_id]
+            receiver__in=[sender_id, receiver_id]
         )
         return messages
 
@@ -60,7 +60,7 @@ class SearchUserEmail(generics.ListAPIView):
         logged_in_user = self.request.user
         users = Profile.objects.filter(
             Q(user__username__icontains=username),
-            
+
         )
 
         if not users.exists():
