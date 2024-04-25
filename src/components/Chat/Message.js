@@ -90,10 +90,16 @@ function Message() {
                   </p>
                 </div>
               </div>
-              {/* Number of no read messages */}
-              <div className="h-6 w-6 rounded-full mr-8 bg-fragole text-white mx-auto">
-                <p className="text-center mt-0.5">6</p>
-              </div>
+              <div className="flex flex-col justify-around mx-auto">
+                {/* date */}
+                <div className="bg-green text-white text-xs h-4 px-1 pt-0.5 rounded ">
+                {moment.utc(message.date).local().startOf('seconds').fromNow()}
+                </div>
+                {/* Number of no read messages */}
+                <div className="h-6 w-6 rounded-full bg-fragole text-white mx-auto">
+                  <p className="text-center mt-0.5">6</p>
+                </div>
+                </div>
             </div>
           ))}
         </aside>
