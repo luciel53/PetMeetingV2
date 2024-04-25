@@ -1,6 +1,7 @@
 from django.db import models
 from django.contrib.auth.models import User
 from users.models import Profile
+from offers.models import CatOffer
 
 
 class ChatMessage(models.Model):
@@ -12,12 +13,14 @@ class ChatMessage(models.Model):
     is_read = models.BooleanField(default=False)
     date = models.DateField(auto_now_add=True)
 
+    cat_offer = models.ForeignKey(CatOffer, on_delete=models.CASCADE, null=True)
+
     class Meta:
         ordering = ['date']
         verbose_name_plural = "Message"
 
     def __str__(self):
-        return f"{self.sender} - {self.receiver}"
+        return f"{self.sender} - {self.receiver} pour l'annonce {self.cat_offer}"
 
     @property
     def sender_profile(self):

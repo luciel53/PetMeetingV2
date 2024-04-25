@@ -68,7 +68,7 @@ function Message() {
               <div>
                 {/* Mini offer avatar */}
                 <img
-                  src={popeye.image}
+                  src={`http://127.0.0.1:8000${message.cat_offer_picture}`}
                   className="w-12 h-12 object-cover rounded-full mr-6"
                   alt={popeye.name}
                 />
@@ -76,7 +76,7 @@ function Message() {
               {/* name + status */}
               <div className="pt-0">
                 <div>
-                  <strong>Popeye</strong>
+                  <strong>{message.cat_offer_name}</strong>
                 </div>
                 <div className="flex flex-row text-sm">
                   <div className="w-2.5 h-2.5 mt-1 mr-2 rounded-full bg-green"></div>

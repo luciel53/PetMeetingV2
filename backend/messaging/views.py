@@ -2,6 +2,7 @@ from django.shortcuts import render
 from django.contrib.auth.models import User
 from messaging.serializers import MessageSerializer
 from messaging.models import ChatMessage
+from offers.models import CatOffer
 from rest_framework import generics
 from rest_framework import status
 from rest_framework.response import Response
@@ -50,6 +51,22 @@ class GetMessages(generics.ListAPIView):
 
 class SendMessage(generics.CreateAPIView):
     serializer_class = MessageSerializer
+
+    def perform_create(self, serializer):
+        cat_offer = self.request.data.get('cat_offer')
+
+        if not cat_offer:
+            return Response({"error": "No cat_offer provided"}, status=status.HTTP_400_BAD_REQUEST)
+
+        try:
+            offer = CatOffer.objects.get(id=cat_offer)
+        except CatOffer.DoesNotExist:
+            return Response({"error": "Invalid cat_offer"}, status=status.HTTP_404_NOT_FOUND)
+
+        # associate each msg to a specific offer
+        serializer.save(offer=offer)
+
+
 
 class SearchUserEmail(generics.ListAPIView):
     serializer_class = ProfileSerializer
