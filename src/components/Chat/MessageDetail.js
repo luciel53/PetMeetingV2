@@ -1,5 +1,5 @@
 import { React, useState, useEffect } from "react";
-import { NavLink, useLocation, useParams } from "react-router-dom";
+import { NavLink, useLocation, useParams, useHistory } from "react-router-dom";
 import axios from "axios";
 import { jwtDecode } from "jwt-decode";
 import moment from "moment";
@@ -17,8 +17,9 @@ function MessageDetail() {
   const [message, setMessage] = useState([]);
   const [messages, setMessages] = useState([]);
   const [userId, setUserId] = useState("");
-  const [IsAuth, setIsAuth] = useState(false);
+  const [isAuth, setIsAuth] = useState(false);
   const other_user_id = useParams();
+  const {senderId, receiverId, offerId} = useParams();
   console.log("theID of other::: ", other_user_id);
 
   useEffect(() => {
@@ -47,35 +48,38 @@ function MessageDetail() {
   console.log("MAIIIIS ID::::::", userId);
 
   useEffect(() => {
-    // let interval = setInterval(() => {
-		if (localStorage.getItem("access_token") !== null) {
-			console.log("pouette");
-			setIsAuth(true);
-			const token = localStorage.getItem("access_token");
-			try {
-			  // decode token
-			  const decodedToken = jwtDecode(token);
-			  console.log(decodedToken);
-			  const user_id = decodedToken.user_id;
-			  setUserId(user_id);
-			  console.log("TEST ID: ", user_id);
 
-			  // fetch msg using user_id
-			  axios
-				.get(baseUrl + "get-messages/" + user_id + "/" + other_user_id.id)
-				.then((response) => {
-				  console.log("C KOI::::", response.data);
-				  setMessage(response.data);
-				});
-			} catch (error) {
-			  console.log(error);
+    if (localStorage.getItem("access_token") !== null) {
+      console.log("pouette");
+      setIsAuth(true);
+      const token = localStorage.getItem("access_token");
+      try {
+        // decode token
+        const decodedToken = jwtDecode(token);
+        console.log(decodedToken);
+        const user_id = decodedToken.user_id;
+        setUserId(user_id);
+        console.log("TEST ID: ", user_id);
+
+        // fetch msg using user_id
+		if (isAuth && senderId && receiverId) {
+        	axios
+        	  .get(baseUrl + "get-messages/" + user_id + "/" + receiverId + '/' + offerId)
+        	  .then((response) => {
+        	    console.log("C KOI::::", response.data);
+        	    setMessage(response.data);
+				console.log("QUEL MESSAGE:", message);
+        	  });
 			}
-		  }
-	// }, 2000);
-	// return () => {
-	// 	clearInterval();
-	// }
-  }, []);
+      } catch (error) {
+        console.log(error);
+      }
+    }
+
+  }, [isAuth, senderId, receiverId, offerId]);
+
+  const offer = message.find((message) => message.sender === userId || message.receiver === userId);
+  console.log("OOFFFERRR", offer);
 
   return (
     <div className="flex flex-row mt-40 mx-auto animate-fade">
@@ -92,7 +96,12 @@ function MessageDetail() {
         {/* 1 conversation */}
         {messages.map((message, index) => (
           <NavLink
-		  	to={"/messagerie/" + (message.sender === userId ? message.receiver : message.sender )}>
+		  	key={index}
+            to={
+              "/messagerie/" +
+              message.receiver + '/' + message.sender + '/' + message.cat_offer
+            }
+          >
             <div className="flex flex-row py-2 pl-10 mt-6 hover:bg-fairpurple">
               <div>
                 {/* Mini offer avatar */}
@@ -110,11 +119,9 @@ function MessageDetail() {
                 <div className="flex flex-row text-sm">
                   <div className="w-2.5 h-2.5 mt-1 mr-2 rounded-full bg-green"></div>
                   <p className="mr-3">
-                      {message.sender !== userId ? (
-                        <em>{message.sender_profile_name}:</em>
-                      ) : (
-                        null
-                      )}
+                    {message.sender !== userId ? (
+                      <em>{message.sender_profile_name}:</em>
+                    ) : null}
                   </p>
                 </div>
                 <div>
@@ -144,20 +151,16 @@ function MessageDetail() {
       {/* Chat */}
       <div className="">
         <div className="flex flex-col md:w-[550px] lg:w-[880px] h-[100%] mr-6 p-4 bg-white rounded-3xl shadow-lg">
-          {message.map((msg, index) =>
-		  	<div className="text-center">
-          	  <p>
-          	    Conversation avec{" "}
-          	    <u>
-          	      <strong>{msg.sender_profile_name}</strong>
-          	    </u>{" "}
-          	    à propos de{" "}
-          	    <u>
-          	      <strong>{msg.cat_offer_name}</strong>
-          	    </u>
-          	  </p>
-          	</div>
-		  )}
+		<p className="text-center">
+                Conversation avec{" "}
+                <u>
+                  <strong>{offer && offer.sender_profile_name}</strong>
+                </u>{" "}
+                à propos de{" "}
+                <u>
+                  <strong>{offer && offer.cat_offer_name}</strong>
+                </u>
+              </p>
           <hr className="text-darkgray my-2"></hr>
           <div className="text-center w-28 text-verydarkgray mx-auto mb-2">
             <p>Aujourd'hui</p>

@@ -41,7 +41,7 @@ export default function App() {
           <Route path="/Contact" element={<Contact />} />
           <Route path="/Profile/:id" element={<Profile />} />
           <Route path="/Messagerie" element={<Message />} />
-          <Route path="/Messagerie/:id" element={<MessageDetail />} />
+          <Route path="/Messagerie/:senderId/:receiverId/:offerId" element={<MessageDetail />} />
         </Routes>
         <Footer />
       </div>
