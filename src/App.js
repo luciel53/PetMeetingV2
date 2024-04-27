@@ -11,12 +11,12 @@ import Login from "./pages/Login";
 import Logout from "./pages/Logout";
 import Register from "./pages/Register";
 import Profile from "./pages/Profile";
-import Messages from "./pages/Messages";
+import Message from "./pages/Messages";
+import MessageDetail from "./components/Chat/MessageDetail";
 import Publier from "./pages/Publier";
 import Contact from "./pages/Contact";
 import Error404 from "./pages/Error404";
 import Footer from "./components/Footer";
-import Message from "./components/Chat/Message";
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 
 
@@ -40,8 +40,8 @@ export default function App() {
           <Route path="/Membres" element={<Membres />} />
           <Route path="/Contact" element={<Contact />} />
           <Route path="/Profile/:id" element={<Profile />} />
-          <Route path="/Messagerie" element={<Messages />} />
-          <Route path="/inbox" element={<Message />} exact />
+          <Route path="/Messagerie" element={<Message />} />
+          <Route path="/Messagerie/:id" element={<MessageDetail />} />
         </Routes>
         <Footer />
       </div>

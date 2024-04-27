@@ -41,11 +41,11 @@ class GetMessages(generics.ListAPIView):
     def get_queryset(self):
         sender_id = self.kwargs['sender_id']
         receiver_id = self.kwargs['receiver_id']
-        username = self.kwargs['username']
+        # username = self.kwargs['username']
 
         messages = ChatMessage.objects.filter(
             sender__in=[sender_id, receiver_id],
-            receiver__in=[sender_id, receiver_id]
+            receiver__in=[sender_id, receiver_id],
         )
         return messages
 
