@@ -43,6 +43,7 @@ function Message() {
     }
   }, []);
   console.log("messages: ", messages);
+  console.log('c koi l id là:::: ', userId);
 
   return (
     <>
@@ -82,7 +83,11 @@ function Message() {
                   <div className="flex flex-row text-sm">
                     <div className="w-2.5 h-2.5 mt-1 mr-2 rounded-full bg-green"></div>
                     <p className="mr-3">
-                      <em>{message.receiver_profile_name}:</em>
+                      {message.sender !== userId ? (
+                        <em>{message.sender_profile_name}:</em>
+                      ) : (
+                        null
+                      )}
                     </p>
                   </div>
                   <div>

@@ -18,8 +18,8 @@ function MessageDetail() {
   const [messages, setMessages] = useState([]);
   const [userId, setUserId] = useState("");
   const [IsAuth, setIsAuth] = useState(false);
-  const id = useParams();
-  console.log("theID::: ", id);
+  const other_user_id = useParams();
+  console.log("theID of other::: ", other_user_id);
 
   useEffect(() => {
     // get token
@@ -44,31 +44,37 @@ function MessageDetail() {
       }
     }
   }, []);
+  console.log("MAIIIIS ID::::::", userId);
 
   useEffect(() => {
-    if (localStorage.getItem("access_token") !== null) {
-      console.log("pouette");
-      setIsAuth(true);
-      const token = localStorage.getItem("access_token");
-      try {
-        // decode token
-        const decodedToken = jwtDecode(token);
-        console.log(decodedToken);
-        const user_id = decodedToken.user_id;
-        setUserId(user_id);
-        console.log("TEST ID: ", user_id);
+    // let interval = setInterval(() => {
+		if (localStorage.getItem("access_token") !== null) {
+			console.log("pouette");
+			setIsAuth(true);
+			const token = localStorage.getItem("access_token");
+			try {
+			  // decode token
+			  const decodedToken = jwtDecode(token);
+			  console.log(decodedToken);
+			  const user_id = decodedToken.user_id;
+			  setUserId(user_id);
+			  console.log("TEST ID: ", user_id);
 
-        // fetch msg using user_id
-        axios
-          .get(baseUrl + "get-messages/" + user_id + "/" + id.id)
-          .then((response) => {
-            console.log("C KOI::::", response.data);
-            setMessage(response.data);
-          });
-      } catch (error) {
-        console.log(error);
-      }
-    }
+			  // fetch msg using user_id
+			  axios
+				.get(baseUrl + "get-messages/" + user_id + "/" + other_user_id.id)
+				.then((response) => {
+				  console.log("C KOI::::", response.data);
+				  setMessage(response.data);
+				});
+			} catch (error) {
+			  console.log(error);
+			}
+		  }
+	// }, 2000);
+	// return () => {
+	// 	clearInterval();
+	// }
   }, []);
 
   return (
@@ -86,7 +92,7 @@ function MessageDetail() {
         {/* 1 conversation */}
         {messages.map((message, index) => (
           <NavLink
-		  	to={"/messagerie/" + message.sender}>
+		  	to={"/messagerie/" + (message.sender === userId ? message.receiver : message.sender )}>
             <div className="flex flex-row py-2 pl-10 mt-6 hover:bg-fairpurple">
               <div>
                 {/* Mini offer avatar */}
@@ -104,7 +110,11 @@ function MessageDetail() {
                 <div className="flex flex-row text-sm">
                   <div className="w-2.5 h-2.5 mt-1 mr-2 rounded-full bg-green"></div>
                   <p className="mr-3">
-                    <em>{message.receiver_profile_name}:</em>
+                      {message.sender !== userId ? (
+                        <em>{message.sender_profile_name}:</em>
+                      ) : (
+                        null
+                      )}
                   </p>
                 </div>
                 <div>
