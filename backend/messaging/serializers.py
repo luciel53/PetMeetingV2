@@ -15,7 +15,7 @@ class MessageSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = ChatMessage
-        fields = ['id', 'user', 'cat_offer', 'cat_offer_name', 'cat_offer_picture', 'sender', 'sender_profile', 'sender_profile_name', 'receiver', 'receiver_profile', 'receiver_profile_name', 'message', 'is_read','date']
+        fields = ['id', 'cat_offer', 'cat_offer_name', 'cat_offer_picture', 'sender', 'sender_profile', 'sender_profile_name', 'receiver', 'receiver_profile', 'receiver_profile_name', 'message', 'is_read','date']
 
     def get_sender_profile_name(self, obj):
         return obj.sender_profile.user.username if obj.sender_profile else None
@@ -33,6 +33,8 @@ class MessageSerializer(serializers.ModelSerializer):
         return value
 
     def get_cat_offer_name(self, obj):
+        if isinstance(obj, dict):
+            return None
         return obj.cat_offer.name if obj.cat_offer else None
 
     def get_cat_offer_picture(self, obj):

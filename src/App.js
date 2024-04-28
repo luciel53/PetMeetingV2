@@ -40,8 +40,8 @@ export default function App() {
           <Route path="/Membres" element={<Membres />} />
           <Route path="/Contact" element={<Contact />} />
           <Route path="/Profile/:id" element={<Profile />} />
-          <Route path="/Messagerie" element={<Message />} />
-          <Route path="/Messagerie/:senderId/:receiverId/:offerId" element={<MessageDetail />} />
+          {/* <Route path="/Messagerie" element={<Message />} /> */}
+          <Route path="/Messagerie/:sender_id/:receiver_id/:cat_offer" element={<MessageDetail />} />
         </Routes>
         <Footer />
       </div>

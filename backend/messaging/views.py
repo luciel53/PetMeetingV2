@@ -17,23 +17,34 @@ class Inbox(generics.ListAPIView):
     def get_queryset(self):
         user_id = self.kwargs['user_id']
 
-        messages = ChatMessage.objects.filter(
-            id__in=Subquery(
-                User.objects.filter(
-                    Q(sender__receiver=user_id) |
-                    Q(receiver__sender=user_id)
-                ).distinct().annotate(
-                    last_msg=Subquery(
-                        ChatMessage.objects.filter(
-                            Q(sender=OuterRef('id'), receiver=user_id) |
-                            Q(receiver=OuterRef('id'), sender=user_id)
-                        ).order_by('-id')[:1].values_list('id', flat=True)
-                    )
-                ).values_list('last_msg', flat=True).order_by('-id')
-            )
-        ).order_by('-id')
+        unique_offers = ChatMessage.objects.filter(
+            Q(sender=user_id) |
+            Q(receiver=user_id)
+        ).order_by('-cat_offer').values_list('cat_offer', flat=True).distinct()
 
-        return messages
+        print("offres uniques:", unique_offers)
+        conversations = []
+        added_conversations = set()
+
+        for cat_offer in unique_offers:
+            offer_info = CatOffer.objects.get(id=cat_offer)
+            print("offer INFO: ", offer_info)
+            messages = ChatMessage.objects.filter(
+                (Q(receiver=user_id) | Q(sender=user_id))  &
+                Q(cat_offer=offer_info)
+            ).order_by('-date')
+
+            print('ya quoi là:', messages)
+
+            for message in messages:
+                other_user_id = message.sender_id if message.receiver_id == user_id else message.receiver_id
+                conversation_key = (offer_info.id, user_id, other_user_id)
+                if conversation_key not in added_conversations:
+                    conversations.append(message)
+
+
+        print('jeretourne::', conversations)
+        return conversations
 
 class GetMessages(generics.ListAPIView):
     serializer_class = MessageSerializer
@@ -41,14 +52,14 @@ class GetMessages(generics.ListAPIView):
     def get_queryset(self):
         sender_id = self.kwargs['sender_id']
         receiver_id = self.kwargs['receiver_id']
-        offer_id = self.kwargs['offer_id']
+        cat_offer = self.kwargs['cat_offer']
         # username = self.kwargs['username']
 
         messages = ChatMessage.objects.filter(
-            sender__in=[sender_id, receiver_id],
-            receiver__in=[sender_id, receiver_id],
-            cat_offer_id=offer_id
-        )
+            (Q(sender=sender_id) & Q(receiver=receiver_id)) |
+            (Q(sender=receiver_id) & Q(receiver=sender_id)),
+            cat_offer=cat_offer
+        ).order_by('date')
         return messages
 
 class SendMessage(generics.CreateAPIView):

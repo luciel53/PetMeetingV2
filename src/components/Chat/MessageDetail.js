@@ -19,7 +19,9 @@ function MessageDetail() {
   const [userId, setUserId] = useState("");
   const [isAuth, setIsAuth] = useState(false);
   const other_user_id = useParams();
-  const {senderId, receiverId, offerId} = useParams();
+  const { sender_id, receiver_id, cat_offer } = useParams();
+  const [displayedConversations, setDisplayedConversations] = useState(new Set());
+
   console.log("theID of other::: ", other_user_id);
 
   useEffect(() => {
@@ -46,9 +48,9 @@ function MessageDetail() {
     }
   }, []);
   console.log("MAIIIIS ID::::::", userId);
+  console.log("MESSAGES DATA::::::", messages);
 
   useEffect(() => {
-
     if (localStorage.getItem("access_token") !== null) {
       console.log("pouette");
       setIsAuth(true);
@@ -62,23 +64,69 @@ function MessageDetail() {
         console.log("TEST ID: ", user_id);
 
         // fetch msg using user_id
-		if (isAuth && senderId && receiverId) {
-        	axios
-        	  .get(baseUrl + "get-messages/" + user_id + "/" + receiverId + '/' + offerId)
-        	  .then((response) => {
-        	    console.log("C KOI::::", response.data);
-        	    setMessage(response.data);
-				console.log("QUEL MESSAGE:", message);
-        	  });
-			}
+        if (isAuth && sender_id && receiver_id) {
+          axios
+            .get(
+              baseUrl +
+                "get-messages/" +
+                user_id +
+                "/" +
+                receiver_id +
+                "/" +
+                cat_offer
+            )
+            .then((response) => {
+              setMessage(response.data);
+              console.log("QUEL MESSAGE:", message);
+            });
+        }
       } catch (error) {
         console.log(error);
       }
     }
+  }, [isAuth, sender_id, receiver_id, cat_offer]);
 
-  }, [isAuth, senderId, receiverId, offerId]);
+  // !!! PROBLEM HERE : !!!
 
-  const offer = message.find((message) => message.sender === userId || message.receiver === userId);
+//   useEffect(() => {
+//     const conversationSet = new Set();
+//     messages.forEach(message => {
+//       const conversationKey = `${message.receiver}-${message.sender}-${message.cat_offer}`;
+//       if (!conversationSet.has(conversationKey)) {
+//         conversationSet.add(conversationKey);
+//       }
+//   });
+//   setDisplayedConversations(conversationSet);
+// }, [message]); // Only update on changes to messages
+
+  const filteredMessages = messages.filter(message => {
+    const conversationKey = `${message.receiver}-${message.sender}-${message.cat_offer}`;
+    console.log ("conversations: ", conversationKey);
+    return !displayedConversations.has(conversationKey);
+  });
+
+  // useEffect(() => {
+  //   // Update displayedConversations only if there are new messages
+  //   if (filteredMessages.length > 0) {
+  //     const conversationSet = new Set(displayedConversations);
+  //     console.log("conversatinSET", conversationSet);
+  //     filteredMessages.forEach(message => {
+  //       const conversationKey = `${message.receiver}-${message.sender}-${message.cat_offer}`;
+  //       conversationSet.add(conversationKey);
+  //     });
+  //     setDisplayedConversations(conversationSet);
+  //   }
+  // }, [message]);
+
+  // useEffect(() => {
+  //   // Effect to run after displayedConversations is updated
+  //   console.log("conversationSET updated:", displayedConversations);
+  // }, [displayedConversations]);
+
+  const offer = message.find(
+    (message) => message.sender === userId || message.receiver === userId
+  );
+
   console.log("OOFFFERRR", offer);
 
   return (
@@ -94,39 +142,43 @@ function MessageDetail() {
           />
         </div>
         {/* 1 conversation */}
-        {messages.map((message, index) => (
+        {filteredMessages.map((msg, index) => (
           <NavLink
-		  	key={index}
+            key={index}
             to={
               "/messagerie/" +
-              message.receiver + '/' + message.sender + '/' + message.cat_offer
+              msg.receiver +
+              "/" +
+              msg.sender +
+              "/" +
+              msg.cat_offer
             }
           >
             <div className="flex flex-row py-2 pl-10 mt-6 hover:bg-fairpurple">
               <div>
                 {/* Mini offer avatar */}
                 <img
-                  src={`http://127.0.0.1:8000${message.cat_offer_picture}`}
+                  src={`http://127.0.0.1:8000${msg.cat_offer_picture}`}
                   className="w-12 h-12 object-cover rounded-full mr-6"
-                  alt={message.cat_offer_name}
+                  alt={msg.cat_offer_name}
                 />
               </div>
               {/* name + status */}
               <div className="pt-0">
                 <div>
-                  <strong>{message.cat_offer_name}</strong>
+                  <strong>{msg.cat_offer_name}</strong>
                 </div>
                 <div className="flex flex-row text-sm">
                   <div className="w-2.5 h-2.5 mt-1 mr-2 rounded-full bg-green"></div>
                   <p className="mr-3">
-                    {message.sender !== userId ? (
-                      <em>{message.sender_profile_name}:</em>
-                    ) : null}
+                    {msg.sender !== userId ? (
+                      <em>{msg.sender_profile_name}:</em>
+                    ) : <em>Vous :</em>}
                   </p>
                 </div>
                 <div>
                   <p className="text-sm">
-                    <em>{message.message}</em>
+                    <em>{msg.message}</em>
                   </p>
                 </div>
               </div>
@@ -134,7 +186,7 @@ function MessageDetail() {
                 {/* date */}
                 <div className="bg-green text-white text-xs h-4 px-1 pt-0.5 rounded ">
                   {moment
-                    .utc(message.date)
+                    .utc(msg.date)
                     .local()
                     .startOf("seconds")
                     .fromNow()}
@@ -151,16 +203,16 @@ function MessageDetail() {
       {/* Chat */}
       <div className="">
         <div className="flex flex-col md:w-[550px] lg:w-[880px] h-[100%] mr-6 p-4 bg-white rounded-3xl shadow-lg">
-		<p className="text-center">
-                Conversation avec{" "}
-                <u>
-                  <strong>{offer && offer.sender_profile_name}</strong>
-                </u>{" "}
-                à propos de{" "}
-                <u>
-                  <strong>{offer && offer.cat_offer_name}</strong>
-                </u>
-              </p>
+          <p className="text-center">
+            Conversation avec{" "}
+            <u>
+              <strong>{offer && offer.sender_profile_name}</strong>
+            </u>{" "}
+            à propos de{" "}
+            <u>
+              <strong>{offer && offer.cat_offer_name}</strong>
+            </u>
+          </p>
           <hr className="text-darkgray my-2"></hr>
           <div className="text-center w-28 text-verydarkgray mx-auto mb-2">
             <p>Aujourd'hui</p>
@@ -178,7 +230,7 @@ function MessageDetail() {
                         <img
                           src={msg.sender_profile.avatar}
                           className="h-12 w-12 ml-3 object-cover rounded-full"
-                          alt={paul.name}
+                          alt={msg.sender_profile_name}
                         />
                       </div>
                     </div>
