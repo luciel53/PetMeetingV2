@@ -12,10 +12,11 @@ class MessageSerializer(serializers.ModelSerializer):
     receiver_profile_name = serializers.SerializerMethodField()
     cat_offer_name = serializers.SerializerMethodField()
     cat_offer_picture = serializers.SerializerMethodField()
+    offer_owner_username = serializers.SerializerMethodField()
 
     class Meta:
         model = ChatMessage
-        fields = ['id', 'cat_offer', 'cat_offer_name', 'cat_offer_picture', 'sender', 'sender_profile', 'sender_profile_name', 'receiver', 'receiver_profile', 'receiver_profile_name', 'message', 'is_read','date']
+        fields = ['id', 'offer_owner_username', 'user', 'cat_offer', 'cat_offer_name', 'cat_offer_picture', 'sender', 'sender_profile', 'sender_profile_name', 'receiver', 'receiver_profile', 'receiver_profile_name', 'message', 'is_read','date']
 
     def get_sender_profile_name(self, obj):
         return obj.sender_profile.user.username if obj.sender_profile else None
@@ -39,3 +40,6 @@ class MessageSerializer(serializers.ModelSerializer):
 
     def get_cat_offer_picture(self, obj):
         return obj.cat_offer.picture.url if obj.cat_offer and obj.cat_offer.picture else None
+
+    def get_offer_owner_username(self, obj):
+        return obj.cat_offer.user.username if obj.cat_offer and obj.cat_offer.user else None

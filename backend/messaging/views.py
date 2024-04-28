@@ -22,24 +22,21 @@ class Inbox(generics.ListAPIView):
             Q(receiver=user_id)
         ).order_by('-cat_offer').values_list('cat_offer', flat=True).distinct()
 
-        print("offres uniques:", unique_offers)
         conversations = []
         added_conversations = set()
 
         for cat_offer in unique_offers:
             offer_info = CatOffer.objects.get(id=cat_offer)
-            print("offer INFO: ", offer_info)
             messages = ChatMessage.objects.filter(
                 (Q(receiver=user_id) | Q(sender=user_id))  &
                 Q(cat_offer=offer_info)
             ).order_by('-date')
 
-            print('ya quoi là:', messages)
-
             for message in messages:
                 other_user_id = message.sender_id if message.receiver_id == user_id else message.receiver_id
                 conversation_key = (offer_info.id, user_id, other_user_id)
                 if conversation_key not in added_conversations:
+                    message.offer_owner_username = offer_info.user.username if offer_info.user else None
                     conversations.append(message)
 
 

@@ -20,7 +20,9 @@ function MessageDetail() {
   const [isAuth, setIsAuth] = useState(false);
   const other_user_id = useParams();
   const { sender_id, receiver_id, cat_offer } = useParams();
-  const [displayedConversations, setDisplayedConversations] = useState(new Set());
+  const [displayedConversations, setDisplayedConversations] = useState(
+    new Set()
+  );
 
   console.log("theID of other::: ", other_user_id);
 
@@ -88,20 +90,20 @@ function MessageDetail() {
 
   // !!! PROBLEM HERE : !!!
 
-//   useEffect(() => {
-//     const conversationSet = new Set();
-//     messages.forEach(message => {
-//       const conversationKey = `${message.receiver}-${message.sender}-${message.cat_offer}`;
-//       if (!conversationSet.has(conversationKey)) {
-//         conversationSet.add(conversationKey);
-//       }
-//   });
-//   setDisplayedConversations(conversationSet);
-// }, [message]); // Only update on changes to messages
+  //   useEffect(() => {
+  //     const conversationSet = new Set();
+  //     messages.forEach(message => {
+  //       const conversationKey = `${message.receiver}-${message.sender}-${message.cat_offer}`;
+  //       if (!conversationSet.has(conversationKey)) {
+  //         conversationSet.add(conversationKey);
+  //       }
+  //   });
+  //   setDisplayedConversations(conversationSet);
+  // }, [message]); // Only update on changes to messages
 
-  const filteredMessages = messages.filter(message => {
+  const filteredMessages = messages.filter((message) => {
     const conversationKey = `${message.receiver}-${message.sender}-${message.cat_offer}`;
-    console.log ("conversations: ", conversationKey);
+    console.log("conversations: ", conversationKey);
     return !displayedConversations.has(conversationKey);
   });
 
@@ -173,7 +175,9 @@ function MessageDetail() {
                   <p className="mr-3">
                     {msg.sender !== userId ? (
                       <em>{msg.sender_profile_name}:</em>
-                    ) : <em>Vous :</em>}
+                    ) : (
+                      <em>Vous :</em>
+                    )}
                   </p>
                 </div>
                 <div>
@@ -185,11 +189,7 @@ function MessageDetail() {
               <div className="flex flex-col justify-around mx-auto">
                 {/* date */}
                 <div className="bg-green text-white text-xs h-4 px-1 pt-0.5 rounded ">
-                  {moment
-                    .utc(msg.date)
-                    .local()
-                    .startOf("seconds")
-                    .fromNow()}
+                  {moment.utc(msg.date).local().startOf("seconds").fromNow()}
                 </div>
                 {/* Number of no read messages */}
                 <div className="h-6 w-6 rounded-full bg-fragole text-white mx-auto">
@@ -205,10 +205,16 @@ function MessageDetail() {
         <div className="flex flex-col md:w-[550px] lg:w-[880px] h-[100%] mr-6 p-4 bg-white rounded-3xl shadow-lg">
           <p className="text-center">
             Conversation avec{" "}
-            <u>
-              <strong>{offer && offer.sender_profile_name}</strong>
-            </u>{" "}
-            à propos de{" "}
+            {offer && offer.sender !== userId ? (
+              <u>
+                <strong>{offer && offer.sender_profile_name}</strong>
+              </u>
+            ) : (
+              <u>
+                <strong>{offer && offer.offer_owner_username}</strong>
+              </u>
+            )}
+            {" "}à propos de{" "}
             <u>
               <strong>{offer && offer.cat_offer_name}</strong>
             </u>
