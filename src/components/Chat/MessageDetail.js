@@ -147,9 +147,9 @@ function MessageDetail() {
             key={index}
             to={
               "/messagerie/" +
-              msg.receiver +
+              (userId === msg.sender ? msg.sender : msg.receiver) +
               "/" +
-              msg.sender +
+              (userId === msg.sender ? msg.receiver : msg.sender) +
               "/" +
               msg.cat_offer
             }
