@@ -27,18 +27,26 @@ class Inbox(generics.ListAPIView):
 
         for cat_offer in unique_offers:
             offer_info = CatOffer.objects.get(id=cat_offer)
-            messages = ChatMessage.objects.filter(
-                (Q(receiver=user_id) | Q(sender=user_id))  &
-                Q(cat_offer=offer_info)
+            offer_messages = ChatMessage.objects.filter(
+                Q(cat_offer=cat_offer) &
+                (Q(sender=user_id) | Q(receiver=user_id))
             ).order_by('-date')
+            print('DERNIER MSG:', offer_messages)
 
-            for message in messages:
-                other_user_id = message.sender_id if message.receiver_id == user_id else message.receiver_id
-                conversation_key = (offer_info.id, user_id, other_user_id)
+            last_message = offer_messages.first()
+
+            # other_user_id = last_messages.sender_id if last_messages.receiver_id == user_id else last_messages.receiver_id
+            # conversation_key = (offer_info.id, user_id, other_user_id)
+
+            # if conversation_key not in added_conversations:
+            if last_message:
+                other_user_id = last_message.sender_id if last_message.receiver_id == user_id else last_message.receiver_id
+                conversation_key = (user_id, other_user_id), cat_offer
+
                 if conversation_key not in added_conversations:
-                    message.offer_owner_username = offer_info.user.username if offer_info.user else None
-                    conversations.append(message)
-
+                    last_message.offer_owner_username = offer_info.user.username if offer_info.user else None
+                    conversations.append(last_message)
+                    added_conversations.add(conversation_key)
 
         print('jeretourne::', conversations)
         return conversations

@@ -72,7 +72,7 @@ function MessageDetail() {
         // fetch messges using user_id
         axios.get(baseUrl + "messages/" + user_id + "/").then((response) => {
           setMessages(response.data);
-          console.log("LES MESSAGES de la boite de reception:", messages);
+          console.log(messages);
         });
       } catch (error) {
         console.log(error);
