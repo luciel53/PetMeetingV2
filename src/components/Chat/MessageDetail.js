@@ -8,6 +8,8 @@ import users from "../Users";
 import cats from "../Cats";
 import addimage from "../../assets/images/icons/addimage.png";
 
+<script src="https://cdn.socket.io/4.1.3/socket.io.min.js"></script>;
+
 function MessageDetail() {
   const suzanne = users.find((user) => user.name === "Suzanne");
   const paul = users.find((user) => user.name === "Paul");
@@ -23,47 +25,71 @@ function MessageDetail() {
   const [displayedConversations, setDisplayedConversations] = useState(
     new Set()
   );
+  const [isWebSocketConnected, setIsWebSocketConnected] = useState(false);
 
-  console.log("theID of other::: ", other_user_id);
+  // To manage the websocket connection
+  useEffect(() => {
+    // const chatRoom = `${sender_id}-${receiver_id}-${cat_offer}`;
+    // console.log("teST CHAT", chatRoom);
+    const socket = new WebSocket(`ws://127.0.0.1:8000/ws/messaging/`);
 
+    socket.addEventListener("open", () => {
+      console.log(" WEBSOCKET CONNECTED");
+      setIsWebSocketConnected(true);
+    });
+
+    socket.addEventListener("error", (event) => {
+      console.error(" WEBSOCKET ERROR", event);
+      setIsWebSocketConnected(false);
+    });
+
+    socket.addEventListener("message", (event) => {
+      // Met à jour l'état des messages en ajoutant le nouveau message
+      const newMessage = JSON.parse(event.data);
+      setMessages((prevMessages) => [...prevMessages, newMessage]);
+      console.log("Nouveau message reçu :", newMessage);
+    });
+    //Clean up websocket connection
+    return () => {
+      socket.close();
+      console.log("WEBSOCKET DISCONNECTED");
+      setIsWebSocketConnected(false);
+    };
+  }, []);
+
+  // To display all the conversations
   useEffect(() => {
     // get token
     if (localStorage.getItem("access_token") !== null) {
-      console.log("pouette");
       setIsAuth(true);
       const token = localStorage.getItem("access_token");
       try {
         // decode token
         const decodedToken = jwtDecode(token);
-        console.log(decodedToken);
         const user_id = decodedToken.user_id;
         setUserId(user_id);
-        console.log("TEST ID: ", user_id);
 
-        // fetch msg using user_id
+        // fetch messges using user_id
         axios.get(baseUrl + "messages/" + user_id + "/").then((response) => {
           setMessages(response.data);
+          console.log("LES MESSAGES de la boite de reception:", messages);
         });
       } catch (error) {
         console.log(error);
       }
     }
   }, []);
-  console.log("MAIIIIS ID::::::", userId);
-  console.log("MESSAGES DATA::::::", messages);
 
+  // To display messages in the chat window
   useEffect(() => {
     if (localStorage.getItem("access_token") !== null) {
-      console.log("pouette");
       setIsAuth(true);
       const token = localStorage.getItem("access_token");
       try {
         // decode token
         const decodedToken = jwtDecode(token);
-        console.log(decodedToken);
         const user_id = decodedToken.user_id;
         setUserId(user_id);
-        console.log("TEST ID: ", user_id);
 
         // fetch msg using user_id
         if (isAuth && sender_id && receiver_id) {
@@ -134,7 +160,7 @@ function MessageDetail() {
   return (
     <div className="flex flex-row mt-40 mx-auto animate-fade">
       {/* Box messages */}
-      <aside className="container flex flex-col md:w-[300px] lg:w-[370px] h-[40rem] mr-6 bg-white rounded-3xl shadow-lg pb-5">
+      <aside className="container flex flex-col md:w-[300px] lg:w-[370px] h-[40rem] mr-6 bg-white rounded-3xl shadow-lg pb-5 overflow-scroll">
         <h2 className="text-center text-md font-semibold mt-2">Messages</h2>
         <div className="mx-auto mt-2">
           <input
@@ -202,7 +228,7 @@ function MessageDetail() {
       </aside>
       {/* Chat */}
       <div className="">
-        <div className="flex flex-col md:w-[550px] lg:w-[880px] h-[100%] mr-6 p-4 bg-white rounded-3xl shadow-lg">
+        <div className="flex flex-col md:w-[550px] lg:w-[880px] h-auto mr-6 p-4 bg-white rounded-3xl shadow-lg">
           <p className="text-center">
             Conversation avec{" "}
             {offer && offer.sender !== userId ? (
@@ -213,59 +239,62 @@ function MessageDetail() {
               <u>
                 <strong>{offer && offer.offer_owner_username}</strong>
               </u>
-            )}
-            {" "}à propos de{" "}
+            )}{" "}
+            à propos de{" "}
             <u>
               <strong>{offer && offer.cat_offer_name}</strong>
             </u>
           </p>
           <hr className="text-darkgray my-2"></hr>
-          <div className="text-center w-28 text-verydarkgray mx-auto mb-2">
-            <p>Aujourd'hui</p>
-          </div>
-          {/* Right bubble */}
-          {message.map((msg, index) => (
-            <>
-              {msg.sender === userId && (
-                <div className="flex flex-row justify-end">
-                  {/* <div className="w-auto h-2 bg-white"></div> */}
-                  <div className="flex flex-col max-w-[480px] h-auto ">
-                    <div className="flex flex-row mt-3 p-3 bg-fairpurple rounded-xl">
-                      <p className=" max-w-96">{msg.message}</p>
-                      <div className="flex flex-col items-end justify-center ml-3">
-                        <img
-                          src={msg.sender_profile.avatar}
-                          className="h-12 w-12 ml-3 object-cover rounded-full"
-                          alt={msg.sender_profile_name}
-                        />
+
+          <div className="h-[550px] overflow-x-auto pr-2">
+            <div className="text-center w-28 text-verydarkgray mx-auto mb-2">
+              <p>Aujourd'hui</p>
+            </div>
+            {/* Right bubble */}
+            {message.map((msg, index) => (
+              <>
+                {msg.sender === userId && (
+                  <div className="flex flex-row justify-end">
+                    {/* <div className="w-auto h-2 bg-white"></div> */}
+                    <div className="flex flex-col max-w-[480px] h-auto ">
+                      <div className="flex flex-row mt-3 p-3 bg-fairpurple rounded-xl">
+                        <p className=" max-w-96">{msg.message}</p>
+                        <div className="flex flex-col items-end justify-center ml-3">
+                          <img
+                            src={msg.sender_profile.avatar}
+                            className="h-12 w-12 ml-3 object-cover rounded-full"
+                            alt={msg.sender_profile_name}
+                          />
+                        </div>
                       </div>
+                      <p className="text-end text-verydarkgray mt-1 mr-2">
+                        10:50
+                      </p>
                     </div>
-                    <p className="text-end text-verydarkgray mt-1 mr-2">
-                      10:50
-                    </p>
                   </div>
-                </div>
-              )}
-            </>
-          ))}
-          {/* Left bubble */}
-          {message.map((msg, index) => (
-            <>
-              {msg.sender !== userId && (
-                <>
-                  <div className="flex flex-row max-w-[480px] h-auto mt-3 p-3 bg-gray rounded-xl">
-                    <img
-                      src={msg.sender_profile.avatar}
-                      className="h-12 w-12 object-cover rounded-full"
-                      alt={msg.sender.name}
-                    />
-                    <p className="ml-4 max-w-96">{msg.message}</p>
-                  </div>
-                  <p className=" text-verydarkgray mt-1 mr-2">14:50</p>
-                </>
-              )}
-            </>
-          ))}
+                )}
+              </>
+            ))}
+            {/* Left bubble */}
+            {message.map((msg, index) => (
+              <>
+                {msg.sender !== userId && (
+                  <>
+                    <div className="flex flex-row max-w-[480px] h-auto mt-3 p-3 bg-gray rounded-xl">
+                      <img
+                        src={msg.sender_profile.avatar}
+                        className="h-12 w-12 object-cover rounded-full"
+                        alt={msg.sender.name}
+                      />
+                      <p className="ml-4 max-w-96">{msg.message}</p>
+                    </div>
+                    <p className=" text-verydarkgray mt-1 mr-2">14:50</p>
+                  </>
+                )}
+              </>
+            ))}
+          </div>
         </div>
         {/* Messages input */}
         <div className="flex flex-row lg:w-[880px] h-10 mt-4 mb-auto mr-6 p-4 bg-white items-center rounded-3xl shadow-lg justify-between">

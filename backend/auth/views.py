@@ -1,13 +1,19 @@
+from jwt import ExpiredSignatureError, InvalidTokenError
+import jwt
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework.permissions import IsAuthenticated
 from rest_framework import status
+from rest_framework.exceptions import AuthenticationFailed
 from rest_framework_simplejwt.tokens import RefreshToken
 from django.contrib.auth.models import User
 from django.contrib.auth.hashers import make_password
+from channels.db import database_sync_to_async
+
+from django.conf import settings
 
 # login class
-class HomeView(APIView):
+class LoginView(APIView):
 
    permission_classes = (IsAuthenticated, )
    def get(self, request):
@@ -53,3 +59,16 @@ class RegisterView(APIView):
         user.save()
 
         return Response({"success": "Utilisateur créé avec succès"}, status=status.HTTP_201_CREATED)
+
+# @database_sync_to_async
+# def authenticate_websocket(self, scope, token):
+#     try:
+#         payload = jwt.decode(token, settings.SECRET_KEY, algorithms=['HS256'])
+#         self.verify_token(payload)
+
+#         user_id = payload['id']
+#         user = User.objects.get(id=user_id)
+#         return user
+
+#     except (InvalidTokenError, ExpiredSignatureError, User.DoesNotExist):
+#         raise AuthenticationFailed("Invalid token")
