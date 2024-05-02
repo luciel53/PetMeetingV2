@@ -11,7 +11,6 @@ import Login from "./pages/Login";
 import Logout from "./pages/Logout";
 import Register from "./pages/Register";
 import Profile from "./pages/Profile";
-import Message from "./pages/Messages";
 import MessageDetail from "./components/Chat/MessageDetail";
 import Publier from "./pages/Publier";
 import Contact from "./pages/Contact";
@@ -40,7 +39,7 @@ export default function App() {
           <Route path="/Membres" element={<Membres />} />
           <Route path="/Contact" element={<Contact />} />
           <Route path="/Profile/:id" element={<Profile />} />
-          <Route path="/Messagerie" element={<Message />} />
+          <Route path="/Messagerie" element={<MessageDetail />} />
           <Route path="/Messagerie/:sender_id/:receiver_id/:cat_offer" element={<MessageDetail />} />
         </Routes>
         <Footer />

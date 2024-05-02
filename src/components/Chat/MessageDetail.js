@@ -8,8 +8,6 @@ import users from "../Users";
 import cats from "../Cats";
 import addimage from "../../assets/images/icons/addimage.png";
 
-<script src="https://cdn.socket.io/4.1.3/socket.io.min.js"></script>;
-
 function MessageDetail() {
   const suzanne = users.find((user) => user.name === "Suzanne");
   const paul = users.find((user) => user.name === "Paul");
@@ -26,36 +24,7 @@ function MessageDetail() {
     new Set()
   );
   const [isWebSocketConnected, setIsWebSocketConnected] = useState(false);
-
-  // To manage the websocket connection
-  useEffect(() => {
-    // const chatRoom = `${sender_id}-${receiver_id}-${cat_offer}`;
-    // console.log("teST CHAT", chatRoom);
-    const socket = new WebSocket(`ws://127.0.0.1:8000/ws/messaging/`);
-
-    socket.addEventListener("open", () => {
-      console.log(" WEBSOCKET CONNECTED");
-      setIsWebSocketConnected(true);
-    });
-
-    socket.addEventListener("error", (event) => {
-      console.error(" WEBSOCKET ERROR", event);
-      setIsWebSocketConnected(false);
-    });
-
-    socket.addEventListener("message", (event) => {
-      // Met à jour l'état des messages en ajoutant le nouveau message
-      const newMessage = JSON.parse(event.data);
-      setMessages((prevMessages) => [...prevMessages, newMessage]);
-      console.log("Nouveau message reçu :", newMessage);
-    });
-    //Clean up websocket connection
-    return () => {
-      socket.close();
-      console.log("WEBSOCKET DISCONNECTED");
-      setIsWebSocketConnected(false);
-    };
-  }, []);
+    const [websocketMessages, setWebsocketMessages] = useState([]);
 
   // To display all the conversations
   useEffect(() => {
@@ -69,7 +38,7 @@ function MessageDetail() {
         const user_id = decodedToken.user_id;
         setUserId(user_id);
 
-        // fetch messges using user_id
+        // fetch messages using user_id
         axios.get(baseUrl + "messages/" + user_id + "/").then((response) => {
           setMessages(response.data);
           console.log(messages);
@@ -114,48 +83,57 @@ function MessageDetail() {
     }
   }, [isAuth, sender_id, receiver_id, cat_offer]);
 
-  // !!! PROBLEM HERE : !!!
-
-  //   useEffect(() => {
-  //     const conversationSet = new Set();
-  //     messages.forEach(message => {
-  //       const conversationKey = `${message.receiver}-${message.sender}-${message.cat_offer}`;
-  //       if (!conversationSet.has(conversationKey)) {
-  //         conversationSet.add(conversationKey);
-  //       }
-  //   });
-  //   setDisplayedConversations(conversationSet);
-  // }, [message]); // Only update on changes to messages
-
   const filteredMessages = messages.filter((message) => {
     const conversationKey = `${message.receiver}-${message.sender}-${message.cat_offer}`;
     console.log("conversations: ", conversationKey);
     return !displayedConversations.has(conversationKey);
   });
 
-  // useEffect(() => {
-  //   // Update displayedConversations only if there are new messages
-  //   if (filteredMessages.length > 0) {
-  //     const conversationSet = new Set(displayedConversations);
-  //     console.log("conversatinSET", conversationSet);
-  //     filteredMessages.forEach(message => {
-  //       const conversationKey = `${message.receiver}-${message.sender}-${message.cat_offer}`;
-  //       conversationSet.add(conversationKey);
-  //     });
-  //     setDisplayedConversations(conversationSet);
-  //   }
-  // }, [message]);
-
-  // useEffect(() => {
-  //   // Effect to run after displayedConversations is updated
-  //   console.log("conversationSET updated:", displayedConversations);
-  // }, [displayedConversations]);
 
   const offer = message.find(
     (message) => message.sender === userId || message.receiver === userId
   );
 
-  console.log("OOFFFERRR", offer);
+  // To manage the websocket connection
+  useEffect(() => {
+    // const chatRoom = `${sender_id}-${receiver_id}-${cat_offer}`;
+    const socket = new WebSocket(`ws://127.0.0.1:8000/ws/messaging/`);
+
+    socket.addEventListener("open", () => {
+      console.log(" WEBSOCKET CONNECTED");
+      setIsWebSocketConnected(true);
+    });
+
+    socket.addEventListener("error", (event) => {
+      console.error(" WEBSOCKET ERROR", event);
+      setIsWebSocketConnected(false);
+    });
+
+    socket.addEventListener("message", (event) => {
+      // update the message state by adding the new message
+      const newMessage = JSON.parse(event.data);
+      console.log("EVENTDATA", event.data);
+      setWebsocketMessages((prevMessages) => [...prevMessages, newMessage]);
+      console.log("Nouveau message reçu :", newMessage);
+    });
+
+    //Clean up websocket connection
+    return () => {
+      if (socket.readyState === 1) {
+        socket.close();
+        console.log("WEBSOCKET DISCONNECTED");
+        setIsWebSocketConnected(false);
+      }
+    };
+  }, [messages]);
+
+  // Fusion des messages HTTP et WebSocket
+  // useEffect(() => {
+  //   // Combine les messages HTTP et WebSocket
+  //   const updatedMessages = [...messages, ...websocketMessages];
+  // }, [messages, websocketMessages]);
+
+  console.log("WEBSOK", websocketMessages);
 
   return (
     <div className="flex flex-row mt-40 mx-auto animate-fade">

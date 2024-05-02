@@ -13,6 +13,7 @@ from users.models import Profile
 from collections import defaultdict
 
 class Inbox(generics.ListAPIView):
+    """ Get the conversations in inbox """
     serializer_class = MessageSerializer
 
     def get_queryset(self):
@@ -26,7 +27,6 @@ class Inbox(generics.ListAPIView):
 
         # Get all user's messages
         user_messages = ChatMessage.objects.filter(Q(sender=user_id) | Q(receiver=user_id)).order_by('-date')
-        print("Tous les msg d'un utilisateur:", user_messages)
 
         # browse all messages of the user
         for message in user_messages:
@@ -36,8 +36,6 @@ class Inbox(generics.ListAPIView):
             else:
                 client_id = message.sender_id
             conversation_key = f"{client_id} - {message.cat_offer.id}"
-            print('KEY', conversation_key)
-
 
             #Add the message to the group conversation
             message_groups[conversation_key][message.cat_offer.id] = message
@@ -55,6 +53,7 @@ class Inbox(generics.ListAPIView):
         return conversations
 
 class GetMessages(generics.ListAPIView):
+    """ Get messages for a conversation."""
     serializer_class = MessageSerializer
 
     def get_queryset(self):
@@ -69,6 +68,7 @@ class GetMessages(generics.ListAPIView):
             cat_offer=cat_offer
         ).order_by('date')
         return messages
+
 
 class SendMessage(generics.CreateAPIView):
     serializer_class = MessageSerializer
