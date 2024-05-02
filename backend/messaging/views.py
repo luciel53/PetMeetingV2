@@ -10,45 +10,48 @@ from rest_framework.permissions import IsAuthenticated
 from django.db.models import Subquery, OuterRef, Q
 from users.serializers import ProfileSerializer
 from users.models import Profile
+from collections import defaultdict
 
 class Inbox(generics.ListAPIView):
     serializer_class = MessageSerializer
 
     def get_queryset(self):
         user_id = self.kwargs['user_id']
-
-        unique_offers = ChatMessage.objects.filter(
-            Q(sender=user_id) |
-            Q(receiver=user_id)
-        ).order_by('-cat_offer').values_list('cat_offer', flat=True).distinct()
-
         conversations = []
-        added_conversations = set()
 
-        for cat_offer in unique_offers:
-            offer_info = CatOffer.objects.get(id=cat_offer)
-            offer_messages = ChatMessage.objects.filter(
-                Q(cat_offer=cat_offer) &
-                (Q(sender=user_id) | Q(receiver=user_id))
-            ).order_by('-date')
-            print('DERNIER MSG:', offer_messages)
+        conversation_set = set()
 
-            last_message = offer_messages.first()
+        # Group messages by users pairs and by offer
+        message_groups = defaultdict(dict)
 
-            # other_user_id = last_messages.sender_id if last_messages.receiver_id == user_id else last_messages.receiver_id
-            # conversation_key = (offer_info.id, user_id, other_user_id)
+        # Get all user's messages
+        user_messages = ChatMessage.objects.filter(Q(sender=user_id) | Q(receiver=user_id)).order_by('-date')
+        print("Tous les msg d'un utilisateur:", user_messages)
 
-            # if conversation_key not in added_conversations:
-            if last_message:
-                other_user_id = last_message.sender_id if last_message.receiver_id == user_id else last_message.receiver_id
-                conversation_key = (user_id, other_user_id), cat_offer
+        # browse all messages of the user
+        for message in user_messages:
+            # Identicate all users of the conversation
+            if message.sender_id == message.cat_offer.user.id:
+                client_id = message.receiver_id
+            else:
+                client_id = message.sender_id
+            conversation_key = f"{client_id} - {message.cat_offer.id}"
+            print('KEY', conversation_key)
 
-                if conversation_key not in added_conversations:
-                    last_message.offer_owner_username = offer_info.user.username if offer_info.user else None
-                    conversations.append(last_message)
-                    added_conversations.add(conversation_key)
 
-        print('jeretourne::', conversations)
+            #Add the message to the group conversation
+            message_groups[conversation_key][message.cat_offer.id] = message
+
+        # browse the messages groups to obtain the last message of each conversation
+        for conversation_key, offer_messages in message_groups.items():
+            # Check if the conversation key is unique
+            if conversation_key not in conversation_set:
+                conversations.append(offer_messages[max(offer_messages)])
+
+                # Mark the conversation key as seen
+                conversation_set.add(conversation_key)
+
+        # print('jeretourne::', conversations)
         return conversations
 
 class GetMessages(generics.ListAPIView):

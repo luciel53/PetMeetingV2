@@ -172,7 +172,7 @@ function MessageDetail() {
         {/* 1 conversation */}
         {filteredMessages.map((msg, index) => (
           <NavLink
-            key={index}
+            key={userId + msg.id}
             to={
               "/messagerie/" +
               (userId === msg.sender ? msg.sender : msg.receiver) +
@@ -255,7 +255,7 @@ function MessageDetail() {
             {message.map((msg, index) => (
               <>
                 {msg.sender === userId && (
-                  <div className="flex flex-row justify-end">
+                  <div key={msg.id} className="flex flex-row justify-end">
                     {/* <div className="w-auto h-2 bg-white"></div> */}
                     <div className="flex flex-col max-w-[480px] h-auto ">
                       <div className="flex flex-row mt-3 p-3 bg-fairpurple rounded-xl">
@@ -281,7 +281,7 @@ function MessageDetail() {
               <>
                 {msg.sender !== userId && (
                   <>
-                    <div className="flex flex-row max-w-[480px] h-auto mt-3 p-3 bg-gray rounded-xl">
+                    <div key={msg.id} className="flex flex-row max-w-[480px] h-auto mt-3 p-3 bg-gray rounded-xl">
                       <img
                         src={msg.sender_profile.avatar}
                         className="h-12 w-12 object-cover rounded-full"
