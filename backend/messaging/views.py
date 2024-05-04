@@ -74,18 +74,18 @@ class SendMessage(generics.CreateAPIView):
     serializer_class = MessageSerializer
 
     def perform_create(self, serializer):
-        cat_offer = self.request.data.get('cat_offer')
+        cat_offer_id = self.request.data.get('cat_offer')
 
-        if not cat_offer:
+        if not cat_offer_id:
             return Response({"error": "No cat_offer provided"}, status=status.HTTP_400_BAD_REQUEST)
 
         try:
-            offer = CatOffer.objects.get(id=cat_offer)
+            cat_offer = CatOffer.objects.get(id=cat_offer_id)
         except CatOffer.DoesNotExist:
             return Response({"error": "Invalid cat_offer"}, status=status.HTTP_404_NOT_FOUND)
 
         # associate each msg to a specific offer
-        serializer.save(offer=offer)
+        serializer.save(cat_offer=cat_offer)
 
 
 

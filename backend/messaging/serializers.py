@@ -13,6 +13,7 @@ class MessageSerializer(serializers.ModelSerializer):
     cat_offer_name = serializers.SerializerMethodField()
     cat_offer_picture = serializers.SerializerMethodField()
     offer_owner_username = serializers.SerializerMethodField()
+    cat_offer = serializers.PrimaryKeyRelatedField(queryset=CatOffer.objects.all())
 
     class Meta:
         model = ChatMessage
@@ -23,15 +24,6 @@ class MessageSerializer(serializers.ModelSerializer):
 
     def get_receiver_profile_name(self, obj):
         return obj.receiver_profile.user.username if obj.receiver_profile else None
-
-    def validate_cat_offer(self, value):
-        if not value:
-            raise serializers.ValidationError("No cat_offer provided")
-        try:
-            CatOffer.objects.get(id=value)
-        except CatOffer.DoesNotExist:
-            raise serializers.ValidationError("Invalid offer_id")
-        return value
 
     def get_cat_offer_name(self, obj):
         if isinstance(obj, dict):

@@ -24,7 +24,8 @@ function MessageDetail() {
     new Set()
   );
   const [isWebSocketConnected, setIsWebSocketConnected] = useState(false);
-    const [websocketMessages, setWebsocketMessages] = useState([]);
+  const [websocketMessages, setWebsocketMessages] = useState([]);
+  const [chatMessage, setChatMessage] = useState({message: ""});
 
   // To display all the conversations
   useEffect(() => {
@@ -134,6 +135,45 @@ function MessageDetail() {
   // }, [messages, websocketMessages]);
 
   console.log("WEBSOK", websocketMessages);
+
+  // changes the state of the input chat message
+  const handleChange = (event) => {
+    setChatMessage({
+      ...chatMessage,
+      [event.target.name]: event.target.value
+    })
+  }
+
+  console.log("TEST>>>> user", userId);
+  console.log("TEST>>>> sender", userId);
+  console.log("TEST>>>> receiver", receiver_id);
+  console.log("TEST>>>> message", chatMessage.message);
+  console.log("TEST>>>> catoffer", typeof(parseInt(cat_offer)));
+
+  // Send the message
+  const sendMessage = () => {
+    const cat_offer_id = parseInt(cat_offer);
+    console.log(typeof(cat_offer_id));
+    const formData = new FormData();
+    formData.append("user", userId);
+    formData.append("sender", userId);
+    formData.append("receiver", receiver_id);
+    formData.append("message", chatMessage.message);
+    formData.append("is_read", false);
+    formData.append("cat_offer", cat_offer_id);
+
+    try {
+      axios.post(baseUrl + "send-messages/", formData).then((response) => {
+        console.log(response.data);
+        console.log(formData);
+      })
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
+  console.log(chatMessage);
+  console.log("rzzrzz", cat_offer);
 
   return (
     <div className="flex flex-row mt-40 mx-auto animate-fade">
@@ -278,8 +318,11 @@ function MessageDetail() {
         <div className="flex flex-row lg:w-[880px] h-10 mt-4 mb-auto mr-6 p-4 bg-white items-center rounded-3xl shadow-lg justify-between">
           <textarea
             type="text"
+            name="message"
+            value={chatMessage.message}
+            onChange={handleChange}
             placeholder="Tapez votre message ici..."
-            className="w-[70%] h-6 pl-3  outline-none bg-white resize-none"
+            className="form-control w-[70%] h-6 pl-3  outline-none bg-white resize-none"
           />
           <img
             src={addimage}
@@ -287,7 +330,7 @@ function MessageDetail() {
             alt="Ajouter"
           />
           <div className="-mt-3 -mr-4 hover:opacity-80">
-            <Button text="Envoyer" />
+            <Button onClick={sendMessage} text="Envoyer" />
           </div>
         </div>
       </div>

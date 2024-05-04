@@ -19,8 +19,8 @@ from rest_framework.decorators import api_view, authentication_classes, permissi
 @authentication_classes([JWTAuthentication])
 @permission_classes([IsAuthenticated])
 def delete_offer(request, offerId):
+    """ To delete an offer """
     user = request.user
-    # to delete an offer
     if request.method != 'DELETE':
         return HttpResponseNotAllowed(['DELETE'])
 
@@ -44,9 +44,9 @@ def delete_offer(request, offerId):
         return JsonResponse({'success': 'The offer has been successfully deleted'})
 
 
-
 @csrf_exempt
 def catOffer_view(request):
+    """ To create a cat offer """
     user = None
     # check if token is included in the request
     if 'HTTP_AUTHORIZATION' in request.META:
@@ -141,9 +141,8 @@ def catOffer_view(request):
     return JsonResponse({'error': 'Only POST requests are allowed'})
 
 
-
 def get_form_data(request):
-    # get the data from the database
+    """ get the data from the database """
     races = [race[1] for race in RACE_CHOICES]
     sexe = [sex[1] for sex in SEX_CHOICES]
     locations = [location[1] for location in LOCATION_CHOICES]
@@ -159,6 +158,7 @@ def get_form_data(request):
         })
 
 def get_all_offers(request):
+    """ to get all the offers """
     offers = CatOffer.objects.all()
     # serialize the offers data
     serialized_all_offers = []
@@ -205,6 +205,7 @@ def get_all_offers(request):
     return JsonResponse({'offers': serialized_all_offers})
 
 def get_user_offers(request, user_id):
+    """ to get offers by user """
     offersByUser = CatOffer.objects.filter(user_id=user_id)
     serialized_offers = [serialize_offer(offer) for offer in offersByUser]
     return JsonResponse({'offers': serialized_offers})
