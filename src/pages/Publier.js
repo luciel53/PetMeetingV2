@@ -292,7 +292,8 @@ export default function Publier() {
                     value={formData.name}
                     required
                     onChange={handleChange}
-                    className="w-52 bg-gray border border-darkgray rounded-lg h-8 ml-2 pl-2 px-1"
+                    placeholder="ex: Gollum des bois"
+                    className="w-52 text-sm bg-gray border border-darkgray rounded-lg h-8 ml-2 pl-2 px-1"
                   />
                 </div>
                 {/* Race */}
@@ -321,7 +322,7 @@ export default function Publier() {
                     name="id_num"
                     value={formData.id_num}
                     required
-                    placeholder="LOOF-XXXXXXXX-AAAA-n"
+                    placeholder="ex: 250260000000000"
                     onChange={handleChange}
                     className="bg-gray w-52 text-sm border border-darkgray rounded-lg h-8 ml-2 pl-2 px-1"
                   />
@@ -352,8 +353,8 @@ export default function Publier() {
                     required
                     value={formData.diseases_tests}
                     onChange={handleChange}
-                    placeholder="Fiv, Felv, Pkdef, ..."
-                    className="w-52 bg-gray border border-darkgray rounded-lg h-8 ml-2 pl-2 px-1"
+                    placeholder="TOUS les tests effectués ici"
+                    className="w-52 text-sm bg-gray border border-darkgray rounded-lg h-8 ml-2 pl-2 px-1"
                   />
                 </div>
                 {/* Age */}
@@ -365,7 +366,8 @@ export default function Publier() {
                     value={formData.age}
                     required
                     onChange={handleChange}
-                    className="w-52 bg-gray border border-darkgray rounded-lg h-8 ml-2 pl-2 px-1"
+                    placeholder="ex: 2"
+                    className="w-52 text-sm bg-gray border border-darkgray rounded-lg h-8 ml-2 pl-2 px-1"
                   />
                 </div>
 
@@ -375,9 +377,10 @@ export default function Publier() {
                   <input
                     type="text"
                     name="fur_color"
+                    placeholder="ex: Brown à rosettes"
                     value={formData.fur_color}
                     onChange={handleChange}
-                    className="w-52 bg-gray border border-darkgray rounded-lg h-8 ml-2 pl-2 px-1"
+                    className="w-52 text-sm bg-gray border border-darkgray rounded-lg h-8 ml-2 pl-2 px-1"
                   />
                 </div>
                 {/* Location */}
@@ -408,6 +411,7 @@ export default function Publier() {
                       value={formData.price}
                       required
                       onChange={handleChange}
+                      placeholder="€"
                       disabled={formData.sex === 'Femelle'}
                       className="w-52 bg-gray border border-darkgray rounded-lg h-8 ml-2 pl-2 px-1"
                     />

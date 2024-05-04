@@ -2,7 +2,7 @@ from django.db import models
 from django.contrib import admin
 from django.utils import timezone
 from django.contrib.auth.models import User
-from django.core.validators import MinLengthValidator
+from django.core.validators import MinValueValidator, MaxValueValidator
 
 
 RACE_CHOICES = [
@@ -198,7 +198,7 @@ class CatOffer(models.Model):
     location = models.CharField(choices=LOCATION_CHOICES, max_length=100)
     blood = models.CharField(choices=BLOOD_CHOICES, blank=True, max_length=10)
     diseases_tests = models.CharField(max_length=200)
-    id_num = models.CharField(max_length=30, unique=True, validators=[MinLengthValidator(20)])
+    id_num = models.IntegerField(unique=True, validators=[MinValueValidator(100000000000000), MaxValueValidator(999999999999999)])
     eye_color = models.CharField(max_length=100, choices=EYECOLOR_CHOICES, default=None, blank=True)
     fur_color = models.CharField(max_length=100, default=None, blank=True)
     age = models.IntegerField()
