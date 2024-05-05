@@ -7,10 +7,7 @@
 	src: url('fonts/Mina-Regular.ttf');
 }
 
-:root {
-	--color-purple: #803C9E;
-	--color-gray: #F6F1F6;
-}
+
 
 body {
   margin: 0;

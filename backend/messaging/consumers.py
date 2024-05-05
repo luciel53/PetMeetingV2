@@ -29,18 +29,28 @@ class ChatConsumer(WebsocketConsumer):
 
 
     def receive(self, text_data):
-        json_text = json.loads(text_data)
-        message = json_text["message"]
-        print("Received message", message)
+        print("Received text data:", text_data)
+        try:
+            # Parse the JSON string into a dictionary
+            json_text = json.loads(text_data)
 
-        # Send message to room group
-        async_to_sync(self.channel_layer.group_send)(
-            self.room_group_name,
-            {
-                "type": "chat_message",
-                "message": message
-            }
-        )
+            # Access the "message" key from the dictionary
+            message = json_text.get("message")
+
+            # check if the message is None before processing further
+            if message:
+                print("Received message", message)
+
+            # Send message to room group
+            async_to_sync(self.channel_layer.group_send)(
+                self.room_group_name,
+                {
+                    "type": "chat_message",
+                    "message": message
+                }
+            )
+        except json.JSONDecodeError as e:
+            print("Error decoding JSON:", e)
 
     def chat_message(self, event):
         message = event['message']

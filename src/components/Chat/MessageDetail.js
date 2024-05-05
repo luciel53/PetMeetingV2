@@ -25,7 +25,7 @@ function MessageDetail() {
   );
   const [isWebSocketConnected, setIsWebSocketConnected] = useState(false);
   const [websocketMessages, setWebsocketMessages] = useState([]);
-  const [chatMessage, setChatMessage] = useState({message: ""});
+  const [chatMessage, setChatMessage] = useState({ message: "" });
 
   // To display all the conversations
   useEffect(() => {
@@ -77,6 +77,39 @@ function MessageDetail() {
               setMessage(response.data);
               console.log("QUEL MESSAGE:", message);
             });
+
+          const socket = new WebSocket(`ws://127.0.0.1:8000/ws/messaging/`);
+
+          socket.addEventListener("open", () => {
+            console.log(" WEBSOCKET CONNECTED");
+            setIsWebSocketConnected(true);
+          });
+
+          socket.addEventListener("error", (event) => {
+            console.error(" WEBSOCKET ERROR", event);
+            setIsWebSocketConnected(false);
+          });
+
+          socket.addEventListener("message", (event) => {
+            console.log("EVENTDATA1", event.data);
+            // update the message state by adding the new message
+            const newMessage = event.data;
+            console.log("EVENTDATA2", event.data);
+            setWebsocketMessages((prevMessages) => [
+              ...prevMessages,
+              newMessage,
+            ]);
+            console.log("Nouveau message reçu :", newMessage);
+          });
+
+          //Clean up websocket connection
+          return () => {
+            if (socket.readyState === 1) {
+              socket.close();
+              console.log("WEBSOCKET DISCONNECTED");
+              setIsWebSocketConnected(false);
+            }
+          };
         }
       } catch (error) {
         console.log(error);
@@ -90,49 +123,9 @@ function MessageDetail() {
     return !displayedConversations.has(conversationKey);
   });
 
-
   const offer = message.find(
     (message) => message.sender === userId || message.receiver === userId
   );
-
-  // To manage the websocket connection
-  useEffect(() => {
-    // const chatRoom = `${sender_id}-${receiver_id}-${cat_offer}`;
-    const socket = new WebSocket(`ws://127.0.0.1:8000/ws/messaging/`);
-
-    socket.addEventListener("open", () => {
-      console.log(" WEBSOCKET CONNECTED");
-      setIsWebSocketConnected(true);
-    });
-
-    socket.addEventListener("error", (event) => {
-      console.error(" WEBSOCKET ERROR", event);
-      setIsWebSocketConnected(false);
-    });
-
-    socket.addEventListener("message", (event) => {
-      // update the message state by adding the new message
-      const newMessage = JSON.parse(event.data);
-      console.log("EVENTDATA", event.data);
-      setWebsocketMessages((prevMessages) => [...prevMessages, newMessage]);
-      console.log("Nouveau message reçu :", newMessage);
-    });
-
-    //Clean up websocket connection
-    return () => {
-      if (socket.readyState === 1) {
-        socket.close();
-        console.log("WEBSOCKET DISCONNECTED");
-        setIsWebSocketConnected(false);
-      }
-    };
-  }, [messages]);
-
-  // Fusion des messages HTTP et WebSocket
-  // useEffect(() => {
-  //   // Combine les messages HTTP et WebSocket
-  //   const updatedMessages = [...messages, ...websocketMessages];
-  // }, [messages, websocketMessages]);
 
   console.log("WEBSOK", websocketMessages);
 
@@ -140,20 +133,20 @@ function MessageDetail() {
   const handleChange = (event) => {
     setChatMessage({
       ...chatMessage,
-      [event.target.name]: event.target.value
-    })
-  }
+      [event.target.name]: event.target.value,
+    });
+  };
 
   console.log("TEST>>>> user", userId);
   console.log("TEST>>>> sender", userId);
   console.log("TEST>>>> receiver", receiver_id);
   console.log("TEST>>>> message", chatMessage.message);
-  console.log("TEST>>>> catoffer", typeof(parseInt(cat_offer)));
+  console.log("TEST>>>> catoffer", typeof parseInt(cat_offer));
 
   // Send the message
   const sendMessage = () => {
     const cat_offer_id = parseInt(cat_offer);
-    console.log(typeof(cat_offer_id));
+    console.log(typeof cat_offer_id);
     const formData = new FormData();
     formData.append("user", userId);
     formData.append("sender", userId);
@@ -166,14 +159,52 @@ function MessageDetail() {
       axios.post(baseUrl + "send-messages/", formData).then((response) => {
         console.log(response.data);
         console.log(formData);
-      })
+      });
+
+      //Send it to the websocket server
+      const socket = new WebSocket(`ws://127.0.0.1:8000/ws/messaging/`);
+
+      socket.addEventListener("open", () => {
+        console.log(" WEBSOCKET CONNECTED");
+        setIsWebSocketConnected(true);
+        // once websocket connection is established, send message
+        const jsonMessage = {
+          message: chatMessage.message,
+        };
+
+        socket.send(JSON.stringify(jsonMessage));
+      });
+
+      socket.addEventListener("error", (event) => {
+        console.error(" WEBSOCKET ERROR", event);
+        setIsWebSocketConnected(false);
+      });
+
+      // socket.addEventListener("message", (event) => {
+      //   // update the message state by adding the new message
+      //   const newMessage = JSON.parse(event.data);
+      //   console.log("EVENTDATA", event.data);
+      //   setWebsocketMessages((prevMessages) => [...prevMessages, newMessage]);
+      //   console.log("Nouveau message reçu :", newMessage);
+      // });
+
+      //Clean up websocket connection
+      return () => {
+        if (socket.readyState === 1) {
+          socket.close();
+          console.log("WEBSOCKET DISCONNECTED");
+          setIsWebSocketConnected(false);
+        }
+      };
     } catch (error) {
       console.log(error);
     }
-  }
+  };
 
   console.log(chatMessage);
-  console.log("rzzrzz", cat_offer);
+
+  // const all_messages = [...message, ...websocketMessages];
+  // console.log("tous les msg:::", all_messages);
 
   return (
     <div className="flex flex-row mt-40 mx-auto animate-fade">
@@ -265,53 +296,58 @@ function MessageDetail() {
           </p>
           <hr className="text-darkgray my-2"></hr>
 
-          <div className="h-[550px] overflow-x-auto pr-2">
+          <div className="flex flex-col h-[550px] overflow-x-auto pr-2">
             <div className="text-center w-28 text-verydarkgray mx-auto mb-2">
               <p>Aujourd'hui</p>
             </div>
             {/* Right bubble */}
-            {message.map((msg, index) => (
-              <>
-                {msg.sender === userId && (
-                  <div key={msg.id} className="flex flex-row justify-end">
-                    {/* <div className="w-auto h-2 bg-white"></div> */}
-                    <div className="flex flex-col max-w-[480px] h-auto ">
-                      <div className="flex flex-row mt-3 p-3 bg-fairpurple rounded-xl">
-                        <p className=" max-w-96">{msg.message}</p>
-                        <div className="flex flex-col items-end justify-center ml-3">
-                          <img
-                            src={msg.sender_profile.avatar}
-                            className="h-12 w-12 ml-3 object-cover rounded-full"
-                            alt={msg.sender_profile_name}
-                          />
-                        </div>
-                      </div>
-                      <p className="text-end text-verydarkgray mt-1 mr-2">
-                        10:50
+            {message
+              .sort((a, b) => new Date(a.date) - new Date(b.date))
+              .map((msg, index) => (
+                <div className="flex flex-col">
+                  <div className={`flex flex-row ${msg.sender === userId ? 'justify-end' : 'justify-start'}`}>
+                    <div
+                      key={msg.id}
+                      className={`flex flex-row max-w-[480px] h-auto mt-3 p-3 rounded-xl ${
+                        msg.sender === userId
+                          ? " bg-fairpurple justify-end"
+                          : "justify-start bg-midgray"
+                      }`}
+                    >
+                      {msg.sender !== userId && (
+                        <img
+                          src={msg.sender_profile?.avatar}
+                          className="h-12 w-12 object-cover rounded-full"
+                          alt={msg.sender.name}
+                        />
+                      )}
+                      <p
+                        className={`ml-4 max-w-96 ${
+                          msg.sender === userId ? "text-end" : ""
+                        }`}
+                      >
+                        {msg.message}
                       </p>
+                      {msg.sender === userId && (
+                        <img
+                          src={msg.sender_profile?.avatar}
+                          className="h-12 w-12 object-cover rounded-full"
+                          alt={msg.sender.name}
+                        />
+                      )}
+
                     </div>
+
                   </div>
-                )}
-              </>
-            ))}
-            {/* Left bubble */}
-            {message.map((msg, index) => (
-              <>
-                {msg.sender !== userId && (
-                  <>
-                    <div key={msg.id} className="flex flex-row max-w-[480px] h-auto mt-3 p-3 bg-gray rounded-xl">
-                      <img
-                        src={msg.sender_profile.avatar}
-                        className="h-12 w-12 object-cover rounded-full"
-                        alt={msg.sender.name}
-                      />
-                      <p className="ml-4 max-w-96">{msg.message}</p>
-                    </div>
-                    <p className=" text-verydarkgray mt-1 mr-2">14:50</p>
-                  </>
-                )}
-              </>
-            ))}
+                  <p
+                    className={`text-verydarkgray mt-1 mr-2 ${
+                      msg.sender !== userId ? "" : "text-end"
+                    }`}
+                  >
+                    {moment(msg.date).format("HH:mm")}
+                  </p>
+                </div>
+              ))}
           </div>
         </div>
         {/* Messages input */}
