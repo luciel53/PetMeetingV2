@@ -1,5 +1,5 @@
 import { React, useState, useEffect } from "react";
-import { NavLink, useLocation, useParams, useHistory } from "react-router-dom";
+import { NavLink, useLocation, useParams, useHistory, json } from "react-router-dom";
 import axios from "axios";
 import { jwtDecode } from "jwt-decode";
 import moment from "moment";
@@ -25,7 +25,9 @@ function MessageDetail() {
   );
   const [isWebSocketConnected, setIsWebSocketConnected] = useState(false);
   const [websocketMessages, setWebsocketMessages] = useState([]);
+  const [wsSender, setWsSender] = useState("");
   const [chatMessage, setChatMessage] = useState({ message: "" });
+  const [sentMessages, setSentMessages] = useState([]);
 
   // To display all the conversations
   useEffect(() => {
@@ -89,17 +91,23 @@ function MessageDetail() {
             console.error(" WEBSOCKET ERROR", event);
             setIsWebSocketConnected(false);
           });
-
           socket.addEventListener("message", (event) => {
-            console.log("EVENTDATA1", event.data);
+            try {
             // update the message state by adding the new message
-            const newMessage = event.data;
-            console.log("EVENTDATA2", event.data);
-            setWebsocketMessages((prevMessages) => [
-              ...prevMessages,
-              newMessage,
-            ]);
-            console.log("Nouveau message reçu :", newMessage);
+            const newMessage = JSON.parse(event.data);
+
+            // Check if newMessage is a valid JSON object
+            setWsSender(newMessage["sender"]);
+            let msg = newMessage["message"];
+            setWebsocketMessages((prevMessages) => [...prevMessages, msg]);
+          } catch (e) {
+              console.error("error parsing JSON msg", e);
+            }
+
+
+
+              console.log("All messages received from websocket::", websocketMessages);
+
           });
 
           //Clean up websocket connection
@@ -126,8 +134,6 @@ function MessageDetail() {
   const offer = message.find(
     (message) => message.sender === userId || message.receiver === userId
   );
-
-  console.log("WEBSOK", websocketMessages);
 
   // changes the state of the input chat message
   const handleChange = (event) => {
@@ -169,10 +175,19 @@ function MessageDetail() {
         setIsWebSocketConnected(true);
         // once websocket connection is established, send message
         const jsonMessage = {
+          user: userId,
+          sender: userId,
+          receiver: receiver_id,
           message: chatMessage.message,
+          is_read: false,
+          cat_offer: cat_offer_id,
+          // receiver_profile: receiver_profile.avatar,
+          // sender_profile: sender_profile.avatar,
         };
 
         socket.send(JSON.stringify(jsonMessage));
+        setSentMessages(jsonMessage);
+        console.log("Message envoyé avec Websocket::", jsonMessage);
       });
 
       socket.addEventListener("error", (event) => {
@@ -300,7 +315,7 @@ function MessageDetail() {
             <div className="text-center w-28 text-verydarkgray mx-auto mb-2">
               <p>Aujourd'hui</p>
             </div>
-            {/* Right bubble */}
+            {/* Display the messages from database */}
             {message
               .sort((a, b) => new Date(a.date) - new Date(b.date))
               .map((msg, index) => (
@@ -335,7 +350,6 @@ function MessageDetail() {
                           alt={msg.sender.name}
                         />
                       )}
-
                     </div>
 
                   </div>
@@ -348,6 +362,52 @@ function MessageDetail() {
                   </p>
                 </div>
               ))}
+              {/* Display the websocket messages */}
+            {Array.isArray(websocketMessages) && (
+              websocketMessages.map((msg, index) => (
+                <div className="flex flex-col">
+                  <div className={`flex flex-row ${wsSender === userId ? 'justify-end' : 'justify-start'}`}>
+                    <div
+                      key={index}
+                      className={`flex flex-row max-w-[480px] h-auto mt-3 p-3 rounded-xl ${
+                        wsSender === userId
+                          ? " bg-fairpurple justify-end"
+                          : "justify-start bg-midgray"
+                      }`}
+                    >
+                      {/* {msg.sender !== userId && (
+                        <img
+                          src={msg.sender_profile?.avatar}
+                          className="h-12 w-12 object-cover rounded-full"
+                          alt={msg.sender.name}
+                        />
+                      )} */}
+                      <p
+                        className={`ml-4 max-w-96 ${
+                          wsSender === userId ? "text-end" : ""
+                        }`}
+                      >
+                        {msg}
+                      </p>
+                      {/* {msg.sender === userId && (
+                        <img
+                          src={msg.sender_profile?.avatar}
+                          className="h-12 w-12 object-cover rounded-full"
+                          alt={msg.sender.name}
+                        />
+                      )} */}
+                    </div>
+
+                  </div>
+                  <p
+                    className={`text-verydarkgray mt-1 mr-2 ${
+                      wsSender !== userId ? "" : "text-end"
+                    }`}
+                  >
+                    {moment(msg.date).format("HH:mm")}
+                  </p>
+                </div>
+              )))}
           </div>
         </div>
         {/* Messages input */}
