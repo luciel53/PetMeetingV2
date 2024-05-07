@@ -141,6 +141,24 @@ function MessageDetail() {
     (message) => message.sender === userId || message.receiver === userId
   );
 
+  //find the avatars
+  // recover the sender avatar
+  const avatarSender = offer && offer.sender_profile ? offer.sender_profile.avatar : '';
+  console.log("avatarSender: ", avatarSender);
+
+  // recover the receiver avatar
+  const avatarReceiver = offer && offer.receiver_profile ? offer.receiver_profile.avatar : '';
+  console.log("avatarReceiver: ", avatarReceiver);
+
+  // recover tje sender name
+  const nameSender = offer && offer.sender_profile_name ? offer.sender_profile_name : '';
+  console.log(nameSender);
+
+  // recover the receiver name
+  const nameReceiver = offer && offer.receiver_profile_name ? offer.receiver_profile_name : '';
+  console.log(nameReceiver);
+  console.log("offer: ", offer);
+
   // changes the state of the input chat message
   const handleChange = (event) => {
     setChatMessage({
@@ -381,13 +399,13 @@ function MessageDetail() {
                           : "justify-start bg-midgray"
                       }`}
                     >
-                      {/* {msg.sender !== userId && (
+                      {msg.sender !== userId && (
                         <img
-                          src={msg.sender_profile?.avatar}
+                          src={avatarReceiver}
                           className="h-12 w-12 object-cover rounded-full"
-                          alt={msg.sender.name}
+                          alt={nameReceiver}
                         />
-                      )} */}
+                      )}
                       <p
                         className={`ml-4 max-w-96 ${
                           msg.sender === userId ? "text-end" : ""
@@ -395,13 +413,13 @@ function MessageDetail() {
                       >
                         {msg.message}
                       </p>
-                      {/* {msg.sender === userId && (
+                      {msg.sender === userId && (
                         <img
-                          src={msg.sender_profile?.avatar}
+                          src={avatarSender}
                           className="h-12 w-12 object-cover rounded-full"
-                          alt={msg.sender.name}
+                          alt={nameSender}
                         />
-                      )} */}
+                      )}
                     </div>
 
                   </div>
