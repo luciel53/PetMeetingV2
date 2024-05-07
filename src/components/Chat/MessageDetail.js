@@ -95,18 +95,24 @@ function MessageDetail() {
             try {
             // update the message state by adding the new message
             const newMessage = JSON.parse(event.data);
+            console.log("websocket nouveau messsage", newMessage);
 
             // Check if newMessage is a valid JSON object
-            setWsSender(newMessage["sender"]);
-            let msg = newMessage["message"];
-            setWebsocketMessages((prevMessages) => [...prevMessages, msg]);
+            // setWsSender(newMessage["sender"]);
+            // let new_msg_user = newMessage["user"];
+            // let new_msg_sender = newMessage["sender"];
+            // let new_msg_receiver = newMessage["receiver"];
+            // let new_msg_msg = newMessage["message"];
+            // let new_msg_is_read = newMessage["is_read"];
+            // let new_msg_cat_offer = newMessage["cat_offer"];
+
+            setWebsocketMessages((prevMessages) => [...prevMessages, newMessage]);
+            console.log("All messages received from websocket::", websocketMessages);
+
           } catch (e) {
               console.error("error parsing JSON msg", e);
             }
-
-
-
-              console.log("All messages received from websocket::", websocketMessages);
+          console.log("All messages received from websocket::", websocketMessages);
 
           });
 
@@ -366,11 +372,11 @@ function MessageDetail() {
             {Array.isArray(websocketMessages) && (
               websocketMessages.map((msg, index) => (
                 <div className="flex flex-col">
-                  <div className={`flex flex-row ${wsSender === userId ? 'justify-end' : 'justify-start'}`}>
+                  <div className={`flex flex-row ${msg.sender === userId ? 'justify-end' : 'justify-start'}`}>
                     <div
                       key={index}
                       className={`flex flex-row max-w-[480px] h-auto mt-3 p-3 rounded-xl ${
-                        wsSender === userId
+                        msg.sender === userId
                           ? " bg-fairpurple justify-end"
                           : "justify-start bg-midgray"
                       }`}
@@ -384,10 +390,10 @@ function MessageDetail() {
                       )} */}
                       <p
                         className={`ml-4 max-w-96 ${
-                          wsSender === userId ? "text-end" : ""
+                          msg.sender === userId ? "text-end" : ""
                         }`}
                       >
-                        {msg}
+                        {msg.message}
                       </p>
                       {/* {msg.sender === userId && (
                         <img
@@ -401,7 +407,7 @@ function MessageDetail() {
                   </div>
                   <p
                     className={`text-verydarkgray mt-1 mr-2 ${
-                      wsSender !== userId ? "" : "text-end"
+                      msg.sender !== userId ? "" : "text-end"
                     }`}
                   >
                     {moment(msg.date).format("HH:mm")}
