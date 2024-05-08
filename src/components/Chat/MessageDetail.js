@@ -150,6 +150,9 @@ function MessageDetail() {
   const avatarReceiver = offer && offer.receiver_profile ? offer.receiver_profile.avatar : '';
   console.log("avatarReceiver: ", avatarReceiver);
 
+  const test1 = offer && offer.sender === userId ? avatarSender : avatarReceiver;
+  const test2 = offer && offer.sender === userId ? avatarReceiver : avatarSender;
+
   // recover tje sender name
   const nameSender = offer && offer.sender_profile_name ? offer.sender_profile_name : '';
   console.log(nameSender);
@@ -189,6 +192,7 @@ function MessageDetail() {
       axios.post(baseUrl + "send-messages/", formData).then((response) => {
         console.log(response.data);
         console.log(formData);
+        setChatMessage({ message: "" });
       });
 
       //Send it to the websocket server
@@ -401,7 +405,7 @@ function MessageDetail() {
                     >
                       {msg.sender !== userId && (
                         <img
-                          src={avatarReceiver}
+                          src={test2}
                           className="h-12 w-12 object-cover rounded-full"
                           alt={nameReceiver}
                         />
@@ -415,7 +419,7 @@ function MessageDetail() {
                       </p>
                       {msg.sender === userId && (
                         <img
-                          src={avatarSender}
+                          src={test1}
                           className="h-12 w-12 object-cover rounded-full"
                           alt={nameSender}
                         />
