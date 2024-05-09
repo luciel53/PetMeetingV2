@@ -96,7 +96,7 @@ export default function Annonces() {
                     {catOffer.sex === "Mâle" ? (
                       <img src={male} alt="mâle" className="pl-4" />
                     ) : (
-                      <img src={female} alt="femelle" />
+                      <img src={female} alt="femelle" className="pl-4" />
                     )}
                   </p>
                 </div>

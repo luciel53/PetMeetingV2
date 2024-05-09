@@ -40,7 +40,7 @@ export default function Accueil() {
 			  </p>
 		  </div>
 		  {/* BG de la semaine */}
-		  <div className="container flex flex-col bg-cover w-60 lg:w-[320px] h-60 lg:h-[320px] mt-10 md:mt-4 lg:mt-8 lg:mr-28 border-2 shadow-2xl rounded-3xl mx-auto ml-24 md:ml-0 animate-fade-left animate-duration-[800ms] animate-ease-linear">
+		  <div className="container flex flex-col bg-cover w-60 lg:w-[320px] h-32 lg:h-[320px] mt-10 md:mt-4 lg:mt-8 lg:mr-28 border-2 shadow-2xl rounded-3xl mx-auto ml-24 md:ml-0 animate-fade-left animate-duration-[800ms] animate-ease-linear">
 			<div className="bg-yellow z-10 relative p-2 text-center font-semibold transform rounded-g-3xl rounded-t-3xl">Le BG de la semaine</div>
 			<img src={require("../assets/images/bg.png")} className='z-0 max-h-[196px] lg:max-h-[276px] max-w-[196px] lg:max-width-[316px] justify-center mx-auto' alt="Le beau chat de la semaine" />
 		  </div>
