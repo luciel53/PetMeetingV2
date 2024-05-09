@@ -53,18 +53,16 @@ def catOffer_view(request):
         # obtain the jwt token of the authorization header
         token = request.META['HTTP_AUTHORIZATION'].split(' ')[1]
         # create an instance of JWTAuthentication
-        print("salouteee", token)
         jwt_authentication = JWTAuthentication()
         try:
             # validate and decode jwt token to obtain the user
             user, _ = jwt_authentication.authenticate(request)
-            print("coucou", user)
         except:
             # if token not valid, throw an error
             return JsonResponse({'error': 'Invalid JWT token'}, status=401)
-    # else:
-    #     # if token not in request, throw an error
-    #     return JsonResponse({'error': 'JWT token is missing'}, status=401)
+    else:
+        # if token not in request, throw an error
+        return JsonResponse({'error': 'JWT token is missing'}, status=401)
 
     if request.method == 'POST':
         print(1)

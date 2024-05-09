@@ -128,9 +128,11 @@ export default function Publier() {
         axios.defaults.headers.common["Authorization"] = `Bearer ${localStorage.getItem("access_token")}`;
           const response = await axios.post("http://127.0.0.1:8000/offers/offers/",
             formData,
+            // { refresh_token: localStorage.getItem("refresh_token") },
             {
               headers: { "Content-Type": "multipart/form-data" },
-            }
+            },
+            // {withCredentials: true},
           );
           // authorize the token
           // axios.defaults.headers.common["Authorization"] = `Bearer ${localStorage.getItem("access_token")}`;
