@@ -218,7 +218,7 @@ export default function Offer() {
             <div className="h-auto">
               <img
                 src={selectedImage}
-                className="mt-24 mb-5 mx-auto max-w-72 max-h-96 shadow-lg"
+                className="mt-16 mb-5 mx-auto max-w-96 max-h-[430px] shadow-lg"
                 alt="selected"
               />
             </div>
@@ -249,14 +249,14 @@ export default function Offer() {
                   <img
                   src={`http://127.0.0.1:8000${selectedOffer.picture3}`}
                   onClick={() => handleImageClick(`http://127.0.0.1:8000${selectedOffer.picture3}`)}
-                  className="max-w-24 max-h-24 mr-4 rounded-lg shadow-lg cursor-pointer"
+                  className="max-w-24 max-h-24 rounded-lg shadow-lg cursor-pointer"
                   alt="image1"
                 />
                 ) : (
                   <img
                     src={noPic}
                     alt="Vide"
-                    className="max-w-24 max-h-24 mr-4 rounded-lg shadow-lg"
+                    className="max-w-24 max-h-24 rounded-lg shadow-lg"
                   />
                 )}
               </div>
