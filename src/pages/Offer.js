@@ -14,9 +14,14 @@ export default function Offer() {
   const [ownerProfile, setOwnerProfile] = useState(null);
   const [selectedOffer, setSelectedOffer] = useState(null);
   const [avatar, setAvatar] = useState(null);
+  const [selectedImage, setSelectedImage] = useState(null);
   // useParams extracts the params of the url
   const { id } = useParams();
   console.log(id);
+
+  const handleImageClick = (imageUrl) => {
+    setSelectedImage(imageUrl);
+  };
 
   useEffect(() => {
     const fetchCatOffer = async () => {
@@ -29,6 +34,8 @@ export default function Offer() {
         const selected = offers.find((offer) => offer.id === parseInt(id));
         console.log("selecteed???????", selected);
         setSelectedOffer(selected);
+        setSelectedImage(selected.picture);
+        handleImageClick(`http://127.0.0.1:8000${selected.picture}`);
 
         const ownerResponse = await axios.get(
           `http://127.0.0.1:8000/users/profile/${selected.user_id}`
@@ -210,9 +217,9 @@ export default function Offer() {
             {/* Big Picture */}
             <div className="h-auto">
               <img
-                src={abyssin}
+                src={selectedImage}
                 className="mt-24 mb-5 mx-auto max-w-72 max-h-96 shadow-lg"
-                alt="1"
+                alt="selected"
               />
             </div>
             {/* Mini pictures */}
@@ -220,15 +227,17 @@ export default function Offer() {
               <div className="flex flex-row justify-center">
                 <img
                   src={`http://127.0.0.1:8000${selectedOffer.picture}`}
-                  className="max-w-24 max-h-24 mr-4 rounded-lg shadow-lg"
+                  onClick={() => handleImageClick(`http://127.0.0.1:8000${selectedOffer.picture}`)}
+                  className="max-w-24 max-h-24 mr-4 rounded-lg shadow-lg cursor-pointer"
                   alt="image1"
                 />
                 {selectedOffer.picture2 ? (
                   <img
-                    src={`http://127.0.0.1:8000${selectedOffer.picture2}`}
-                    className="max-w-24 max-h-24 mr-4 rounded-lg shadow-lg"
-                    alt="image2"
-                  />
+                  src={`http://127.0.0.1:8000${selectedOffer.picture2}`}
+                  onClick={() => handleImageClick(`http://127.0.0.1:8000${selectedOffer.picture2}`)}
+                  className="max-w-24 max-h-24 mr-4 rounded-lg shadow-lg cursor-pointer"
+                  alt="image1"
+                />
                 ) : (
                   <img
                     src={noPic}
@@ -238,10 +247,11 @@ export default function Offer() {
                 )}
                 {selectedOffer.picture3 ? (
                   <img
-                    src={`http://127.0.0.1:8000${selectedOffer.picture3}`}
-                    className="max-w-24 max-h-24 mr-4 rounded-lg shadow-lg"
-                    alt="image3"
-                  />
+                  src={`http://127.0.0.1:8000${selectedOffer.picture3}`}
+                  onClick={() => handleImageClick(`http://127.0.0.1:8000${selectedOffer.picture3}`)}
+                  className="max-w-24 max-h-24 mr-4 rounded-lg shadow-lg cursor-pointer"
+                  alt="image1"
+                />
                 ) : (
                   <img
                     src={noPic}

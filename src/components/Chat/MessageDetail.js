@@ -341,7 +341,7 @@ function MessageDetail() {
 
           <div className="flex flex-col h-[550px] overflow-x-auto pr-2">
             <div className="text-center w-28 text-verydarkgray mx-auto mb-2">
-              <p>Aujourd'hui</p>
+              <p>{offer.date}</p>
             </div>
             {/* Display the messages from database */}
             {message
