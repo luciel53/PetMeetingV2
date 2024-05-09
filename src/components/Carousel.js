@@ -1,7 +1,6 @@
-import cats from "./Cats";
 import React, { useState, useEffect } from "react";
 
-export default function Carousel() {
+export default function Carousel({ offers }) {
     const [startIndex, setStartIndex] = useState(0);
     const [itemsToShow, setItemsToShow] = useState(0);
 
@@ -27,14 +26,14 @@ export default function Carousel() {
             window.removeEventListener("resize", handleResize); // avoid bugs/memory leaks
             clearInterval(intervalId); // clear interval
         };
-    }, [cats.length]);
+    }, [offers.length]);
 
     function nextImages() {
-        setStartIndex(prevIndex => (prevIndex + 1) % cats.length);
+        setStartIndex(prevIndex => (prevIndex + 1) % offers.length);
     }
 
     function prevImages() {
-        setStartIndex(prevIndex => (prevIndex - 1 + cats.length) % cats.length);
+        setStartIndex(prevIndex => (prevIndex - 1 + offers.length) % offers.length);
     }
 
     return (
@@ -46,13 +45,17 @@ export default function Carousel() {
             {/* Carousel */}
             <div className="relative mt-4 md:mt-8 md:p-5 shadow-xl mb-5 flex flex-nowrap bg-white rounded-3xl font-semibold overflow-x-scroll snap-mandatory">
                 {Array.from({ length: itemsToShow }).map((_, index) => {
-                    const imageIndex = (startIndex + index) % cats.length;
-                    const image = cats[imageIndex];
+                    const offerIndex = (startIndex + index) % offers.length;
+                    const offer = offers[offerIndex];
+                    if (!offer) {
+                        return null;
+                    }
+
                     return (
                         <div key={index} className="container flex flex-col bg-white z-0 md:h-80 w-80 mx-auto mr-3 pt-2 pb-2 rounded-3xl shadow-xl transition: all 0.5s ease-in-out hover:scale-110 transition duration-500 cursor-pointer">
-                            <p className="text-center">{image.name}</p>
-                            <img src={image.image} className="z-20 h-[100px] md:h-[244px] my-3 object-cover mx-auto" alt={image.name} />
-                            <p className="text-center">{image.race}</p>
+                            <p className="text-center">{offer.name}</p>
+                            <img src={`http://127.0.0.1:8000${offer.picture}`} className="z-20 h-[100px] md:h-[235px] md:w-[200px] my-3 object-cover mx-auto rounded-lg" alt={offer.name} />
+                            <p className="text-center">{offer.race}</p>
 
                         </div>
                     );

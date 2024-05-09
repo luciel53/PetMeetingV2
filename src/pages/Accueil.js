@@ -1,6 +1,23 @@
+import { useState, useEffect } from 'react';
 import Carousel from '../components/Carousel';
+import axios from 'axios';
 
 export default function Accueil() {
+	const [offers, setOffers] = useState([]);
+
+	useEffect(() => {
+		const fetchOffers = async () => {
+		  try {
+			const response = await axios.get('http://127.0.0.1:8000/offers/offers/get_all_offers/');
+			setOffers(response.data.offers);
+			console.log('OFFERS:::', offers);
+		  } catch (error) {
+			console.error('Erreur lors de la récupération des offres :', error);
+		  }
+		};
+
+		fetchOffers();
+	  }, []);
 
 	return (
 	  <main className="container flex flex-col mt-20 lg:w-[96rem] mx-auto">
@@ -30,7 +47,7 @@ export default function Accueil() {
 		</section>
 		{/* Carousel */}
 		<section className='mt-10 mb-10 lg:mt-0'>
-		  <div><Carousel /></div>
+		  <div><Carousel offers={offers} /></div>
 		</section>
 	  </main>
 	);
