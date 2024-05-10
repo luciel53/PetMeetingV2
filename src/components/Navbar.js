@@ -39,7 +39,6 @@ export default function Navbar() {
   // set the auth to false if disconnected
   const updateIsAuthLogout = () => {
     setIsAuth(false);
-    console.log("just to change the username");
   };
 
   useEffect(() => {
@@ -58,22 +57,6 @@ export default function Navbar() {
       console.log("Error fetching username", error);
     }
   };
-  // const ToDecodeToken = async () => {
-  //   if (isAuth) {
-  //   const token = localStorage.getItem("access_token");
-  //     try {
-  //       const decodedToken = jwtDecode(token);
-  //       setUserId(decodedToken.userId);
-  //       console.log(userId);
-  //     } catch (error) {
-  //       console.error("Error decoding token");
-  //     }
-  //   }
-  // };
-
-  // useEffect(() => {
-  //   ToDecodeToken();
-  // }, [isAuth, ToDecodeToken])
 
   function toggleMenu() {
     setIsMenuOpen(!isMenuOpen);
@@ -85,25 +68,15 @@ export default function Navbar() {
 
   const handleLogout = async () => {
     try {
-      // const response = await axios.post(
-      //   "http://localhost:8000/logout/",
-      //   { refresh_token: localStorage.getItem("refresh_token") },
-      //     { headers: { "Content-Type": "application/json" } },
-      //     { withCredentials: true }
-      // );
-
-      console.log("YEAHHHHHHHHHHHHHHH! You're disconnected babe");
-
       localStorage.clear();
       axios.defaults.headers.common["Authorization"] = null;
       updateIsAuthLogout();
       window.location.href = "/login";
-    } catch (e) {
-      console.log("Logout not working", e);
+      console.log("You're disconnected");
+    } catch (error) {
+      console.log("Logout doesn't work", error);
     }
   };
-
-  console.log("moi c'est: ", username);
 
   return (
     <header className="bg-purple z-50 fixed top-0 w-full shadow-xl">
