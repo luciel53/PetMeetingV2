@@ -6,8 +6,8 @@ import axios from "axios";
 export default function Contact() {
   const location = useLocation();
   const searchParams = new URLSearchParams(location.search);
-
   const [successMessage, setSuccessMessage] = useState("");
+  
   const initialFormData = {
     name: "" || searchParams.get("name"),
     email: "" || searchParams.get("email"),

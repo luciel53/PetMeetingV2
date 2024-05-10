@@ -1,4 +1,4 @@
-import { NavLink, useNavigate, useLocation, useParams } from "react-router-dom";
+import { NavLink, useParams } from "react-router-dom";
 import { useState, useEffect } from "react";
 import axios from "axios";
 import profileMsg from "../assets/images/icons/profileMsg.png";
@@ -7,11 +7,9 @@ import minicat from "../assets/images/icons/minicat.png";
 import warning from "../assets/images/icons/warning.png";
 import male from "../assets/images/icons/male.png";
 import female from "../assets/images/icons/female.png";
-import abyssin from "../assets/images/grid-carousel/abyssin.png";
 import noPic from "../assets/images/nopicture.png";
 
 export default function Offer() {
-  const [ownerProfile, setOwnerProfile] = useState(null);
   const [selectedOffer, setSelectedOffer] = useState(null);
   const [avatar, setAvatar] = useState(null);
   const [selectedImage, setSelectedImage] = useState(null);
@@ -30,9 +28,7 @@ export default function Offer() {
           "http://127.0.0.1:8000/offers/offers/get_all_offers/"
         );
         const offers = response.data.offers;
-        console.log("offers????", offers);
         const selected = offers.find((offer) => offer.id === parseInt(id));
-        console.log("selecteed???????", selected);
         setSelectedOffer(selected);
         setSelectedImage(selected.picture);
         handleImageClick(`http://127.0.0.1:8000${selected.picture}`);
@@ -41,9 +37,7 @@ export default function Offer() {
           `http://127.0.0.1:8000/users/profile/${selected.user_id}`
         );
         const profile = ownerResponse.data;
-        console.log("quel Profil???", ownerResponse.data);
         setAvatar(profile.avatar);
-        console.log("image???",avatar);
       } catch (e) {
         console.error("Error fetching cats offers", e);
       }

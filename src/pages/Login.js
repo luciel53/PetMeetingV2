@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import { NavLink } from "react-router-dom";
 import Button from "../components/Button";
 import lock from "../assets/images/icons/lock.png";
@@ -9,6 +9,7 @@ export default function Login() {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [errorMessage, setErrorMessage] = useState(false);
+
   // Create the submit method
   const submit = async e => {
     e.preventDefault();

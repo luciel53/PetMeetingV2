@@ -1,6 +1,7 @@
 def serialize_offer(offer):
     serialized_offer = {
         'name': offer.name,
+        'date_posted': offer.date_posted,
         'id': offer.id,
         'price': offer.price,
         'sex': offer.sex,

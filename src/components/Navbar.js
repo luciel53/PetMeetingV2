@@ -7,7 +7,6 @@ import logoutIcon from "../assets/images/icons/logout.svg";
 import registerIcon from "../assets/images/icons/register.png";
 import connectionIcon from "../assets/images/icons/connection.png";
 import paw from "../assets/images/icons/paw.png";
-import Logout from "../pages/Logout.js";
 import { jwtDecode } from "jwt-decode";
 
 export default function Navbar() {
@@ -50,9 +49,8 @@ export default function Navbar() {
   const fetchUsernameByUserId = async () => {
     try {
       const response = await axios.get(`http://localhost:8000/users/${userId}/`);
-      console.log("euuuuuuuuh", response.data);
       setUsername(response.data.username);
-      console.log(response.data.username);
+      console.log("username:", response.data.username);
     } catch (error) {
       console.log("Error fetching username", error);
     }

@@ -8,7 +8,6 @@ import Annonces from "./pages/Annonces";
 import Membres from "./pages/Membres";
 import Offer from "./pages/Offer";
 import Login from "./pages/Login";
-import Logout from "./pages/Logout";
 import Register from "./pages/Register";
 import Profile from "./pages/Profile";
 import MessageDetail from "./components/Chat/MessageDetail";
@@ -29,7 +28,6 @@ export default function App() {
         <Routes>
           <Route path="/" exact element={<Accueil />} />
           <Route path="/Login" element={<Login />} />
-          {/* <Route path="/Logout" element={<Logout />} /> */}
           <Route path="/Register" element={<Register />} />
           <Route path="/Offer" element={<Offer />} />
           <Route path="/Erreur404" element={<Error404 />} />

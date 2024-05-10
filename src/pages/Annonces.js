@@ -7,6 +7,7 @@ import { useState, useEffect } from "react";
 
 export default function Annonces() {
   const [catsOffers, setCatsOffers] = useState([]);
+
   useEffect(() => {
     fetchCatsOffers();
   }, []);
@@ -17,7 +18,6 @@ export default function Annonces() {
         "http://127.0.0.1:8000/offers/offers/get_all_offers/"
       );
       setCatsOffers(response.data.offers);
-      console.log("testtttt", response.data);
     } catch (e) {
       console.error("Error fetching cats offers", e);
     }
@@ -33,7 +33,6 @@ export default function Annonces() {
   useEffect(() => {
     // Filter offers according to selected criteria
     const filtered = catsOffers.filter((offer) => {
-      console.log("CKOIIIIIIIIIII", offer.eye_color);
       // Checks if each criteria matches the selected criteria
       return (
         (!sex || offer.sex === sex) &&
@@ -45,7 +44,6 @@ export default function Annonces() {
     });
     setFilteredOffers(filtered);
   }, [catsOffers, sex, race, eye_color, blood, location]);
-  console.log("jetesttttttttt", race);
 
   function handleSearch(criteria) {
     setSex(criteria.selectedSex);
@@ -54,12 +52,6 @@ export default function Annonces() {
     setBlood(criteria.selectedBlood);
     setLocation(criteria.selectedLocation);
   }
-
-  console.log("SEXE:::: ", sex);
-  console.log("RACE:::: ", race);
-  console.log("EYECOLOR:::: ", eye_color);
-  console.log("BLOOD:::: ", blood);
-  console.log("LOCATION:::: ", location);
 
   return (
     <>

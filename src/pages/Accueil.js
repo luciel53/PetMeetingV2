@@ -10,7 +10,7 @@ export default function Accueil() {
 		  try {
 			const response = await axios.get('http://127.0.0.1:8000/offers/offers/get_all_offers/');
 			setOffers(response.data.offers);
-			console.log('OFFERS:::', offers);
+			console.log('OFFERS:', offers);
 		  } catch (error) {
 			console.error('Erreur lors de la récupération des offres :', error);
 		  }

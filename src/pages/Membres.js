@@ -49,19 +49,6 @@ export default function Members() {
           <p className="mx-auto text-center">Désolé, aucun résultat. Va bien manger tes morts.</p>
         )}
       </div>
-
-      {/* <div>
-        {profiles && profiles.length > 0 ? (
-          <Grid items={profiles.map(profile => (
-            {
-            name: profile.username,
-            image: profile.avatar,
-            race: profile.location,
-          }
-          ))} />
-        ) : ( <p>Loading profiles...</p> )
-          }
-      </div> */}
     </div>
   );
 }
