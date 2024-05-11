@@ -38,7 +38,6 @@ export default function Profile() {
   const [changedAvatar, setChangedAvatar] = useState(null);
   const [userNotFound, setUserNotFound] = useState(false);
   const [catsOffers, setCatsOffers] = useState([]);
-  const [loading, setLoading] = useState(true);
   const [isAuth, setIsAuth] = useState(false);
   const [username, setUsername] = useState("");
   const [userId, setUserId] = useState("");
@@ -348,7 +347,6 @@ export default function Profile() {
 
   const handleSaveFacebook = async () => {
     try {
-      console.log("quel facebook?????", changedFacebook);
       const accessToken = localStorage.getItem("access_token");
       const response = await axios.put(
         "http://localhost:8000/users/profile/update/",
@@ -424,7 +422,7 @@ export default function Profile() {
             <div className="flex flex-row w-[988px] mx-24">
               <div className="flex flex-col w-96">
                 {/* email */}
-                <div className="flex flex-row justify-between mx-10 w-96">
+                <div className="flex flex-row justify-between mx-10 w-[90%]">
                   <p className="flex flex-row text-lg mt-4 mb-4">
                     <img
                       src={email}
@@ -440,7 +438,7 @@ export default function Profile() {
                             value={changedMail}
                             onChange={(e) => setChangedMail(e.target.value)}
                             placeholder="Entrez votre adresse mail"
-                            className="w-60"
+                            className="w-60 hover:cursor-pointer"
                           />
                         ) : (
                           <span>{userEmail}</span>
@@ -454,7 +452,7 @@ export default function Profile() {
                     <img
                       src={change}
                       alt="modifier"
-                      className=" w-8 h-8 ml-28 mt-3 mr-5"
+                      className=" w-8 h-8 ml-28 mt-3 mr-5 hover:cursor-pointer"
                       onClick={() => setIsEditEmail(!isEditEmail)}
                     />
                   ) : (
@@ -462,14 +460,14 @@ export default function Profile() {
                       <img
                         src={save}
                         alt="sauvegarder"
-                        className="w-6 h-6 ml-24 mt-3.5"
+                        className="w-6 h-6 ml-16 mt-3.5 hover:cursor-pointer"
                         onClick={handleSaveEmail}
                       ></img>
                     )
                   )}
                 </div>
                 {/* location */}
-                <div className="flex flex-row  justify-between mx-10 w-96">
+                <div className="flex flex-row justify-between mx-10 w-[90%]">
                   <p className="flex flex-row text-lg mt-4 mb-4">
                     <img
                       src={location}
@@ -499,7 +497,7 @@ export default function Profile() {
                     <img
                       src={change}
                       alt="modifier"
-                      className=" w-8 h-8 ml-28 mt-3 mr-5"
+                      className=" w-8 h-8 ml-28 mt-3 mr-5 hover:cursor-pointer"
                       onClick={() => setIsEditLocation(!isEditLocation)}
                     />
                   ) : (
@@ -507,14 +505,14 @@ export default function Profile() {
                       <img
                         src={save}
                         alt="sauvegarder"
-                        className="w-6 h-6 ml-24 mt-3.5"
+                        className="w-6 h-6 ml-16 mt-3.5 hover:cursor-pointer"
                         onClick={handleSaveLocation}
                       ></img>
                     )
                   )}
                 </div>
                 {/* Birthdate */}
-                <div className="flex flex-row justify-between mx-10 w-96">
+                <div className="flex flex-row justify-between mx-10 w-[90%]">
                   <p className="flex flex-row text-lg mt-4 mb-4">
                     <img
                       src={birthday}
@@ -546,7 +544,7 @@ export default function Profile() {
                     <img
                       src={change}
                       alt="modifier"
-                      className=" w-8 h-8 ml-28 mt-3 mr-5"
+                      className=" w-8 h-8 ml-28 mt-3 mr-5 hover:cursor-pointer"
                       onClick={() => setIsEditBirthdate(!isEditBirthdate)}
                     />
                   ) : (
@@ -554,7 +552,7 @@ export default function Profile() {
                       <img
                         src={save}
                         alt="sauvegarder"
-                        className="w-6 h-6 ml-24 mt-3.5"
+                        className="w-6 h-6 ml-16 mt-3.5 hover:cursor-pointer"
                         onClick={handleSaveBirthdate}
                       ></img>
                     )
@@ -563,7 +561,7 @@ export default function Profile() {
               </div>
               <div className="flex flex-col w-96">
                 {/* Bio */}
-                <div className="flex flex-row justify-between mx-10 w-96">
+                <div className="flex flex-row justify-between mx-10 w-[100%]">
                   <p className="flex flex-row text-lg mt-4 mb-4 ">
                     <img
                       src={hello}
@@ -593,7 +591,7 @@ export default function Profile() {
                     <img
                       src={change}
                       alt="modifier"
-                      className=" w-8 h-8 ml-28 mt-3 mr-5"
+                      className=" w-8 h-8 ml-28 mt-3 mr-5 hover:cursor-pointer"
                       onClick={() => setIsEditBio(!isEditBio)}
                     />
                   ) : (
@@ -601,14 +599,14 @@ export default function Profile() {
                       <img
                         src={save}
                         alt="sauvegarder"
-                        className="w-6 h-6 ml-24 mt-3.5"
+                        className="w-6 h-6 ml-16 mt-3.5 hover:cursor-pointer"
                         onClick={handleSaveBio}
                       ></img>
                     )
                   )}
                 </div>
                 {/* website */}
-                <div className="flex flex-row justify-between mx-10 w-96">
+                <div className="flex flex-row justify-between mx-10 w-[100%]">
                   <p className="flex flex-row text-lg mt-4 mb-4">
                     <img
                       src={www}
@@ -640,7 +638,7 @@ export default function Profile() {
                     <img
                       src={change}
                       alt="modifier"
-                      className=" w-8 h-8 ml-28 mt-3 mr-5"
+                      className=" w-8 h-8 ml-28 mt-3 mr-5 hover:cursor-pointer"
                       onClick={() => setIsEditWebsite(!isEditWebsite)}
                     />
                   ) : (
@@ -648,14 +646,14 @@ export default function Profile() {
                       <img
                         src={save}
                         alt="sauvegarder"
-                        className="w-6 h-6 ml-24 mt-3.5"
+                        className="w-6 h-6 ml-16 mt-3.5 hover:cursor-pointer"
                         onClick={handleSaveWebsite}
                       ></img>
                     )
                   )}
                 </div>
                 {/* facebook */}
-                <div className="flex flex-row justify-between mx-10 w-96">
+                <div className="flex flex-row justify-between mx-10 w-[100%]">
                   <p className="flex flex-row text-lg mt-4 mb-8">
                     <img
                       src={facebook}
@@ -687,7 +685,7 @@ export default function Profile() {
                     <img
                       src={change}
                       alt="modifier"
-                      className=" w-8 h-8 ml-28 mt-3 mr-5"
+                      className=" w-8 h-8 ml-28 mt-3 mr-5 hover:cursor-pointer"
                       onClick={() => setIsEditFacebook(!isEditFacebook)}
                     />
                   ) : (
@@ -695,7 +693,7 @@ export default function Profile() {
                       <img
                         src={save}
                         alt="sauvegarder"
-                        className="w-6 h-6 ml-24 mt-3.5"
+                        className="w-6 h-6 ml-16 mt-3.5 hover:cursor-pointer"
                         onClick={handleSaveFacebook}
                       ></img>
                     )
