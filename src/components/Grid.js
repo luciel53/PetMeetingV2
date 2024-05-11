@@ -1,9 +1,4 @@
-import { NavLink, useParams } from "react-router-dom";
-import cats from "./Cats";
-import male from "../assets/images/icons/male.png";
-import female from "../assets/images/icons/female.png";
-import { useState } from "react";
-import users from "../components/Users";
+import { NavLink } from "react-router-dom";
 
 export default function Grid({ items }) {
   // useParams extracts the params of the url

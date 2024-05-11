@@ -50,7 +50,7 @@ export default function Carousel({ offers }) {
       </div>
 
       {/* Carousel */}
-      <div className="relative mt-4 md:mt-2 md:p-5 shadow-xl mb-5 flex flex-nowrap bg-white rounded-3xl font-semibold overflow-x-scroll snap-mandatory">
+      <div className="relative mt-4 md:mt-2 md:p-5 shadow-xl mb-5 flex flex-nowrap bg-white rounded-3xl font-semibold snap-mandatory">
         {Array.from({ length: itemsToShow }).map((_, index) => {
           const offerIndex = (startIndex + index) % offers.length;
           const offer = offers[offerIndex];

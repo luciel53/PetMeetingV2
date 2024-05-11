@@ -11,14 +11,12 @@ import { jwtDecode } from "jwt-decode";
 
 export default function Navbar() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
-  const [connectedIcons, setConnectedIcons] = useState(true);
   const [unconnectedIcons, setUnconnectedIcons] = useState(false);
   const [userId, setUserId] = useState("1");
   const [username, setUsername] = useState("");
   const location = useLocation();
-  const { id } = useParams();
 
-  {/* To manage the authentication */}
+  /* To manage the authentication */
   const [isAuth, setIsAuth] = useState(false);
 
   useEffect(() => {
@@ -50,7 +48,6 @@ export default function Navbar() {
     try {
       const response = await axios.get(`http://localhost:8000/users/${userId}/`);
       setUsername(response.data.username);
-      console.log("username:", response.data.username);
     } catch (error) {
       console.log("Error fetching username", error);
     }
@@ -158,7 +155,7 @@ export default function Navbar() {
         </ul>
         {/* Parallelogram */}
         <div className="flex flex-col bg-gray w-28 md:w-36 lg:w-60 h-12 md:h-14 lg:h-20 skew-x-45 mr-8 md:mr-10 lg:mr-48 px-4 md:px-6 lg:px-12 justify-between items-center">
-          <div class="flex flex-row mt-4">
+          <div class="flex flex-row mt-6">
             {isAuth ? (
               <NavLink
                 to={`/Profile/${userId.toString()}`}
@@ -208,11 +205,11 @@ export default function Navbar() {
               </NavLink>
             )}
           </div>
-          {isAuth && (
+          {/* {isAuth && (
             <div className="-skew-x-45">
               <p>Hello {username}</p>
             </div>
-          )}
+          )} */}
         </div>
         {/* Burger button */}
         <button

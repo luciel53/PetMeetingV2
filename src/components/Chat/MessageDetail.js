@@ -7,8 +7,6 @@ import Button from "../Button";
 import addimage from "../../assets/images/icons/addimage.png";
 
 function MessageDetail() {
-
-
   const baseUrl = "http://127.0.0.1:8000/messaging/";
   const [message, setMessage] = useState([]);
   const [messages, setMessages] = useState([]);
@@ -87,13 +85,18 @@ function MessageDetail() {
           });
           socket.addEventListener("message", (event) => {
             try {
-            // update the message state by adding the new message
-            const newMessage = JSON.parse(event.data);
+              // update the message state by adding the new message
+              const newMessage = JSON.parse(event.data);
 
-            setWebsocketMessages((prevMessages) => [...prevMessages, newMessage]);
-            console.log("All messages received from websocket::", websocketMessages);
-
-          } catch (e) {
+              setWebsocketMessages((prevMessages) => [
+                ...prevMessages,
+                newMessage,
+              ]);
+              console.log(
+                "All messages received from websocket::",
+                websocketMessages
+              );
+            } catch (e) {
               console.error("error parsing JSON msg", e);
             }
           });
@@ -123,19 +126,25 @@ function MessageDetail() {
   );
 
   // recover the sender avatar
-  const avatarSender = offer && offer.sender_profile ? offer.sender_profile.avatar : '';
+  const avatarSender =
+    offer && offer.sender_profile ? offer.sender_profile.avatar : "";
 
   // recover the receiver avatar
-  const avatarReceiver = offer && offer.receiver_profile ? offer.receiver_profile.avatar : '';
+  const avatarReceiver =
+    offer && offer.receiver_profile ? offer.receiver_profile.avatar : "";
 
-  const test1 = offer && offer.sender === userId ? avatarSender : avatarReceiver;
-  const test2 = offer && offer.sender === userId ? avatarReceiver : avatarSender;
+  const test1 =
+    offer && offer.sender === userId ? avatarSender : avatarReceiver;
+  const test2 =
+    offer && offer.sender === userId ? avatarReceiver : avatarSender;
 
   // recover tje sender name
-  const nameSender = offer && offer.sender_profile_name ? offer.sender_profile_name : '';
+  const nameSender =
+    offer && offer.sender_profile_name ? offer.sender_profile_name : "";
 
   // recover the receiver name
-  const nameReceiver = offer && offer.receiver_profile_name ? offer.receiver_profile_name : '';
+  const nameReceiver =
+    offer && offer.receiver_profile_name ? offer.receiver_profile_name : "";
   console.log(nameReceiver);
 
   // changes the state of the input chat message
@@ -300,7 +309,11 @@ function MessageDetail() {
               .sort((a, b) => new Date(a.date) - new Date(b.date))
               .map((msg, index) => (
                 <div className="flex flex-col">
-                  <div className={`flex flex-row ${msg.sender === userId ? 'justify-end' : 'justify-start'}`}>
+                  <div
+                    className={`flex flex-row ${
+                      msg.sender === userId ? "justify-end" : "justify-start"
+                    }`}
+                  >
                     <div
                       key={msg.id}
                       className={`flex flex-row max-w-[480px] h-auto mt-3 p-3 rounded-xl ${
@@ -331,7 +344,6 @@ function MessageDetail() {
                         />
                       )}
                     </div>
-
                   </div>
                   <p
                     className={`text-verydarkgray mt-1 mr-2 ${
@@ -342,11 +354,15 @@ function MessageDetail() {
                   </p>
                 </div>
               ))}
-              {/* Display the websocket messages */}
-            {Array.isArray(websocketMessages) && (
+            {/* Display the websocket messages */}
+            {Array.isArray(websocketMessages) &&
               websocketMessages.map((msg, index) => (
                 <div className="flex flex-col">
-                  <div className={`flex flex-row ${msg.sender === userId ? 'justify-end' : 'justify-start'}`}>
+                  <div
+                    className={`flex flex-row ${
+                      msg.sender === userId ? "justify-end" : "justify-start"
+                    }`}
+                  >
                     <div
                       key={index}
                       className={`flex flex-row max-w-[480px] h-auto mt-3 p-3 rounded-xl ${
@@ -363,7 +379,7 @@ function MessageDetail() {
                         />
                       )}
                       <p
-                        className={`ml-4 max-w-96 ${
+                        className={`mx-4 max-w-96 ${
                           msg.sender === userId ? "text-end" : ""
                         }`}
                       >
@@ -377,7 +393,6 @@ function MessageDetail() {
                         />
                       )}
                     </div>
-
                   </div>
                   <p
                     className={`text-verydarkgray mt-1 mr-2 ${
@@ -387,7 +402,7 @@ function MessageDetail() {
                     {moment(msg.date).format("HH:mm")}
                   </p>
                 </div>
-              )))}
+              ))}
           </div>
         </div>
         {/* Messages input */}

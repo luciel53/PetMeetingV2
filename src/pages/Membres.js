@@ -46,7 +46,7 @@ export default function Members() {
             </NavLink>
           ))
         ) : (
-          <p className="mx-auto text-center">Désolé, aucun résultat. Va bien manger tes morts.</p>
+          <p className="mx-auto text-center">Désolé, aucun résultat.</p>
         )}
       </div>
     </div>
