@@ -835,7 +835,7 @@ export default function Profile() {
                     <td>
                       <img
                         src={garbage}
-                        className="w-9 mx-auto"
+                        className="w-9 mx-auto hover:cursor-pointer"
                         onClick={() => handleDelete(catOffer.id)}
                         alt="supprimer l'annonce"
                       />

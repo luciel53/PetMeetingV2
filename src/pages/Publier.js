@@ -12,6 +12,7 @@ export default function Publier() {
   const [formSubmitted, setFormSubmitted] = useState(false);
   const [loof, setLoof] = useState("");
   const [vaccins, setVaccins] = useState("");
+
   const initialFormData = {
     name: "",
     race: "",
@@ -44,16 +45,12 @@ export default function Publier() {
     }));
   }
 
-  // function handleChange(e) {
-  //   setFormData({ ...formData, [e.target.name]: e.target.value });
-  // }
-
   const [blood, setBlood] = useState([]);
   const [races, setRaces] = useState([]);
   const [sex, setSex] = useState([]);
   const [locations, setLocations] = useState([]);
   const [eyeColor, setEyeColor] = useState([]);
-  const [showPrice, setShowPrice] = useState(true);
+  const showPrice = true;
 
   useEffect(() => {
     fetchSelectData();
@@ -66,7 +63,6 @@ export default function Publier() {
       const response = await axios.get(
         "http://127.0.0.1:8000/offers/offers/get_form_data/"
       );
-      console.log(response.data);
       setRaces(response.data.races);
       setSex(response.data.sexe);
       setLocations(response.data.locations);
@@ -116,15 +112,9 @@ export default function Publier() {
       ...prevFormData,
       user_id: userId
     }));
-    //check if LOOF and Vaccins are both set on Yes
-    // const loofValue = document.querySelector('input[name="loof"]:checked')?.value;
-    // const vaccinsValue = document.querySelector(
-    //   'input[name="vaccins"]:checked'
-    // )?.value;
 
     try {
       if (loof === "Oui" && vaccins === "Oui") {
-        console.log('data: ', formData);
         axios.defaults.headers.common["Authorization"] = `Bearer ${localStorage.getItem("access_token")}`;
           const response = await axios.post("http://127.0.0.1:8000/offers/offers/",
             formData,
@@ -132,10 +122,8 @@ export default function Publier() {
             {
               headers: { "Content-Type": "multipart/form-data" },
             },
-            // {withCredentials: true},
+
           );
-          // authorize the token
-          // axios.defaults.headers.common["Authorization"] = `Bearer ${localStorage.getItem("access_token")}`;
           console.log(response.data);
           setFormData(initialFormData);
           setSuccessMessage("Votre annonce a bien été postée!");

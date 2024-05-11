@@ -1,24 +1,19 @@
 import { React, useState, useEffect } from "react";
-import { NavLink, useLocation, useParams, useHistory, json } from "react-router-dom";
+import { NavLink, useParams } from "react-router-dom";
 import axios from "axios";
 import { jwtDecode } from "jwt-decode";
 import moment from "moment";
 import Button from "../Button";
-import users from "../Users";
-import cats from "../Cats";
 import addimage from "../../assets/images/icons/addimage.png";
 
 function MessageDetail() {
-  const suzanne = users.find((user) => user.name === "Suzanne");
-  const paul = users.find((user) => user.name === "Paul");
-  const popeye = cats.find((cat) => cat.name === "Popeye");
+
 
   const baseUrl = "http://127.0.0.1:8000/messaging/";
   const [message, setMessage] = useState([]);
   const [messages, setMessages] = useState([]);
   const [userId, setUserId] = useState("");
   const [isAuth, setIsAuth] = useState(false);
-  const other_user_id = useParams();
   const { sender_id, receiver_id, cat_offer } = useParams();
   const [displayedConversations, setDisplayedConversations] = useState(
     new Set()
@@ -77,7 +72,6 @@ function MessageDetail() {
             )
             .then((response) => {
               setMessage(response.data);
-              console.log("QUEL MESSAGE:", message);
             });
 
           const socket = new WebSocket(`ws://127.0.0.1:8000/ws/messaging/`);
@@ -95,16 +89,6 @@ function MessageDetail() {
             try {
             // update the message state by adding the new message
             const newMessage = JSON.parse(event.data);
-            console.log("websocket nouveau messsage", newMessage);
-
-            // Check if newMessage is a valid JSON object
-            // setWsSender(newMessage["sender"]);
-            // let new_msg_user = newMessage["user"];
-            // let new_msg_sender = newMessage["sender"];
-            // let new_msg_receiver = newMessage["receiver"];
-            // let new_msg_msg = newMessage["message"];
-            // let new_msg_is_read = newMessage["is_read"];
-            // let new_msg_cat_offer = newMessage["cat_offer"];
 
             setWebsocketMessages((prevMessages) => [...prevMessages, newMessage]);
             console.log("All messages received from websocket::", websocketMessages);
@@ -112,8 +96,6 @@ function MessageDetail() {
           } catch (e) {
               console.error("error parsing JSON msg", e);
             }
-          console.log("All messages received from websocket::", websocketMessages);
-
           });
 
           //Clean up websocket connection
@@ -133,7 +115,6 @@ function MessageDetail() {
 
   const filteredMessages = messages.filter((message) => {
     const conversationKey = `${message.receiver}-${message.sender}-${message.cat_offer}`;
-    console.log("conversations: ", conversationKey);
     return !displayedConversations.has(conversationKey);
   });
 
@@ -141,26 +122,21 @@ function MessageDetail() {
     (message) => message.sender === userId || message.receiver === userId
   );
 
-  //find the avatars
   // recover the sender avatar
   const avatarSender = offer && offer.sender_profile ? offer.sender_profile.avatar : '';
-  console.log("avatarSender: ", avatarSender);
 
   // recover the receiver avatar
   const avatarReceiver = offer && offer.receiver_profile ? offer.receiver_profile.avatar : '';
-  console.log("avatarReceiver: ", avatarReceiver);
 
   const test1 = offer && offer.sender === userId ? avatarSender : avatarReceiver;
   const test2 = offer && offer.sender === userId ? avatarReceiver : avatarSender;
 
   // recover tje sender name
   const nameSender = offer && offer.sender_profile_name ? offer.sender_profile_name : '';
-  console.log(nameSender);
 
   // recover the receiver name
   const nameReceiver = offer && offer.receiver_profile_name ? offer.receiver_profile_name : '';
   console.log(nameReceiver);
-  console.log("offer: ", offer);
 
   // changes the state of the input chat message
   const handleChange = (event) => {
@@ -170,16 +146,9 @@ function MessageDetail() {
     });
   };
 
-  console.log("TEST>>>> user", userId);
-  console.log("TEST>>>> sender", userId);
-  console.log("TEST>>>> receiver", receiver_id);
-  console.log("TEST>>>> message", chatMessage.message);
-  console.log("TEST>>>> catoffer", typeof parseInt(cat_offer));
-
   // Send the message
   const sendMessage = () => {
     const cat_offer_id = parseInt(cat_offer);
-    console.log(typeof cat_offer_id);
     const formData = new FormData();
     formData.append("user", userId);
     formData.append("sender", userId);
@@ -191,7 +160,6 @@ function MessageDetail() {
     try {
       axios.post(baseUrl + "send-messages/", formData).then((response) => {
         console.log(response.data);
-        console.log(formData);
         setChatMessage({ message: "" });
       });
 
@@ -209,27 +177,16 @@ function MessageDetail() {
           message: chatMessage.message,
           is_read: false,
           cat_offer: cat_offer_id,
-          // receiver_profile: receiver_profile.avatar,
-          // sender_profile: sender_profile.avatar,
         };
 
         socket.send(JSON.stringify(jsonMessage));
         setSentMessages(jsonMessage);
-        console.log("Message envoyé avec Websocket::", jsonMessage);
       });
 
       socket.addEventListener("error", (event) => {
         console.error(" WEBSOCKET ERROR", event);
         setIsWebSocketConnected(false);
       });
-
-      // socket.addEventListener("message", (event) => {
-      //   // update the message state by adding the new message
-      //   const newMessage = JSON.parse(event.data);
-      //   console.log("EVENTDATA", event.data);
-      //   setWebsocketMessages((prevMessages) => [...prevMessages, newMessage]);
-      //   console.log("Nouveau message reçu :", newMessage);
-      // });
 
       //Clean up websocket connection
       return () => {
@@ -243,11 +200,6 @@ function MessageDetail() {
       console.log(error);
     }
   };
-
-  console.log(chatMessage);
-
-  // const all_messages = [...message, ...websocketMessages];
-  // console.log("tous les msg:::", all_messages);
 
   return (
     <div className="flex flex-row mt-40 mx-auto animate-fade">
