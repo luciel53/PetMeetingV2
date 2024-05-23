@@ -1,6 +1,7 @@
 import React from "react";
 import { useState, useEffect } from "react";
 import axios from "axios";
+import moment from "moment";
 import { NavLink, useParams } from "react-router-dom";
 import { jwtDecode } from "jwt-decode";
 import save from "../assets/images/icons/save.png";
@@ -819,7 +820,7 @@ export default function Profile() {
                   </td>
                   <td>
                     <NavLink to={`/Annonces/${catOffer.id}`}>
-                      <p className="mt-3">{catOffer.date_posted}</p>
+                      <p className="mt-3">{moment(catOffer.date_posted).format("DD/MM/YYYY")}</p>
                     </NavLink>
                   </td>
                   <td>
