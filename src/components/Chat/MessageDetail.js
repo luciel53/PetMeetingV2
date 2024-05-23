@@ -83,19 +83,16 @@ function MessageDetail() {
             console.error(" WEBSOCKET ERROR", event);
             setIsWebSocketConnected(false);
           });
+
           socket.addEventListener("message", (event) => {
             try {
-              // update the message state by adding the new message
               const newMessage = JSON.parse(event.data);
-
+              // update the message state by adding the new message
               setWebsocketMessages((prevMessages) => [
                 ...prevMessages,
                 newMessage,
               ]);
-              console.log(
-                "All messages received from websocket::",
-                websocketMessages
-              );
+              
             } catch (e) {
               console.error("error parsing JSON msg", e);
             }

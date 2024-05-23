@@ -127,6 +127,7 @@ export default function Offer() {
                 <div className="flex flex-col">
                   <div>
                     <table className="text-lg ml-5 leading-8">
+                      {/* Sex */}
                       <tr>
                         <td className="text-purple">Sexe:</td>
                         <td className="pl-7">
@@ -137,42 +138,57 @@ export default function Offer() {
                           )}
                         </td>
                       </tr>
+                      {/* Race */}
+                      <tr>
+                        <td className="text-purple">Race:</td>
+                        <td className="pl-8">{selectedOffer.race}</td>
+                      </tr>
+                      {/* LOOF */}
                       <tr>
                         <td className="text-purple">LOOF:</td>
                         <td className="pl-8">Oui</td>
                       </tr>
+                      {/* location */}
                       <tr>
                         <td className="text-purple">Localisation:</td>
                         <td className="pl-8">{selectedOffer.location}</td>
                       </tr>
+                      {/* bloodtype */}
                       <tr>
                         <td className="text-purple">Groupe sanguin:</td>
                         <td className="pl-8">{selectedOffer.blood}</td>
                       </tr>
+                      {/* Diseases tests */}
                       <tr>
                         <td className="text-purple">Tests maladies:</td>
                         <td className="pl-8">{selectedOffer.diseases_tests}</td>
                       </tr>
+                      {/* Vaccines */}
                       <tr>
                         <td className="text-purple">Vaccins à jour:</td>
                         <td className="pl-8">Oui</td>
                       </tr>
+                      {/* identication number */}
                       <tr>
                         <td className="text-purple">N° d’identification:</td>
                         <td className="pl-8">{selectedOffer.id_num}</td>
                       </tr>
+                      {/* eye color */}
                       <tr>
                         <td className="text-purple">Couleur des yeux:</td>
                         <td className="pl-8">{selectedOffer.eye_color}</td>
                       </tr>
+                      {/* fur color */}
                       <tr>
                         <td className="text-purple">Robe:</td>
                         <td className="pl-8">{selectedOffer.fur_color}</td>
                       </tr>
+                      {/* age */}
                       <tr>
                         <td className="text-purple">Age:</td>
                         <td className="pl-8">{selectedOffer.age} an(s)</td>
                       </tr>
+                      {/* qualities */}
                       <tr>
                         <td className="text-purple">Qualités:</td>
                         <td
@@ -182,6 +198,7 @@ export default function Offer() {
                           {selectedOffer.qualities}
                         </td>
                       </tr>
+                      {/* defaults */}
                       <tr>
                         <td className="text-purple">Défauts:</td>
                         <td
@@ -191,6 +208,7 @@ export default function Offer() {
                           {selectedOffer.flaws}
                         </td>
                       </tr>
+                      {/* other */}
                       <tr>
                         <td className="text-purple">Autres:</td>
                         <td
@@ -212,7 +230,7 @@ export default function Offer() {
             <div className="h-auto">
               <img
                 src={selectedImage}
-                className="mt-16 mb-5 mx-auto max-w-96 max-h-[430px] shadow-lg"
+                className="mt-16 mb-5 mx-auto max-w-96 max-h-[430px] shadow-lg rounded-lg"
                 alt="selected"
               />
             </div>

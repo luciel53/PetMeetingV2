@@ -16,7 +16,7 @@ class ProfileListAPIView(generics.ListAPIView):
 
     def get_queryset(self):
         queryset = super().get_queryset()
-        queryset = queryset.select_related('user')  # Assurez-vous de sélectionner l'utilisateur associé pour éviter les requêtes supplémentaires
+        queryset = queryset.select_related('user')
         return queryset
 
     def list(self, request, *args, **kwargs):
