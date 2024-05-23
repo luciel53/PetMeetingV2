@@ -1,6 +1,7 @@
 import { NavLink, useParams } from "react-router-dom";
 import { useState, useEffect } from "react";
 import axios from "axios";
+import moment from "moment";
 import profileMsg from "../assets/images/icons/profileMsg.png";
 import profileCard from "../assets/images/icons/profileCard.png";
 import minicat from "../assets/images/icons/minicat.png";
@@ -30,6 +31,7 @@ export default function Offer() {
         const offers = response.data.offers;
         const selected = offers.find((offer) => offer.id === parseInt(id));
         setSelectedOffer(selected);
+        console.log(selected);
         setSelectedImage(selected.picture);
         handleImageClick(`http://127.0.0.1:8000${selected.picture}`);
 
@@ -104,7 +106,7 @@ export default function Offer() {
               </div>
               <div className="flex flex-col w-1/2 pl-12 pt-1">
                 <div className="flex flex-row items-center">
-                  <small className="">01/02/2024 20:58</small>
+                  <small className="">{moment(selectedOffer.date_posted).format("DD/MM/YYYY HH:mm")}</small>
                   <NavLink to={`/contact?&email=&topic=Signalement d'une annonce&message=Bonjour, je souhaite signaler l'annonce n°${selectedOffer.id} - ${selectedOffer.name}, car `}>
                   <img
                     src={warning}
