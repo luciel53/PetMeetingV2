@@ -534,7 +534,7 @@ export default function Profile() {
                             className="w-60"
                           />
                         ) : (
-                          <span>{profile.birthdate}</span>
+                          <span>{moment(profile.birthdate).format("DD/MM/YYYY")}</span>
                         )}
                       </>
                     ) : (
