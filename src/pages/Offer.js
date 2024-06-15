@@ -31,15 +31,26 @@ export default function Offer() {
         const offers = response.data.offers;
         const selected = offers.find((offer) => offer.id === parseInt(id));
         setSelectedOffer(selected);
-        console.log(selected);
+        console.log("selected", selected);
         setSelectedImage(selected.picture);
         handleImageClick(`http://127.0.0.1:8000${selected.picture}`);
 
         const ownerResponse = await axios.get(
-          `http://127.0.0.1:8000/users/profile/${selected.user_id}`
+          `http://127.0.0.1:8000/users/${selected.user_id}`
         );
-        const profile = ownerResponse.data;
-        setAvatar(profile.avatar);
+        console.log("responce", ownerResponse);
+
+        const ProfileResponse = await axios.get(
+          `http://localhost:8000/users/profile/`
+        );
+
+        const profiles = ProfileResponse.data;
+        // filter the users by id
+        const selectedProfile = profiles.filter(
+          (profile) => profile.user === parseInt(selected.user_id)
+        );
+        console.log("Réponce", selectedProfile);
+        setAvatar(selectedProfile[0].avatar);
       } catch (e) {
         console.error("Error fetching cats offers", e);
       }
@@ -106,13 +117,19 @@ export default function Offer() {
               </div>
               <div className="flex flex-col w-1/2 pl-12 pt-1">
                 <div className="flex flex-row items-center">
-                  <small className="">{moment(selectedOffer.date_posted).format("DD/MM/YYYY HH:mm")}</small>
-                  <NavLink to={`/contact?&email=&topic=Signalement d'une annonce&message=Bonjour, je souhaite signaler l'annonce n°${selectedOffer.id} - ${selectedOffer.name}, car `}>
-                  <img
-                    src={warning}
-                    className="mr-4"
-                    alt="signaler l'annonce"
-                  />
+                  <small className="">
+                    {moment(selectedOffer.date_posted).format(
+                      "DD/MM/YYYY HH:mm"
+                    )}
+                  </small>
+                  <NavLink
+                    to={`/contact?&email=&topic=Signalement d'une annonce&message=Bonjour, je souhaite signaler l'annonce n°${selectedOffer.id} - ${selectedOffer.name}, car `}
+                  >
+                    <img
+                      src={warning}
+                      className="mr-4"
+                      alt="signaler l'annonce"
+                    />
                   </NavLink>
                 </div>
                 {/* Price */}
@@ -241,17 +258,25 @@ export default function Offer() {
               <div className="flex flex-row justify-center">
                 <img
                   src={`http://127.0.0.1:8000${selectedOffer.picture}`}
-                  onClick={() => handleImageClick(`http://127.0.0.1:8000${selectedOffer.picture}`)}
+                  onClick={() =>
+                    handleImageClick(
+                      `http://127.0.0.1:8000${selectedOffer.picture}`
+                    )
+                  }
                   className="max-w-24 max-h-24 mr-4 rounded-lg shadow-lg cursor-pointer"
                   alt="image1"
                 />
                 {selectedOffer.picture2 ? (
                   <img
-                  src={`http://127.0.0.1:8000${selectedOffer.picture2}`}
-                  onClick={() => handleImageClick(`http://127.0.0.1:8000${selectedOffer.picture2}`)}
-                  className="max-w-24 max-h-24 mr-4 rounded-lg shadow-lg cursor-pointer"
-                  alt="image1"
-                />
+                    src={`http://127.0.0.1:8000${selectedOffer.picture2}`}
+                    onClick={() =>
+                      handleImageClick(
+                        `http://127.0.0.1:8000${selectedOffer.picture2}`
+                      )
+                    }
+                    className="max-w-24 max-h-24 mr-4 rounded-lg shadow-lg cursor-pointer"
+                    alt="image1"
+                  />
                 ) : (
                   <img
                     src={noPic}
@@ -261,11 +286,15 @@ export default function Offer() {
                 )}
                 {selectedOffer.picture3 ? (
                   <img
-                  src={`http://127.0.0.1:8000${selectedOffer.picture3}`}
-                  onClick={() => handleImageClick(`http://127.0.0.1:8000${selectedOffer.picture3}`)}
-                  className="max-w-24 max-h-24 rounded-lg shadow-lg cursor-pointer"
-                  alt="image1"
-                />
+                    src={`http://127.0.0.1:8000${selectedOffer.picture3}`}
+                    onClick={() =>
+                      handleImageClick(
+                        `http://127.0.0.1:8000${selectedOffer.picture3}`
+                      )
+                    }
+                    className="max-w-24 max-h-24 rounded-lg shadow-lg cursor-pointer"
+                    alt="image1"
+                  />
                 ) : (
                   <img
                     src={noPic}
